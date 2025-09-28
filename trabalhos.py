@@ -1,0 +1,1 @@
+# a criação de divulgação de trabalhos NÃO pode ser acessada por usuários comuns
