@@ -8,7 +8,7 @@
     padding: 0;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
@@ -31,7 +31,7 @@ body {
 }
 
 .main {
-    min-height: 100vh;
+    min-height: calc(100vh - 70px);
     width: 100%;
     overflow: hidden;
     transition: all .35s ease-in-out;
@@ -57,19 +57,24 @@ body {
     background-color: transparent;
     cursor: pointer;
     border: 0;
-    padding: 1rem 1.5rem;
+    padding: 0 1.5rem;
+    transition: transform 0.3s ease;
 }
 
-#toggle-btn i{
+#toggle-btn.rotated {
+    transform: rotate(180deg);
+}
+
+#toggle-btn i {
     font-size: 1.5rem;
     color: #fff;
 }
 
-.sidebar-logo{
+.sidebar-logo {
     margin: auto 0;
 }
 
-.sidebar-logo a{
+.sidebar-logo a {
     color: #fff;
     font-size: 1.15rem;
     font-weight: 600;
@@ -81,7 +86,7 @@ body {
 }
 
 .sidebar-nav {
-    padding: 2rem 0;
+    padding: 1rem 0;
     flex: 1 1 auto;
 }
 
@@ -89,17 +94,17 @@ a.sidebar-link {
     padding: .625rem 1.625rem;
     color: #fff;
     display: block;
-    font-size: 0.9rem;
+    font-size: 1rem;
     white-space: nowrap;
-    border-left:  3px solid transparent;
+    border-left: 3px solid transparent;
 }
 
-.sidebar-link i{
+.sidebar-link i {
     font-size: 1.1rem;
     margin-right: .75rem;
 }
 
-a.sidebar-link:hover{
+a.sidebar-link:hover {
     background-color: rgba(255, 255, 255, 0.075);
     border-left: 3px solid #3b7ddd;
 }
@@ -126,7 +131,7 @@ a.sidebar-link:hover{
 }
 
 /* não funcionam - verificar */
-#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after{
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
     border: solid;
     border-width: 0 0.075rem 0;
     content: "";
@@ -139,8 +144,52 @@ a.sidebar-link:hover{
     transition: all .2s ease-out;
 }
 
-#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapse::after{
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapse::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
 
+/* navbar */
+.container-fluid {
+    background: #0e223e;
+    height: 70px;
+}
+
+.navbar {
+    padding: 0;
+}
+
+.navbar-brand {
+    color: #fafbfe;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-left: 15px;
+}
+
+.nav-link,
+.nav-link.active {
+    color: #fafbfe;
+    transition: none;
+    border-bottom: 3px solid transparent;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+    color: #fafbfe;
+}
+
+.navbar-brand:hover {
+    color: #fafbfe;
+}
+
+.nav-link:hover,
+.nav-link.active:hover {
+    color: #fafbfe;
+    background-color: rgba(255, 255, 255, 0.075);
+    border-bottom: 3px solid #3b7ddd;
+}
+
+.navbar-nav:hover .nav-link.active:hover,
+.navbar-nav:hover .nav-link.show:hover {
+    color: #fafbfe;
+}

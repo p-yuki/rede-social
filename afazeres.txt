@@ -1,4 +1,4 @@
-modificar html e css navbar
+modificar html navbar
 
 mudar botão logout > acesso perfil
 
