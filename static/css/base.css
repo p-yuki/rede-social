@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+/* bases */
 ::after,
 ::before {
     box-sizing: border-box;
@@ -24,6 +25,7 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+/* sidebar */
 .wrapper {
     display: flex;
 }
@@ -123,6 +125,7 @@ a.sidebar-link:hover{
     opacity: 1;
 }
 
+/* não funcionam - verificar */
 #sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after{
     border: solid;
     border-width: 0 0.075rem 0;
@@ -140,3 +143,5 @@ a.sidebar-link:hover{
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+
+/* conteúdo */
