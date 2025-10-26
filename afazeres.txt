@@ -1,0 +1,12 @@
+modificar html e css navbar
+
+mudar botão logout > acesso perfil
+
+modificar listas e cadastros (trabalhos, achados e perdidos)
+
+criar e modificar função botões (conexão entre páginas)
+
+verificar conexão db
+
+add favicon base.html
+
