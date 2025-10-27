@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condomínio - Achados e Perdidos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-city"></i>
+            <h1>Condomínio</h1>
+        </div>
+        <nav class="nav-icons">
+            <a href="{{ url_for('painel') }}" title="Painel" class="{% if active_page == 'dashboard' %}active-icon{% endif %}"><i class="fas fa-th-large"></i></a>
+            <a href="{{ url_for('achados_perdidos') }}" title="Buscar" class="{% if active_page == 'search' %}active-icon{% endif %}"><i class="fas fa-search"></i></a>
+            <a href="{{ url_for('chat') }}" title="Chat" class="{% if active_page == 'chat' %}active-icon{% endif %}"><i class="fas fa-comment-dots"></i></a>
+            <a href="{{ url_for('servicos') }}" title="Serviços" class="{% if active_page == 'services' %}active-icon{% endif %}"><i class="fas fa-tools"></i></a>
+            <a href="{{ url_for('perfil') }}" title="Perfil" class="{% if active_page == 'perfil' %}active-icon{% endif %}"><i class="fas fa-user-circle"></i></a>
+        </nav>
+    </header>
+
+    <main class="lost-and-found-page">
+        <h2>Achados e Perdidos</h2>
+        
+        <div class="feed-actions">
+            <button class="btn-primary">
+                <i class="fas fa-plus"></i> Relatar Achado
+            </button>
+            <button class="btn-secondary">
+                <i class="fas fa-minus"></i> Relatar Perdido
+            </button>
+        </div>
+
+        <div class="lost-and-found-feed">
+            
+            {% set items = [
+                {'title': 'CARTEIRA PRETA', 'status': 'Achado', 'date': '22 de abril', 'location': 'Perto da piscina.', 'details': 'Carteira de couro preta, sem documentos.', 'class': 'wallet', 'status_class': 'found'},
+                {'title': 'SMARTWATCH', 'status': 'Perdido', 'date': '27 de abril', 'location': 'Academia.', 'details': 'Smartwatch cinza da marca X, tela rachada no canto.', 'class': 'smartwatch', 'status_class': 'lost'},
+                {'title': 'BRINCO DOURADO', 'status': 'Achado', 'date': '28 de abril', 'location': 'Sala de Jogos.', 'details': 'Apenas um brinco, formato de estrela.', 'class': 'earring-1', 'status_class': 'found'},
+                {'title': 'CHAVE', 'status': 'Perdido', 'date': '13 de Fevereiro', 'location': 'Hall do Bloco A.', 'details': 'Chave com chaveiro do Corinthians.', 'class': 'key', 'status_class': 'lost'}
+            ] %}
+
+            {% for item in items %}
+            <div class="lost-and-found-post feed-item">
+                <div class="post-header">
+                    <span class="post-status {{ item.status_class }}">{{ item.status }}</span>
+                    <h3 class="post-title">{{ item.title }}</h3>
+                </div>
+                <div class="post-body">
+                    <div class="post-image {{ item.class }}"></div>
+                    <div class="post-details">
+                        <p><strong>Onde:</strong> {{ item.location }}</p>
+                        <p><strong>Detalhes:</strong> {{ item.details }}</p>
+                        <span class="post-date"><i class="fas fa-calendar-alt"></i> {{ item.date }}</span>
+                        <button class="btn-contact">Entrar em Contato</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </main>
+
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modalTitle">Registrar Item</h3>
+            <form id="itemForm">
+                <input type="hidden" id="itemType" name="type" value="achado">
+
+                <div class="form-group">
+                    <label for="titulo">Título Curto (Ex: Chaveiro, Carteira Marrom)</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="detalhes">Descrição/Detalhes</label>
+                    <textarea id="detalhes" name="detalhes" rows="3" required placeholder="Cor, marca, características únicas e onde foi encontrado/perdido."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="local">Localização (Onde achou/perdeu)</label>
+                    <input type="text" id="local" name="local" required placeholder="Ex: Próximo à piscina, Hall do Bloco C.">
+                </div>
+
+                <div class="form-group">
+                    <label for="contato">Contato (Seu Telefone/Apto)</label>
+                    <input type="text" id="contato" name="contato" required placeholder="Ex: (11) 9xxxx-xxxx ou Apto 102 - Bloco B">
+                </div>
+                
+                <button type="submit" class="btn-primary" id="submitButton">Registrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

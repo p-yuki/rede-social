@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condomínio - Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-city"></i>
+            <h1>Condomínio</h1>
+        </div>
+        <nav class="nav-icons">
+            <a href="{{ url_for('painel') }}" title="Painel" class="{% if active_page == 'dashboard' %}active-icon{% endif %}"><i class="fas fa-th-large"></i></a>
+            <a href="{{ url_for('achados_perdidos') }}" title="Buscar" class="{% if active_page == 'search' %}active-icon{% endif %}"><i class="fas fa-search"></i></a>
+            <a href="{{ url_for('chat') }}" title="Chat" class="{% if active_page == 'chat' %}active-icon{% endif %}"><i class="fas fa-comment-dots"></i></a>
+            <a href="{{ url_for('servicos') }}" title="Serviços" class="{% if active_page == 'services' %}active-icon{% endif %}"><i class="fas fa-tools"></i></a>
+            <a href="{{ url_for('perfil') }}" title="Perfil" class="{% if active_page == 'perfil' %}active-icon{% endif %}"><i class="fas fa-user-circle"></i></a>
+        </nav>
+    </header>
+
+    <main class="chat-page">
+        <h2>Chat</h2>
+        
+        <div class="chat-container">
+            <div class="chat-list">
+                <a href="#" class="chat-item active-chat">
+                    <i class="fas fa-comment-alt"></i>
+                    <span>BLOCO A</span>
+                    <i class="fas fa-chevron-right arrow-icon"></i>
+                </a>
+                <a href="#" class="chat-item group-chat">
+                    <i class="fas fa-users"></i>
+                    <span>ASSEMBLEIA</span>
+                    <i class="fas fa-chevron-right arrow-icon"></i>
+                </a>
+            </div>
+
+            <div class="message-area">
+                <div class="messages-display">
+                    
+                    <div class="message received">
+                        <div class="message-avatar received-avatar"></div>
+                        <div class="message-bubble">Olá, tudo bem?</div>
+                    </div>
+                    <div class="message sent">
+                        <div class="message-bubble">Tudo ótimo! Alguma novidade sobre a assembleia?</div>
+                        <div class="message-avatar sent-avatar"></div>
+                    </div>
+                    <div class="message received">
+                        <div class="message-avatar received-avatar"></div>
+                        <div class="message-bubble">A pauta foi enviada por e-mail ontem à noite. Dá uma conferida!</div>
+                    </div>
+                    <div class="message sent">
+                        <div class="message-bubble">Beleza, obrigado!</div>
+                        <div class="message-avatar sent-avatar"></div>
+                    </div>
+
+                </div>
+
+                <div class="message-input-area">
+                    <input type="text" placeholder="Digite sua mensagem...">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
