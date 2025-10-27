@@ -9,10 +9,9 @@ from app import app
 aeps_bp = Blueprint('aeps_bp', __name__)
 @aeps_bp.route('aeps/novo')
 def novo():
-    return render_template('novo_post.html')
+    return render_template('novo_aep.html')
 
-
-@aeps_bp.route('aeps/criar_post', methods=['GET', 'POST'])
+@aeps_bp.route('aeps/criar_aep', methods=['GET', 'POST'])
 @login_required
 def criar_aep():
     if request.method == 'POST':
@@ -21,7 +20,7 @@ def criar_aep():
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            return render_template('criar_post.html')
+            return render_template('criar_aep.html')
         
         foto_id = None
         
@@ -47,7 +46,7 @@ def criar_aep():
                 db.session.flush()  #gera o id sem commit final
                 foto_id = foto.id  #pega o id da foto criada
         
-        #cria a aep
+        #cria a postagem
         aep = Aep()
         aep.usuario_id = session['user_id']
         aep.foto_id = foto_id
@@ -56,23 +55,23 @@ def criar_aep():
         db.session.commit()
         
         flash('Aep criada com sucesso!', 'success')
-        return redirect(url_for('posts_bp.feed'))
+        return redirect(url_for('aeps_bp.aep_lista'))
     
-    return render_template('criar_post.html')
+    return render_template('criar_aep.html')
 
-@aeps_bp.route('/aeps/excluir/<int:post_id>', methods=['POST'])
+@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])
 @login_required
-def excluir_post(post_id):
-    post = Aep.query.get_or_404(post_id)
+def excluir_aep(aep_id):
+    aep = Aep.query.get_or_404(aep_id)
         
     #verifica se o usuário logado é o autor do post
-    if post.usuario_id != session['user_id']:
+    if aep.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
-        return redirect(url_for('aeps_bp.listar_posts'))
+        return redirect(url_for('aeps_bp.listar_aeps'))
         
     #verifica se o post tem uma foto associada para excluir
-    if post.foto_id:
-        foto = Foto.query.get(post.foto_id)
+    if aep.foto_id:
+        foto = Foto.query.get(aep.foto_id)
         if foto:
             #exclui o arquivo físico da foto
             try:
@@ -86,16 +85,16 @@ def excluir_post(post_id):
             db.session.delete(foto)
         
         #exclui o post
-        db.session.delete(post)
+        db.session.delete(aep)
         db.session.commit()
         
     flash('Post excluído com sucesso!', 'success')
     
-    return redirect(url_for('aeps_bp.listar_posts'))
+    return redirect(url_for('aeps_bp.listar_aeps'))
 
-@aeps_bp.route('aeps/aep_feed')
-def listar_posts():
-    posts = Aep.query.join(Usuario).add_columns(
+@aeps_bp.route('aeps/achados_perdidos')
+def achados_perdidos():
+    aeps = Aep.query.join(Usuario).add_columns(
         Aep.id, 
         Aep.descricao, 
         Aep.foto_id, 
@@ -103,6 +102,4 @@ def listar_posts():
         Usuario.nome.label('autor_nome')
     ).order_by(Aep.data_aep.desc()).all()
     
-    return render_template('feed.html', posts=posts)
-
-
+    return render_template('achados_perdidos.html', aeps=aeps)

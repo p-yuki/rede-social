@@ -22,6 +22,7 @@ class Trabalho(db.Model):
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
     data_trabalho = db.Column(db.DateTime, default=db.func.current_timestamp())
+    nome_trabalho =db.Column(db.String(255), nullable=False)
 
 class Foto(db.Model):
     __tablename__ = 'fotos'
@@ -39,6 +40,7 @@ class Aviso(db.Model):
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
     data_aviso = db.Column(db.DateTime, default=db.func.current_timestamp())
+    nome_aviso =db.Column(db.String(255), nullable=False)
 
 class Aep(db.Model):
     __tablename__ = 'aeps'

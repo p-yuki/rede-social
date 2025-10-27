@@ -1,28 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-        <h2>Serviço de Moradores</h2>
-        
-        <div class="services-grid">
-            
-            {% for i in range(9) %}
-            <div class="service-card">
-                <div class="service-role">CONFEITEIRA</div>
-                <div class="service-content">
-                    <div class="service-avatar-container">
-                        <div class="service-avatar"></div>
-                    </div>
-                    <div class="service-info">
-                        <h3>Maria Fátima</h3>
-                        <p>Bloco B</p>
-                        <p>Apto 102</p>
-                        <div class="service-contact">
-                            <i class="fas fa-phone-alt"></i>
-                            <span>(11) 94005-8033</span>
-                        </div>
-                    </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/servicos.css') }}">
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h4>Serviços</h4>
+            {% for servico in servico %}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><strong>{{ trabalho.nome_trabalho }}</strong></h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ servico.desc }}</p>
+                    
+                <div class="card-footer">
+                    <small class="text-muted">
+                        Responsável: {{ usuarios[servico.user_id].nome if servico.user_id in usuarios}}
+                    </small>
                 </div>
             </div>
             {% endfor %}
-            
         </div>
 {% endblock %}

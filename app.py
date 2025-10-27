@@ -13,8 +13,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/red
 db.init_app(app)
 
 @app.route('/')
-def index():
+def painel():
     return render_template('painel.html')
+
+@app.route('/achados_perdidos')
+def achados_perdidos():
+    return render_template('achados_perdidos.html')
+
+@app.route('/servicos')
+def servicos():
+    return render_template('servicos.html')
+
+@app.route('/perfil')
+def perfil():
+    return render_template('perfil.html')
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

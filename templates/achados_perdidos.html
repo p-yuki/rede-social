@@ -1,42 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Achados e Perdidos{% endblock %}
+
 {% block content %}
-        <h2>Achados e Perdidos</h2>
-        
-        <div class="feed-actions">
-            <button class="btn-primary">
-                <i class="fas fa-plus"></i> Relatar Achado
-            </button>
-            <button class="btn-secondary">
-                <i class="fas fa-minus"></i> Relatar Perdido
-            </button>
-        </div>
+<h1 class="mt-4">Clientes</h1>
 
-        <div class="lost-and-found-feed">
-            
-            {% set items = [
-                {'title': 'CARTEIRA PRETA', 'status': 'Achado', 'date': '22 de abril', 'location': 'Perto da piscina.', 'details': 'Carteira de couro preta, sem documentos.', 'class': 'wallet', 'status_class': 'found'},
-                {'title': 'SMARTWATCH', 'status': 'Perdido', 'date': '27 de abril', 'location': 'Academia.', 'details': 'Smartwatch cinza da marca X, tela rachada no canto.', 'class': 'smartwatch', 'status_class': 'lost'},
-                {'title': 'BRINCO DOURADO', 'status': 'Achado', 'date': '28 de abril', 'location': 'Sala de Jogos.', 'details': 'Apenas um brinco, formato de estrela.', 'class': 'earring-1', 'status_class': 'found'},
-                {'title': 'CHAVE', 'status': 'Perdido', 'date': '13 de Fevereiro', 'location': 'Hall do Bloco A.', 'details': 'Chave com chaveiro do Corinthians.', 'class': 'key', 'status_class': 'lost'}
-            ] %}
+<a href="{{ url_for('clientes_bp.novo') }}" class="btn btn-cadastrar mb-3">
+    <i class="bi bi-plus-circle"></i> Novo Cliente
+</a>
 
-            {% for item in items %}
-            <div class="lost-and-found-post feed-item">
-                <div class="post-header">
-                    <span class="post-status {{ item.status_class }}">{{ item.status }}</span>
-                    <h3 class="post-title">{{ item.title }}</h3>
-                </div>
-                <div class="post-body">
-                    <div class="post-image {{ item.class }}"></div>
-                    <div class="post-details">
-                        <p><strong>Onde:</strong> {{ item.location }}</p>
-                        <p><strong>Detalhes:</strong> {{ item.details }}</p>
-                        <span class="post-date"><i class="fas fa-calendar-alt"></i> {{ item.date }}</span>
-                        <button class="btn-contact">Entrar em Contato</button>
-                    </div>
-                </div>
-            </div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle table-secondary">
+        <thead class="table-secondary">
+            <tr>
+                <th style="width: 60px;">ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>CPF/CNPJ</th>
+                <th style="width: 80px;">Tipo Cliente</th>
+                <th style="width: 120px;">Data Nasc.</th>
+                <th style="min-width: 200px;">Endereço</th>
+                <th style="width: 130px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td class="text-center">{{ cliente.id }}</td>
+                <td>{{ cliente.nome }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.telefone }}</td>
+                <td>{{ cliente.cpf_cnpj or '-' }}</td>
+                <td class="text-center">{{ cliente.tipo_cliente or '-' }}</td>
+                <td class="text-center">
+                    {% if cliente.data_nascimento %}
+                    {{ cliente.data_nascimento.strftime('%d/%m/%Y') }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td class="text-truncate" style="max-width: 300px;"
+                    title="{{ cliente.endereco or '' }}, {{ cliente.bairro or '' }}, {{ cliente.cidade or '' }} - {{ cliente.estado or '' }}, CEP: {{ cliente.cep or '' }}">
+                    {{ cliente.endereco or '' }}, {{ cliente.bairro or '' }}, {{ cliente.cidade or '' }} - {{
+                    cliente.estado or '' }}, CEP: {{ cliente.cep or '' }}
+                </td>
+                <td class="text-nowrap text-center">
+                    {% if not cliente.pedidos %}
+                    <a href="{{ url_for('clientes_bp.excluir', id=cliente.id) }}" class="btn btn-circle"
+                        style="background-color: #dc3545; color: white;"
+                        onclick="return confirm('Tem certeza que deseja excluir?')" title="Excluir">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('clientes_bp.editar', id=cliente.id) }}" class="btn btn-circle ms-1"
+                        style="background-color: #0d6efd; color: white;" title="Editar">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                </td>
+            </tr>
             {% endfor %}
-            
-        </div>
-
-    {% endblock %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
