@@ -1,27 +1,26 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
-from models import db, Postagem, Usuario, Foto
+from models import db, Aep, Usuario, Foto
 from utils import login_required, allowed_file
 import os
 from datetime import datetime
-from app import app
+from flask import current_app as app
 
-postagens_bp = Blueprint('postagens_bp', __name__)
-@postagens_bp.route('postagens/novo')
+aeps_bp = Blueprint('aeps_bp', __name__)
+@aeps_bp.route('/aeps/novo')
 def novo():
-    return render_template('novo_post.html')
+    return render_template('novo_aep.html')
 
-
-@postagens_bp.route('postagens/criar_post', methods=['GET', 'POST'])
-@login_required
-def criar_postagem():
+@aeps_bp.route('/aeps/criar_aep', methods=['GET', 'POST'])
+ 
+def criar_aep():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            return render_template('criar_post.html')
+            return render_template('criar_aep.html')
         
         foto_id = None
         
@@ -48,31 +47,31 @@ def criar_postagem():
                 foto_id = foto.id  #pega o id da foto criada
         
         #cria a postagem
-        postagem = Postagem()
-        postagem.usuario_id = session['user_id']
-        postagem.foto_id = foto_id
-        postagem.status = 'pendente'
-        db.session.add(postagem)
+        aep = Aep()
+        aep.usuario_id = session['user_id']
+        aep.foto_id = foto_id
+        aep.status = 'pendente'
+        db.session.add(aep)
         db.session.commit()
         
-        flash('Postagem criada com sucesso!', 'success')
-        return redirect(url_for('posts_bp.feed'))
+        flash('Aep criada com sucesso!', 'success')
+        return redirect(url_for('aeps_bp.aep_lista'))
     
-    return render_template('criar_post.html')
+    return render_template('criar_aep.html')
 
-@postagens_bp.route('/postagens/excluir/<int:post_id>', methods=['POST'])
-@login_required
-def excluir_post(post_id):
-    post = Postagem.query.get_or_404(post_id)
+@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])
+ 
+def excluir_aep(aep_id):
+    aep = Aep.query.get_or_404(aep_id)
         
     #verifica se o usuário logado é o autor do post
-    if post.usuario_id != session['user_id']:
+    if aep.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
-        return redirect(url_for('postagens_bp.listar_posts'))
+        return redirect(url_for('aeps_bp.listar_aeps'))
         
     #verifica se o post tem uma foto associada para excluir
-    if post.foto_id:
-        foto = Foto.query.get(post.foto_id)
+    if aep.foto_id:
+        foto = Foto.query.get(aep.foto_id)
         if foto:
             #exclui o arquivo físico da foto
             try:
@@ -86,23 +85,21 @@ def excluir_post(post_id):
             db.session.delete(foto)
         
         #exclui o post
-        db.session.delete(post)
+        db.session.delete(aep)
         db.session.commit()
         
     flash('Post excluído com sucesso!', 'success')
     
-    return redirect(url_for('postagens_bp.listar_posts'))
+    return redirect(url_for('aeps_bp.listar_aeps'))
 
-@postagens_bp.route('postagens/postagem_feed')
-def listar_posts():
-    posts = Postagem.query.join(Usuario).add_columns(
-        Postagem.id, 
-        Postagem.descricao, 
-        Postagem.foto_id, 
-        Postagem.data_postagem,
+@aeps_bp.route('/aeps/achados_perdidos')
+def achados_perdidos():
+    aeps = Aep.query.join(Usuario).add_columns(
+        Aep.id, 
+        Aep.descricao, 
+        Aep.foto_id, 
+        Aep.data_aep,
         Usuario.nome.label('autor_nome')
-    ).order_by(Postagem.data_postagem.desc()).all()
+    ).order_by(Aep.data_aep.desc()).all()
     
-    return render_template('feed.html', posts=posts)
-
-
+    return render_template('achados_perdidos.html', aeps=aeps)

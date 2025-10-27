@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/painel.css') }}">
+
+<div class="container">
+    <h4 class="acesso">Acesso Rápido</h4>
+    <div class="container aviso">
+        <div class="row mt-4">
+            <div class="col">
+                <a href="#">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>Aviso</h5>
+                            </div>
+                            <div class="card-text">
+                                <span>A Assembleia Geral de Moradores será realizada no dia <strong>10/11 às
+                                        20h</strong>. Confira a pauta no
+                                    chat <strong>"ASSEMBLEIA"</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 ">
+        <!-- <div class="col">
+            <a href="#">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Mural de Avisos</h4>
+                        </div>
+                        <div class="card-text">
+                            <span>Verifique os avisos do seu condomínio</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div> -->
+        <div class="col">
+            <a href="#">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Converse com o Síndico</h4>
+                        </div>
+                        <div class="card-text">
+                            <span>Mande mensagem para o síndico do seu condomínio</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="{{ url_for('trabalhos') }}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Serviços da comunidade</h4>
+                        </div>
+                        <div class="card-text">
+                            <span>Conheça os trabalhos da sua comunidade</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <div class="row mt-4 importante">
+            <div class="col">
+                <a href="#">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h4>Novo Item Perdido Reportado</h4>
+                            </div>
+                            <div class="card-text">
+                                <span>Um morador reportou ter perdido um <strong>par de chaves</strong> perto do Bloco
+                                    C.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row mt-4 importante">
+            <div class="col">
+                <a href="#">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h4>Manutenção na Piscina</h4>
+                            </div>
+                            <div class="card-text">
+                                <span>Informamos que a piscina estará interditada na quarta-feira (22/10) para limpeza e
+                                    manutenção.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
