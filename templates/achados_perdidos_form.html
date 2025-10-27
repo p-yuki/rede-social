@@ -1,0 +1,31 @@
+<div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modalTitle">Registrar Item</h3>
+            <form id="itemForm">
+                <input type="hidden" id="itemType" name="type" value="achado">
+
+                <div class="form-group">
+                    <label for="titulo">Título Curto (Ex: Chaveiro, Carteira Marrom)</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="detalhes">Descrição/Detalhes</label>
+                    <textarea id="detalhes" name="detalhes" rows="3" required placeholder="Cor, marca, características únicas e onde foi encontrado/perdido."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="local">Localização (Onde achou/perdeu)</label>
+                    <input type="text" id="local" name="local" required placeholder="Ex: Próximo à piscina, Hall do Bloco C.">
+                </div>
+
+                <div class="form-group">
+                    <label for="contato">Contato (Seu Telefone/Apto)</label>
+                    <input type="text" id="contato" name="contato" required placeholder="Ex: (11) 9xxxx-xxxx ou Apto 102 - Bloco B">
+                </div>
+                
+                <button type="submit" class="btn-primary" id="submitButton">Registrar</button>
+            </form>
+        </div>
+    </div>

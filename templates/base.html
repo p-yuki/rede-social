@@ -41,6 +41,7 @@
     </nav>
     <div class="main p-3">
         {% block content %} {% endblock %}
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     </div>
 </body>
 
