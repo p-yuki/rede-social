@@ -1,15 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 /* bases */
-::after,
-::before {
+*,
+*::after,
+*::before {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff9f1; /* branco sujo */
+    color: #333;
+}
+
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 li {
@@ -21,51 +29,122 @@ h1 {
     font-size: 1.5rem;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
+/* NAVBAR */
+.navbar-container {
+    background: #348ce3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
-/* navbar */
-.container-fluid {
-    background: #0e223e;
+/* parte superior */
+.navbar-top {
     height: 70px;
-}
-
-.navbar {
-    padding: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
 }
 
 .navbar-brand {
-    color: #fafbfe;
+    display: flex;
+    align-items: center;
+    color: #000; /* preto */
     font-weight: 600;
     font-size: 1.5rem;
-    margin-left: 15px;
-}
-
-.nav-link,
-.nav-link.active {
-    color: #fafbfe;
-    transition: none;
-    border-bottom: 3px solid transparent;
-}
-
-.navbar-nav .nav-link.active,
-.navbar-nav .nav-link.show {
-    color: #fafbfe;
+    gap: 10px;
+    transition: color 0.3s ease;
 }
 
 .navbar-brand:hover {
-    color: #fafbfe;
+    color: #666; /* cinza claro */
 }
 
-.nav-link:hover,
-.nav-link.active:hover {
-    color: #fafbfe;
-    background-color: rgba(255, 255, 255, 0.075);
-    border-bottom: 3px solid #3b7ddd;
+.navbar-brand img {
+    height: 40px;
+    width: auto;
 }
 
-.navbar-nav:hover .nav-link.active:hover,
-.navbar-nav:hover .nav-link.show:hover {
-    color: #fafbfe;
+/* menu */
+.navbar-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.navbar-menu ul {
+    display: flex;
+    gap: 25px;
+    padding: 10px 0;
+}
+
+.navbar-menu a {
+    color: #000;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-menu a:hover {
+    color: #777;
+}
+
+/* comportamento responsivo */
+@media (max-width: 992px) {
+    .navbar-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        padding: 0 20px;
+    }
+
+    .navbar-menu {
+        width: auto;
+        border: none;
+        background: transparent;
+        position: relative;
+    }
+
+    .navbar-menu ul {
+        flex-direction: row;
+        gap: 15px;
+        padding: 0;
+    }
+
+    .navbar-menu a {
+        color: #000;
+    }
+}
+
+/* Rodapé */
+.footer {
+    background-color: #dbdfe4;
+    color: #000;
+    text-align: center;
+    border-top: 2px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.footer a {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #555;
+}
+
+.footer p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+
+.footer .bi {
+    margin-right: 6px;
 }

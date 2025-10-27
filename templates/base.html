@@ -5,16 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boa Vizinhança - {% block title %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('painel') }}"><i class="bi bi-house-heart-fill"></i> Boa Vizinhança</a>
+            <a class="navbar-brand" href="{{ url_for('painel') }}">
+                <i class="bi bi-house-heart-fill"></i> Boa Vizinhança
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -39,11 +43,26 @@
         </div>
     </nav>
 
-        <div class="main p-3">
-            <!-- conteúdo -->
-            {% block content %} {% endblock %}
-        </div>
+    <!-- conteúdo principal -->
+    <div class="main p-3">
+        {% block content %} {% endblock %}
     </div>
+
+    <!-- rodapé -->
+    <footer class="footer mt-auto py-4">
+        <div class="container text-center">
+            <div class="footer-info mb-2">
+                <p><strong>Boa Vizinhança</strong> — conectando lares, aproximando corações 💙</p>
+            </div>
+            <div class="footer-contacts">
+                <p><i class="bi bi-envelope-fill"></i> E-mail: <a href="mailto:boavizinhanca@gmail.com">boavizinhanca@gmail.com</a></p>
+                <p><i class="bi bi-telephone-fill"></i> Telefone: (11) 99999-9999</p>
+            </div>
+            <div class="footer-copy mt-3">
+                <p>&copy; 2025 Boa Vizinhança. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
