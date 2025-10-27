@@ -7,7 +7,7 @@ usuarios_bp = Blueprint('usuarios_bp', __name__)
 def novo():
     return render_template('cadastro_user.html')
 
-@usuarios_bp.route('usuarios/register', methods=['GET', 'POST'])
+@usuarios_bp.route('/usuarios/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         nome = request.form.get('nome', '').strip()
@@ -37,7 +37,7 @@ def register():
     return render_template('register.html', title='Cadastro')
 
 
-@usuarios_bp.route('usuarios/login', methods=['GET', 'POST'])
+@usuarios_bp.route('/usuarios/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
@@ -51,7 +51,7 @@ def login():
         flash('Email ou senha incorretos!', 'danger')
     return render_template('login.html', title='Login')
 
-@usuarios_bp.route('usuarios/logout')
+@usuarios_bp.route('/usuarios/logout')
 def logout():
     session.clear()
     flash('Você saiu da conta.', 'info')

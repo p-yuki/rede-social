@@ -4,14 +4,14 @@ from models import db, Aep, Usuario, Foto
 from utils import login_required, allowed_file
 import os
 from datetime import datetime
-from app import app
+from flask import current_app as app
 
 aeps_bp = Blueprint('aeps_bp', __name__)
-@aeps_bp.route('aeps/novo')
+@aeps_bp.route('/aeps/novo')
 def novo():
     return render_template('novo_aep.html')
 
-@aeps_bp.route('aeps/criar_aep', methods=['GET', 'POST'])
+@aeps_bp.route('/aeps/criar_aep', methods=['GET', 'POST'])
 @login_required
 def criar_aep():
     if request.method == 'POST':
@@ -92,7 +92,7 @@ def excluir_aep(aep_id):
     
     return redirect(url_for('aeps_bp.listar_aeps'))
 
-@aeps_bp.route('aeps/achados_perdidos')
+@aeps_bp.route('/aeps/achados_perdidos')
 def achados_perdidos():
     aeps = Aep.query.join(Usuario).add_columns(
         Aep.id, 

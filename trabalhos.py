@@ -6,24 +6,20 @@ from models import db, Trabalho, Usuario, Foto
 from utils import login_required, allowed_file
 import os
 from datetime import datetime
-from app import app
+from flask import current_app as app
 
 trabalhos_bp = Blueprint('trabalhos_bp', __name__)
-@trabalhos_bp.route('trabalhos/novo')
-def novo():
-    return render_template('novo_post.html')
 
-
-@trabalhos_bp.route('trabalhos/criar_post', methods=['GET', 'POST'])
+@trabalhos_bp.route('/novo_trabalho', methods=['GET', 'POST'])
 @login_required
-def criar_trabalho():
+def novo_trabalho():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            return render_template('criar_post.html')
+            return render_template('trabalhos_form.html')
         
         foto_id = None
         
@@ -58,9 +54,9 @@ def criar_trabalho():
         db.session.commit()
         
         flash('Trabalho criada com sucesso!', 'success')
-        return redirect(url_for('posts_bp.feed'))
+        return redirect(url_for('trabalhos_bp.trabalhos'))
     
-    return render_template('criar_post.html')
+    return render_template('trabalhos_form.html')
 
 @trabalhos_bp.route('/trabalhos/excluir/<int:post_id>', methods=['POST'])
 @login_required
@@ -70,7 +66,7 @@ def excluir_post(post_id):
     #verifica se o usuário logado é o autor do post
     if post.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
-        return redirect(url_for('trabalhos_bp.listar_posts'))
+        return redirect(url_for('trabalhos_bp.trabalhos'))
         
     #verifica se o post tem uma foto associada para excluir
     if post.foto_id:
@@ -95,16 +91,7 @@ def excluir_post(post_id):
     
     return redirect(url_for('trabalhos_bp.listar_posts'))
 
-@trabalhos_bp.route('trabalhos/trabalho_feed')
-def listar_posts():
-    posts = Trabalho.query.join(Usuario).add_columns(
-        Trabalho.id, 
-        Trabalho.descricao, 
-        Trabalho.foto_id, 
-        Trabalho.data_trabalho,
-        Usuario.nome.label('autor_nome')
-    ).order_by(Trabalho.data_trabalho.desc()).all()
-    
-    return render_template('feed.html', posts=posts)
-
-
+@trabalhos_bp.route('/trabalhos')
+def trabalhos():
+    trabalhos = Trabalho.query.all()
+    return render_template('trabalhos.html', trabalhos=trabalhos)

@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, render_template
 from models import db
 import os
 
@@ -9,7 +9,20 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 #cria pasta de uploads se não existir
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
+from trabalhos import trabalhos_bp
+app.register_blueprint(trabalhos_bp)
+
+from avisos import avisos_bp
+app.register_blueprint(avisos_bp)
+
+from usuarios import usuarios_bp
+app.register_blueprint(usuarios_bp)
+
+from aeps import aeps_bp
+app.register_blueprint(aeps_bp)
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
 db.init_app(app)
 
 @app.route('/')
@@ -20,9 +33,9 @@ def painel():
 def achados_perdidos():
     return render_template('achados_perdidos.html')
 
-@app.route('/servicos')
-def servicos():
-    return render_template('servicos.html')
+@app.route('/trabalhos')
+def trabalhos():
+    return render_template('trabalhos.html')
 
 @app.route('/perfil')
 def perfil():

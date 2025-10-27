@@ -6,15 +6,16 @@ from models import db, Aviso, Usuario, Foto
 from utils import login_required, allowed_file
 import os
 from datetime import datetime
-from app import app
+from flask import current_app as app
+
 
 avisos_bp = Blueprint('avisos_bp', __name__)
-@avisos_bp.route('avisos/novo')
+@avisos_bp.route('/avisos/novo')
 def novo():
     return render_template('novo_aviso.html')
 
 
-@avisos_bp.route('avisos/criar_aviso', methods=['GET', 'POST'])
+@avisos_bp.route('/avisos/criar_aviso', methods=['GET', 'POST'])
 @login_required
 def criar_aviso():
     if request.method == 'POST':
@@ -95,7 +96,7 @@ def excluir_aviso(aviso_id):
     
     return redirect(url_for('avisos_bp.listar_avisos'))
 
-@avisos_bp.route('avisos/avisos_feed')
+@avisos_bp.route('/avisos/avisos_feed')
 def listar_avisos():
     avisos = Aviso.query.join(Usuario).add_columns(
         Aviso.id, 
