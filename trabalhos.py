@@ -10,8 +10,7 @@ from flask import current_app as app
 
 trabalhos_bp = Blueprint('trabalhos_bp', __name__)
 
-@trabalhos_bp.route('/novo_trabalho', methods=['GET', 'POST'])
-@login_required
+@trabalhos_bp.route('/trabalhos/novo_trabalho', methods=['GET', 'POST'])
 def novo_trabalho():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
@@ -59,7 +58,7 @@ def novo_trabalho():
     return render_template('trabalhos_form.html')
 
 @trabalhos_bp.route('/trabalhos/excluir/<int:post_id>', methods=['POST'])
-@login_required
+ 
 def excluir_post(post_id):
     post = Trabalho.query.get_or_404(post_id)
         

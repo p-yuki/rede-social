@@ -10,6 +10,7 @@ class Usuario(db.Model):
     email = db.Column(db.String(255), nullable=False)
     senha = db.Column(db.String(255), nullable=False)
     apartamento = db.Column(db.String(16), nullable=False)
+    bloco = db.Column(db.String(16), nullable=False)
     is_adm = db.Column(db.Boolean, default=False, nullable=False)
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
     trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído

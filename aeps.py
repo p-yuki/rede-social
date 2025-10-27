@@ -12,7 +12,7 @@ def novo():
     return render_template('novo_aep.html')
 
 @aeps_bp.route('/aeps/criar_aep', methods=['GET', 'POST'])
-@login_required
+ 
 def criar_aep():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
@@ -60,7 +60,7 @@ def criar_aep():
     return render_template('criar_aep.html')
 
 @aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])
-@login_required
+ 
 def excluir_aep(aep_id):
     aep = Aep.query.get_or_404(aep_id)
         
