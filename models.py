@@ -14,14 +14,14 @@ class Usuario(db.Model):
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
     posts = db.relationship('Postagem', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
 
-class Postagem(db.Model):
-    __tablename__ = 'postagens'
+class Trabalho(db.Model):
+    __tablename__ = 'trabalhos'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
-    data_postagem = db.Column(db.DateTime, default=db.func.current_timestamp())
+    data_trabalho = db.Column(db.DateTime, default=db.func.current_timestamp())
 
 class Foto(db.Model):
     __tablename__ = 'fotos'
@@ -40,11 +40,11 @@ class Aviso(db.Model):
     status = db.Column(db.String(16), nullable=False)
     data_aviso = db.Column(db.DateTime, default=db.func.current_timestamp())
 
-class Trabalho(db.Model):
-    __tablename__ = 'trabalhos'
+class Aep(db.Model):
+    __tablename__ = 'aeps'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
-    data_aviso = db.Column(db.DateTime, default=db.func.current_timestamp())
+    data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())

@@ -1,20 +1,21 @@
+{% extends "base.html" %}
 {% block content %}
-        <h2>Painel de Atividades e Avisos</h2>
-        
-        <div class="alert-box">
-            <i class="fas fa-bell"></i>
-            <p>Aviso: A Assembleia Geral de Moradores será realizada no dia 10/11 às 20h. Confira a pauta no chat "ASSEMBLEIA".</p>
-        </div>
-        
-        <div class="feed-item">
-            <h3>Novo Item Perdido Reportado</h3>
-            <p>Um morador reportou ter perdido um **par de chaves** perto do Bloco C.</p>
-            <a href="{{ url_for('achados_perdidos') }}">Ver detalhes em Achados e Perdidos.</a>
-        </div>
+<h2>Painel de Atividades e Avisos</h2>
 
-        <div class="feed-item">
-            <h3>Manutenção na Piscina</h3>
-            <p>Informamos que a piscina estará interditada na quarta-feira (22/10) para limpeza e manutenção.</p>
-            <span class="feed-date">Publicado: 21 de Outubro</span>
-        </div>
+<div class="alert-box">
+    <i class="fas fa-bell"></i>
+    <p>Aviso: A Assembleia Geral de Moradores será realizada no dia 10/11 às 20h. Confira a pauta no chat "ASSEMBLEIA".
+    </p>
+</div>
+
+<div class="feed-item">
+    <h3>Novo Item Perdido Reportado</h3>
+    <p>Um morador reportou ter perdido um **par de chaves** perto do Bloco C.</p>
+</div>
+
+<div class="feed-item">
+    <h3>Manutenção na Piscina</h3>
+    <p>Informamos que a piscina estará interditada na quarta-feira (22/10) para limpeza e manutenção.</p>
+    <span class="feed-date">Publicado: 21 de Outubro</span>
+</div>
 {% endblock %}
