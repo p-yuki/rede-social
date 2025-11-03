@@ -69,3 +69,32 @@ body {
 .navbar-nav:hover .nav-link.show:hover {
     color: #fafbfe;
 }
+
+/* perfil */
+.perfil-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil-container a {
+    margin: 20px;
+}
+
+.perfil-foto {
+    height: 160px;
+    border: 2px #0e223e;
+    margin: 20px;
+}
+
+.perfil-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.col {
+    display: grid;
+}
+

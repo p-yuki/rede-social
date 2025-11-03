@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" href="" type="image/x-icon">
 </head>
 
 <body>
@@ -25,15 +26,20 @@
                     <li class="nav-item">
                         <a href="{{ url_for('painel') }}" title="Painel" id="nav-link" class="nav-link">Painel</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a href="#" title="Chat" id="nav-link" class="nav-link">Chat</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a href="{{ url_for('trabalhos') }}" title="Serviços" id="nav-link" class="nav-link">Serviços</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ url_for('perfil') }}" title="Perfil" id="nav-link" class="nav-link">Perfil</a>
                     </li>
+                    {% if usuario.is_adm %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('usuarios_bp.novo') }}" title="Cadastro de Moradores" id="nav-link" class="nav-link">Cadastro de Moradores</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
