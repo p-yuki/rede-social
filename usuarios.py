@@ -45,14 +45,14 @@ def login():
         senha = request.form.get('senha', '')
         user = Usuario.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.senha, senha):  # ou check_password_hash
+        if user and user.senha == senha:  # ou check_password_hash
             session['user_id'] = user.id
             session['user_name'] = user.nome
             session['user_bloco'] = user.bloco
             session['user_apartamento'] = user.apartamento
             session['is_adm'] = user.is_adm
             flash('Login realizado com sucesso!', 'success')
-            return redirect(url_for('painel'))
+            return redirect(url_for('home'))
     flash('Email ou senha incorretos!', 'danger')
     return render_template('login.html', title='Login')
 
