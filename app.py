@@ -26,7 +26,7 @@ from werkzeug.security import generate_password_hash
 from models import Usuario
 
 with app.app_context():
-    db.create_all()  # garante que as tabelas existem
+    db.create_all()  # arante que as tabelas existem
     # Verifica se o admin já existe
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
