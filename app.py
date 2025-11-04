@@ -22,6 +22,28 @@ app.register_blueprint(usuarios_bp)
 from aeps import aeps_bp
 app.register_blueprint(aeps_bp)
 
+from werkzeug.security import generate_password_hash
+from models import Usuario
+
+with app.app_context():
+    db.create_all()  # garante que as tabelas existem
+    # Verifica se o admin já existe
+    if not Usuario.query.filter_by(email='adm@gmail.com').first():
+        admin = Usuario()
+        admin.nome = 'Administrador'
+        admin.email = 'adm@gmail.com'
+        admin.senha = generate_password_hash('12345')
+        admin.bloco = '0'
+        admin.apartamento = '0'
+        admin.is_adm = True
+        admin.is_sindico = False
+
+        db.session.add(admin)
+        db.session.commit()
+
+    else:
+        print("⚙️ Conta de administrador já existe.")
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Senai%40118@localhost/redesocialdb'
 db.init_app(app)
