@@ -32,12 +32,8 @@ app.register_blueprint(aeps_bp)
 
 # 🧠 Cria tabelas e o admin padrão
 with app.app_context():
-<<<<<<< HEAD
     db.create_all()  # arante que as tabelas existem
     # Verifica se o admin já existe
-=======
-    db.create_all()
->>>>>>> e2f27a640c41a92e44822f5dda8f18d23c42a459
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
         admin.nome = 'Administrador'
