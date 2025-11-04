@@ -32,7 +32,7 @@ body {
     background-color: #fff;
     border-radius: 16px;
     padding: 120px 32px 64px;
-    border: 1px solid #0e223e;
+    border: 1px solid #348ce3;
     transform: .3s;
 }
 
@@ -46,7 +46,7 @@ body {
     justify-content: center;
     width: 120px;
     height: 60px;
-    background-color: #0e223e;
+    background-color: #348ce3;
     border-radius: 0 0 20px 20px;
 }
 
@@ -60,8 +60,6 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 24px;
-    transition: .3s;
     font-size: 24px;
     transition: .3s;
 }
@@ -95,7 +93,7 @@ body {
 }
 
 .input-field:focus {
-    border: 1px solid #0e223e;
+    border: 1px solid #022242;
 }
 
 .input-field:focus ~ .label,
@@ -103,12 +101,12 @@ body {
     top: 0;
     font-size: 14px;
     background-color: #fff;
-    color: #0e223e;
+    color: #348ce3;
     padding: 0 10px;
 }
 
 .input-field:valid ~ .label {
-    color: #0e223e;
+    color: #022242;
 }
 
 .label {
@@ -126,7 +124,7 @@ body {
     right: 25px;
     transform: translateY(-50%);
     font-size: 20px;
-    color: #0e223e;
+    color: #348ce3;
 }
 
 .form-cols {
@@ -148,7 +146,7 @@ body {
     gap: 10px;
     width: 100%;
     height: 50px;
-    background-color: #0e223e;
+    background-color: #348ce3;
     color: #fff;
     font-size: 16px;
     font-weight: 500;
@@ -171,7 +169,28 @@ body {
 }
 
 @media only screen and (max-width:564px) {
-    .wrapper{
+    .wrapper {
         margin: 20px;
     }
+}
+
+/* ==== NAVBAR BRAND ==== */
+.navbar-brand {
+    color: #fff9f1 !important; /* cor padrão do texto e do ícone */
+    font-weight: 600;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #022242 !important; /* cor ao passar o mouse */
+}
+
+/* Ícone da casinha muda junto */
+.navbar-brand i {
+    color: inherit !important;
+    transition: color 0.3s ease;
 }
