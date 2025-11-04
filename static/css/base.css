@@ -11,7 +11,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #fff9f1; /* branco sujo */
+    background-color: #fffaf4; /* branco sujo */
     color: #333;
 }
 
@@ -31,28 +31,15 @@ h1 {
 
 /* NAVBAR */
 .navbar-container {
-    background: #348ce3;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    background-color: #3e95ed !important; /* azul viva */
     width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-/* parte superior */
-.navbar-top {
-    height: 70px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
     display: flex;
     align-items: center;
-    color: #000; /* preto */
+    color: #fff !important;
     font-weight: 600;
     font-size: 1.5rem;
     gap: 10px;
@@ -60,70 +47,33 @@ h1 {
 }
 
 .navbar-brand:hover {
-    color: #666; /* cinza claro */
+    color: #4c5478 !important;
 }
 
-.navbar-brand img {
-    height: 40px;
-    width: auto;
-}
-
-/* menu */
-.navbar-menu {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.navbar-menu ul {
-    display: flex;
-    gap: 25px;
-    padding: 10px 0;
-}
-
-.navbar-menu a {
-    color: #000;
+.navbar-nav .nav-link {
+    color: #fff !important;
     font-weight: 500;
     transition: color 0.3s ease;
+    border-bottom: 3px solid transparent;
 }
 
-.navbar-menu a:hover {
-    color: #777;
+.navbar-nav .nav-link:hover {
+    color: #dceeff !important;
+    border-bottom: 3px solid #3e5bed;
+    background-color: rgba(255, 255, 255, 0.075);
 }
 
-/* comportamento responsivo */
-@media (max-width: 992px) {
-    .navbar-container {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        height: 70px;
-        padding: 0 20px;
-    }
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
 
-    .navbar-menu {
-        width: auto;
-        border: none;
-        background: transparent;
-        position: relative;
-    }
-
-    .navbar-menu ul {
-        flex-direction: row;
-        gap: 15px;
-        padding: 0;
-    }
-
-    .navbar-menu a {
-        color: #000;
-    }
+.navbar-toggler-icon {
+    filter: invert(1);
 }
 
 /* Rodapé */
 .footer {
-    background-color: #dbdfe4;
+    background-color: #e2e4e7;
     color: #000;
     text-align: center;
     border-top: 2px solid rgba(0, 0, 0, 0.05);
@@ -147,4 +97,12 @@ h1 {
 
 .footer .bi {
     margin-right: 6px;
+}
+
+.card-body {
+    transition: 0.3s;
+}
+
+.card-body:hover{
+    box-shadow: 5px 5px 16px 5px rgba(0,0,0,0.17);
 }

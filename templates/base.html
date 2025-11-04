@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boa Vizinhança - {% block title %}{% endblock %}</title>
+    <title>Boa Vizinhança {% block title %}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
@@ -14,7 +14,7 @@
 
 <body>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-container">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('painel') }}">
                 <i class="bi bi-house-heart-fill"></i> Boa Vizinhança
@@ -52,7 +52,7 @@
     <footer class="footer mt-auto py-4">
         <div class="container text-center">
             <div class="footer-info mb-2">
-                <p><strong>Boa Vizinhança</strong> — conectando lares, aproximando corações 💙</p>
+                <p><strong>Boa Vizinhança</strong> — conectando lares e aproximando corações 💙</p>
             </div>
             <div class="footer-contacts">
                 <p><i class="bi bi-envelope-fill"></i> E-mail: <a href="mailto:boavizinhanca@gmail.com">boavizinhanca@gmail.com</a></p>
