@@ -45,7 +45,7 @@ def login():
         senha = request.form.get('senha', '')
         user = Usuario.query.filter_by(email=email).first()
 
-        if user and user.senha == senha:  # ou check_password_hash
+        if user and check_password_hash(user.senha, senha):  # ou check_password_hash
             session['user_id'] = user.id
             session['user_name'] = user.nome
             session['user_bloco'] = user.bloco
