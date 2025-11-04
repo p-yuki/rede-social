@@ -58,7 +58,6 @@ def novo_trabalho():
     return render_template('trabalhos_form.html')
 
 @trabalhos_bp.route('/trabalhos/excluir/<int:post_id>', methods=['POST'])
- 
 def excluir_post(post_id):
     post = Trabalho.query.get_or_404(post_id)
         

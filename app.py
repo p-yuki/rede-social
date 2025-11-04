@@ -1,5 +1,6 @@
-from flask import Flask, render_template
-from models import db
+from flask import Flask, render_template, session
+from models import db, Usuario
+from utils import login_required
 import os
 
 app = Flask(__name__)
@@ -22,33 +23,63 @@ from aeps import aeps_bp
 app.register_blueprint(aeps_bp)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Senai%40118@localhost/redesocialdb'
 db.init_app(app)
 
+@app.context_processor
+def inject_usuario():
+    class Usuario:
+        def __init__(self, nome, bloco, apartamento, is_adm):
+            self.nome = nome
+            self.bloco = bloco
+            self.apartamento = apartamento
+            self.is_adm = is_adm
+
+    usuario = Usuario(
+        session.get('user_name'),
+        session.get('user_bloco'),
+        session.get('user_apartamento'),
+        session.get('is_adm')
+    )
+
+    return dict(usuario=usuario)
+
+
 @app.route('/')
-def painel():
-    return render_template('painel.html')
+def login():
+    return render_template('login.html')
+
+@app.route('/home')
+@login_required
+def home():
+    return render_template('home.html')
 
 @app.route('/achados_perdidos')
+@login_required
 def achados_perdidos():
     return render_template('achados_perdidos.html')
 
 @app.route('/trabalhos')
+@login_required
 def trabalhos():
     return render_template('trabalhos.html')
 
 @app.route('/perfil')
+@login_required
 def perfil():
     return render_template('perfil.html')
 
-@app.route('/chat')
+
+@app.route('/usuarios')
+@login_required
+def usuarios():
+    usuarios_lista = Usuario.query.all()
+    return render_template('usuarios.html', usuarios=usuarios_lista)
+
+@app.route('/chat') 
+@login_required
 def chat():
     return render_template('chat.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
-    from flask import Flask
-
-app = Flask(__name__)
-
