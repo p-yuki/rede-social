@@ -2,14 +2,22 @@ from flask import Flask, render_template, session
 from models import db, Usuario
 from utils import login_required
 import os
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_123'
+
+# 📁 Configurações de upload
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
-#cria pasta de uploads se não existir
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# 💾 Configuração do banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
+
+# 🔧 Importa e registra blueprints
 from trabalhos import trabalhos_bp
 app.register_blueprint(trabalhos_bp)
 
@@ -22,12 +30,9 @@ app.register_blueprint(usuarios_bp)
 from aeps import aeps_bp
 app.register_blueprint(aeps_bp)
 
-from werkzeug.security import generate_password_hash
-from models import Usuario
-
+# 🧠 Cria tabelas e o admin padrão
 with app.app_context():
-    db.create_all()  # garante que as tabelas existem
-    # Verifica se o admin já existe
+    db.create_all()
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
         admin.nome = 'Administrador'
@@ -45,28 +50,26 @@ with app.app_context():
         print("⚙️ Conta de administrador já existe.")
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Senai%40118@localhost/redesocialdb'
-db.init_app(app)
-
+# 📡 Injeção de dados do usuário logado no template
 @app.context_processor
 def inject_usuario():
-    class Usuario:
+    class UsuarioFake:
         def __init__(self, nome, bloco, apartamento, is_adm):
             self.nome = nome
             self.bloco = bloco
             self.apartamento = apartamento
             self.is_adm = is_adm
 
-    usuario = Usuario(
+    usuario = UsuarioFake(
         session.get('user_name'),
         session.get('user_bloco'),
         session.get('user_apartamento'),
         session.get('is_adm')
     )
-
     return dict(usuario=usuario)
 
 
+# 🧩 Rotas principais
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -91,17 +94,17 @@ def trabalhos():
 def perfil():
     return render_template('perfil.html')
 
-
 @app.route('/usuarios')
 @login_required
 def usuarios():
     usuarios_lista = Usuario.query.all()
     return render_template('usuarios.html', usuarios=usuarios_lista)
 
-@app.route('/chat') 
+@app.route('/chat')
 @login_required
 def chat():
     return render_template('chat.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
