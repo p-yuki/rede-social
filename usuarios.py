@@ -12,13 +12,11 @@ def novo():
         senha = request.form.get('senha', '')
         bloco = request.form.get('bloco','')
         apartamento = request.form.get('apartamento','')
-        confirmar = request.form.get('confirmar', '')
+        is_adm = bool(int(request.form.get('is_adm', 0)))
+        is_sindico = bool(int(request.form.get('is_sindico', 0)))
 
         if not nome or not email or not senha:
             flash('Preencha todos os campos!', 'danger')
-            return redirect(url_for('usuarios_form'))
-        if senha != confirmar:
-            flash('As senhas não coincidem!', 'danger')
             return redirect(url_for('usuarios_form'))
 
         if Usuario.query.filter_by(email=email).first():
@@ -31,10 +29,11 @@ def novo():
         usuario.senha = generate_password_hash(senha)
         usuario.bloco = bloco
         usuario.apartamento = apartamento
+        usuario.is_adm = is_adm
+        usuario.is_sindico = is_sindico
         db.session.add(usuario)
         db.session.commit()
-        flash('Conta criada com sucesso! Faça seu login.', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('home'))
     
     return render_template('usuarios_form.html', title='Cadastro')
 
@@ -46,7 +45,7 @@ def login():
         senha = request.form.get('senha', '')
         user = Usuario.query.filter_by(email=email).first()
 
-        if user and (user.senha == senha):  # ou check_password_hash
+        if user and check_password_hash(user.senha, senha):  # ou check_password_hash
             session['user_id'] = user.id
             session['user_name'] = user.nome
             session['user_bloco'] = user.bloco

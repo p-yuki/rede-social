@@ -15,7 +15,7 @@
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('painel') }}"><i class="bi bi-house-heart-fill"></i> Boa Vizinhança</a>
+            <a class="navbar-brand" href="{{ url_for('home') }}"><i class="bi bi-house-heart-fill"></i> Boa Vizinhança</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -24,7 +24,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="{{ url_for('painel') }}" title="Painel" id="nav-link" class="nav-link">Painel</a>
+                        <a href="{{ url_for('home') }}" title="Painel" id="nav-link" class="nav-link">Painel</a>
                     </li>
                     <!-- <li class="nav-item">
                         <a href="#" title="Chat" id="nav-link" class="nav-link">Chat</a>
@@ -35,9 +35,12 @@
                     <li class="nav-item">
                         <a href="{{ url_for('perfil') }}" title="Perfil" id="nav-link" class="nav-link">Perfil</a>
                     </li>
-                    {% if usuario.is_adm %}
+                    {% if usuario.is_adm or usuario.is_sindico %}
                     <li class="nav-item">
                         <a href="{{ url_for('usuarios_bp.novo') }}" title="Cadastro de Moradores" id="nav-link" class="nav-link">Cadastro de Moradores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('usuarios')}}" title="Lista de Usuários" id="navlink" class="nav-link">Lista de Usuários</a>
                     </li>
                     {% endif %}
                 </ul>

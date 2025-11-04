@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from models import db
+from models import db, Usuario
 from utils import login_required
 import os
 
@@ -23,7 +23,7 @@ from aeps import aeps_bp
 app.register_blueprint(aeps_bp)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Senai%40118@localhost/redesocialdb'
 db.init_app(app)
 
 @app.context_processor
@@ -49,10 +49,10 @@ def inject_usuario():
 def login():
     return render_template('login.html')
 
-@app.route('/painel')
+@app.route('/home')
 @login_required
-def painel():
-    return render_template('painel.html')
+def home():
+    return render_template('home.html')
 
 @app.route('/achados_perdidos')
 @login_required
@@ -72,10 +72,11 @@ def perfil():
 
 @app.route('/usuarios')
 @login_required
-def novo_user():
-    return render_template('usuarios.html')
+def usuarios():
+    usuarios_lista = Usuario.query.all()
+    return render_template('usuarios.html', usuarios=usuarios_lista)
 
-@app.route('/chat')
+@app.route('/chat') 
 @login_required
 def chat():
     return render_template('chat.html')
