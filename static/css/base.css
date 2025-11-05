@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* ==== BASE ==== */
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff9f1;
+    color: #333;
+    padding-top: 70px; /* espaço pro topo fixo */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+li {
+    list-style: none;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+/* ==== NAVBAR ==== */
+.navbar {
+    background-color: #348ce3 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+    color: #fff9f1 !important; /* cor normal */
+    font-weight: 600;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #022242 !important; /* cor ao passar o mouse */
+}
+
+.navbar-nav .nav-link {
+    color: #fafbfe !important;
+    font-weight: 500;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    border-bottom: none !important; /* remove qualquer linha */
+    box-shadow: none !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff !important;
+    border-bottom: none !important; /* sem linha branca ao passar o mouse */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link:active {
+    border-bottom: none !important; /* remove a linha do "Painel" */
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Ícone do menu (hambúrguer) branco */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1); /* deixa o ícone branco */
+}
+
+/* Ajuste do menu quando aberto no mobile */
+.navbar-collapse {
+    background-color: #348ce3;
+    text-align: center;
+}
+
+.navbar-collapse .nav-link {
+    padding: 10px;
+}
+
+/* ==== RODAPÉ ==== */
+.footer {
+    background-color: #dbdfe4;
+    color: #000;
+    text-align: center;
+    border-top: 2px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+    padding: 10px 0;
+}
+
+.footer a {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #555;
+}
+
+.footer p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+
+.footer .bi {
+    margin-right: 6px;
+}
+
+/* ==== PERFIL ==== */
+.perfil-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil-container a {
+    margin: 20px;
+}
+
+.perfil-foto {
+    height: 160px;
+    border: none; /* remove a borda preta */
+    margin: 20px;
+    border-radius: 50%; /* deixa a foto redonda */
+    object-fit: cover; /* mantém a proporção da imagem */
+}
+
+.perfil-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.col {
+    display: grid;
+}
+
+/* ==== RESPONSIVIDADE EXTRA ==== */
+@media (max-width: 992px) {
+    body {
+        padding-top: 100px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .navbar-nav .nav-link {
+        border-bottom: none !important;
+    }
+
+    .navbar-nav .nav-link:hover {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}

@@ -10,18 +10,21 @@ class Usuario(db.Model):
     email = db.Column(db.String(255), nullable=False)
     senha = db.Column(db.String(255), nullable=False)
     apartamento = db.Column(db.String(16), nullable=False)
+    bloco = db.Column(db.String(16), nullable=False)
     is_adm = db.Column(db.Boolean, default=False, nullable=False)
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
-    posts = db.relationship('Postagem', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
+    trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
+    aeps = db.relationship('Aep', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
 
-class Postagem(db.Model):
-    __tablename__ = 'postagens'
+class Trabalho(db.Model):
+    __tablename__ = 'trabalhos'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
-    data_postagem = db.Column(db.DateTime, default=db.func.current_timestamp())
+    data_trabalho = db.Column(db.DateTime, default=db.func.current_timestamp())
+    nome_trabalho =db.Column(db.String(255), nullable=False)
 
 class Foto(db.Model):
     __tablename__ = 'fotos'
@@ -39,12 +42,13 @@ class Aviso(db.Model):
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
     data_aviso = db.Column(db.DateTime, default=db.func.current_timestamp())
+    nome_aviso =db.Column(db.String(255), nullable=False)
 
-class Trabalho(db.Model):
-    __tablename__ = 'trabalhos'
+class Aep(db.Model):
+    __tablename__ = 'aeps'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16), nullable=False)
-    data_aviso = db.Column(db.DateTime, default=db.func.current_timestamp())
+    data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())

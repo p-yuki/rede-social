@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Cadastro Moradores{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/servicos.css') }}">
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header text-center">
+                <h4>Cadastro Morador</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <input type="hidden" name="id">
+
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome do Morador: </label>
+                        <input type="text" name="nome" id="nome" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email do Morador: </label>
+                        <input type="text" name="email" id="email" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha (Padrão): </label>
+                        <input type="password" name="senha" id="senha" class="form-control">
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                        <label for="apartamento" class="form-label">Apto.: </label>
+                        <input type="number" name="apartamento" id="apartamento" class="form-control" required>
+                        <label for="bloco" class="form-label">Bloco: </label>
+                        <input type="number" name="bloco" id="bloco" class="form-control" required>
+                    </div>
+                    <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
+                        <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
+                            <label for="is_sindico" class="form-label">É um síndico?</label>
+                            <input type="radio" name="is_sindico" value="1">Sim
+                            <input type="radio" name="is_sindico" value="0" checked>Não
+                        </div>
+                        {% if usuario.is_adm %}
+                        <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
+                            <label for="is_adm" class="form-label">É um admistrador?</label>
+                            <input type="radio" name="is_adm" value="1">Sim
+                            <input type="radio" name="is_adm" value="0" checked>Não
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4">
+                            <i class="bi bi-save"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

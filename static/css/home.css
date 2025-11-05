@@ -1,0 +1,16 @@
+.container h4 {
+    font-weight: 900;
+}
+
+.aviso .card {
+    border: none;
+}
+
+.aviso .card-body {
+    background-color: #e7d764;
+    border-radius: 5px;
+}
+
+.aviso h5 {
+    font-weight: 600;
+}
