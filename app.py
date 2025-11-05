@@ -1,0 +1,111 @@
+from flask import Flask, render_template, session
+from models import db, Usuario
+from utils import login_required
+import os
+from werkzeug.security import generate_password_hash
+
+app = Flask(__name__)
+app.secret_key = 'sua_chave_secreta_123'
+
+# 📁 Configurações de upload
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# 💾 Configuração do banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
+
+# 🔧 Importa e registra blueprints
+from trabalhos import trabalhos_bp
+app.register_blueprint(trabalhos_bp)
+
+from avisos import avisos_bp
+app.register_blueprint(avisos_bp)
+
+from usuarios import usuarios_bp
+app.register_blueprint(usuarios_bp)
+
+from aeps import aeps_bp
+app.register_blueprint(aeps_bp)
+
+# 🧠 Cria tabelas e o admin padrão
+with app.app_context():
+    db.create_all()  # arante que as tabelas existem
+    # Verifica se o admin já existe
+    if not Usuario.query.filter_by(email='adm@gmail.com').first():
+        admin = Usuario()
+        admin.nome = 'Administrador'
+        admin.email = 'adm@gmail.com'
+        admin.senha = generate_password_hash('12345')
+        admin.bloco = '0'
+        admin.apartamento = '0'
+        admin.is_adm = True
+        admin.is_sindico = False
+
+        db.session.add(admin)
+        db.session.commit()
+
+    else:
+        print("⚙️ Conta de administrador já existe.")
+
+
+# 📡 Injeção de dados do usuário logado no template
+@app.context_processor
+def inject_usuario():
+    class UsuarioFake:
+        def __init__(self, nome, bloco, apartamento, is_adm):
+            self.nome = nome
+            self.bloco = bloco
+            self.apartamento = apartamento
+            self.is_adm = is_adm
+
+    usuario = UsuarioFake(
+        session.get('user_name'),
+        session.get('user_bloco'),
+        session.get('user_apartamento'),
+        session.get('is_adm')
+    )
+    return dict(usuario=usuario)
+
+
+# 🧩 Rotas principais
+@app.route('/')
+def login():
+    return render_template('login.html')
+
+@app.route('/home')
+@login_required
+def home():
+    return render_template('home.html')
+
+@app.route('/achados_perdidos')
+@login_required
+def achados_perdidos():
+    return render_template('achados_perdidos.html')
+
+@app.route('/trabalhos')
+@login_required
+def trabalhos():
+    return render_template('trabalhos.html')
+
+@app.route('/perfil')
+@login_required
+def perfil():
+    return render_template('perfil.html')
+
+@app.route('/usuarios')
+@login_required
+def usuarios():
+    usuarios_lista = Usuario.query.all()
+    return render_template('usuarios.html', usuarios=usuarios_lista)
+
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
