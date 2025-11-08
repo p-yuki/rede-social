@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Avisos{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/avisos.css') }}">
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                <h4>Aviso</h4>
+                {% if usuario.is_adm or usuario.is_sindico %}
+                <a href="{{ url_for('avisos_bp.novo_aviso') }}" class="btn btn-danger rounded-pill px-4">
+                    <i class="bi bi-journal-plus"></i> Emita um novo aviso <!-- trocar o nome disso -->
+                </a>
+                {% endif %}
+            </div>
+            {% for aviso in avisos %}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><strong>{{ aviso.nome_aviso }}</strong></h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ aviso.descricao }}</p>
+
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <p><{{ aviso.usuario_nome }}</p>
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

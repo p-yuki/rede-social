@@ -10,21 +10,21 @@ from flask import current_app as app
 
 
 avisos_bp = Blueprint('avisos_bp', __name__)
-@avisos_bp.route('/avisos/novo')
-def novo():
-    return render_template('novo_aviso.html')
 
-
-@avisos_bp.route('/avisos/criar_aviso', methods=['GET', 'POST'])
+@avisos_bp.route('/avisos/novo', methods=['GET', 'POST'])
 @login_required
-def criar_aviso():
+def novo_aviso():
     if request.method == 'POST':
+        nome_aviso = request.form.get('nome_aviso', '').strip()
         descricao = request.form.get('descricao', '').strip()
+        data_aviso = request.form.get('data_aviso')
+        horario_aviso = request.form.get('horario_aviso')
+        status = request.form.get('status', 'pendente')
         arquivo_foto = request.files.get('foto')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            return render_template('criar_aviso.html')
+            return render_template('avisos_form.html')
         
         foto_id = None
         
@@ -54,14 +54,18 @@ def criar_aviso():
         aviso = Aviso()
         aviso.usuario_id = session['user_id']
         aviso.foto_id = foto_id
-        aviso.status = 'pendente'
+        aviso.status = status
+        aviso.nome_aviso = nome_aviso
+        aviso.descricao = descricao
+        aviso.data_aviso = data_aviso
+        aviso.horario_aviso = horario_aviso
         db.session.add(aviso)
         db.session.commit()
         
-        flash('aviso criada com sucesso!', 'success')
-        return redirect(url_for('avisos_bp.feed'))
+        flash('aviso criado com sucesso!', 'success')
+        return redirect(url_for('avisos_bp.avisos'))
     
-    return render_template('criar_aviso.html')
+    return render_template('avisos_form.html')
 
 @avisos_bp.route('/avisos/excluir/<int:aviso_id>', methods=['POST'])
 @login_required
@@ -71,7 +75,7 @@ def excluir_aviso(aviso_id):
     #verifica se o usuário logado é o autor do aviso
     if aviso.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este aviso.', 'danger')
-        return redirect(url_for('avisos_bp.listar_avisos'))
+        return redirect(url_for('avisos_bp.avisos'))
         
     #verifica se o aviso tem uma foto associada para excluir
     if aviso.foto_id:
@@ -94,14 +98,23 @@ def excluir_aviso(aviso_id):
         
     flash('Post excluído com sucesso!', 'success')
     
-    return redirect(url_for('avisos_bp.listar_avisos'))
+    return redirect(url_for('avisos_bp.avisos'))
 
-@avisos_bp.route('/avisos/avisos_feed')
-def listar_avisos():
-    avisos = Aviso.query.join(Usuario).add_columns(
+@avisos_bp.route('/avisos')
+def avisos():
+    avisos = (
+    Aviso.query
+    .join(Usuario)
+    .add_columns(
         Aviso.id, 
         Aviso.descricao, 
         Aviso.foto_id, 
-        Aviso.data_aviso.desc()).all()
+        Aviso.data_aviso,
+        Usuario.nome.label('usuario_nome')
+    )
+    .order_by(Aviso.data_aviso.desc())
+    .all()
+)
+
     
-    return render_template('feed.html', avisos=avisos)
+    return render_template('avisos.html', avisos=avisos)

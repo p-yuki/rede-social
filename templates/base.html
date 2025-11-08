@@ -36,21 +36,21 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="{{ url_for('home') }}" class="nav-link text-light active">Painel</a>
+            <a href="{{ url_for('home') }}" class="nav-link text-light active">Home</a>
           </li>
           <li class="nav-item">
-            <a href="{{ url_for('trabalhos') }}" class="nav-link text-light">Serviços</a>
+            <a href="{{ url_for('trabalhos') }}" class="nav-link text-light">Trabalhos</a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('perfil') }}" class="nav-link text-light">Perfil</a>
           </li>
+          <li class="nav-item">
+            <a href="{{ url_for('avisos') }}" class="nav-link text-light">Avisos</a>
+          </li>
 
           {% if usuario.is_adm or usuario.is_sindico %}
           <li class="nav-item">
-            <a href="{{ url_for('usuarios_bp.novo') }}" class="nav-link text-light">Cadastro de Moradores</a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url_for('usuarios') }}" class="nav-link text-light">Lista de Usuários</a>
+            <a href="{{ url_for('painel') }}" class="nav-link text-light">{{ "Painel Síndico" if usuario.is_sindico else "Painel Adm" }}</a>
           </li>
           {% endif %}
         </ul>

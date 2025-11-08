@@ -15,6 +15,8 @@ def novo_trabalho():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
+        cateogria = request.files.get('categoria')
+        nome_trabalho = request.files.get('nome_trabalho')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
@@ -48,7 +50,9 @@ def novo_trabalho():
         trabalho = Trabalho()
         trabalho.usuario_id = session['user_id']
         trabalho.foto_id = foto_id
-        trabalho.status = 'pendente'
+        trabalho.categoria = cateogria
+        trabalho.nome_trabalho = nome_trabalho
+        trabalho.descricao = descricao
         db.session.add(trabalho)
         db.session.commit()
         

@@ -1,0 +1,12 @@
+h4 {
+    font-weight: 900;
+}
+
+.prazo {
+    align-items: center;
+}
+
+.prazo .form-control {
+    width: 320px;
+    height: 60px;
+}

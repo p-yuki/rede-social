@@ -12,12 +12,13 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title">
-                                <h5>Aviso</h5>
+                                <h5>{{ aviso.nome_aviso }}</h5>
                             </div>
                             <div class="card-text">
-                                <span>A Assembleia Geral de Moradores será realizada no dia <strong>10/11 às
-                                        20h</strong>. Confira a pauta no
-                                    chat <strong>"ASSEMBLEIA"</strong>.</span>
+                                <span>{{ aviso.descricao }}</span>
+                                <br>
+                                <span>Dia: {{ aviso.data_aviso }}</span>
+                                <span>Horário: {{ aviso.horario_aviso }}</span>
                             </div>
                         </div>
                     </div>
@@ -26,20 +27,6 @@
         </div>
     </div>
     <div class="row mt-4 ">
-        <!-- <div class="col">
-            <a href="#">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h4>Mural de Avisos</h4>
-                        </div>
-                        <div class="card-text">
-                            <span>Verifique os avisos do seu condomínio</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
         <div class="col">
             <a href="#">
                 <div class="card">
