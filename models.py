@@ -44,13 +44,17 @@ class Aviso(db.Model):
     horario_aviso = db.Column(db.Time(16))
     data_aviso = db.Column(db.Date())
     data_criacao = db.Column(db.DateTime, default=db.func.current_timestamp())
-    nome_aviso =db.Column(db.String(255), nullable=False)
+    nome_aviso = db.Column(db.String(255), nullable=False)
 
 class Aep(db.Model):
     __tablename__ = 'aeps'
     id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(255), nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
+    bloco_aep = db.Column(db.String(16), nullable=False)
+    local = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(16), nullable=False)
     data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())
+    data_encontro = db.Column(db.Date())

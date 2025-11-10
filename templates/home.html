@@ -4,95 +4,141 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
 <div class="container">
-    <h4 class="acesso">Acesso Rápido</h4>
+    <!-- AVISO URGENTE -->
+    {% if aviso %}
     <div class="container aviso">
         <div class="row mt-4">
             <div class="col">
                 <a href="#">
-                    <div class="card">
+                    <div class="card border-danger shadow">
+                        <div class="card-body">
+                            <div class="card-title text-danger">
+                                <h5><strong>{{ aviso.nome_aviso }}</strong></h5>
+                            </div>
+                            <div class="card-text">
+                                <span>{{ aviso.descricao }}</span><br>
+                                <small>Dia: {{ aviso.data_aviso }}</small> |
+                                <small>Horário: {{ aviso.horario_aviso }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted text-center mt-3">Nenhum aviso <strong>urgente</strong> no momento.</p>
+    {% endif %}
+</div>
+
+<!-- OUTRAS SEÇÕES -->
+<div class="container">
+    <div class="row mt-4">
+        <div class="col">
+            <a href="#">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Converse com o Síndico</h4>
+                        <span>Mande mensagem para o síndico do seu condomínio</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="{{ url_for('trabalhos_bp.trabalhos') }}">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Serviços da Comunidade</h4>
+                        <span>Conheça os trabalhos da sua comunidade</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr>
+</div>
+
+<!-- AVISOS RECENTES -->
+<div class="container">
+    <div class="row mt-4 importante">
+        <div class="col">
+            <h4>Últimos Avisos</h4>
+
+            {% if avisos %}
+                {% for aviso in avisos %}
+                <a href="#">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="card-title">
                                 <h5>{{ aviso.nome_aviso }}</h5>
                             </div>
                             <div class="card-text">
-                                <span>{{ aviso.descricao }}</span>
-                                <br>
-                                <span>Dia: {{ aviso.data_aviso }}</span>
-                                <span>Horário: {{ aviso.horario_aviso }}</span>
+                                <span>{{ aviso.descricao }}</span><br>
+                                <small>Dia: {{ aviso.data_aviso }}</small> |
+                                <small>Horário: {{ aviso.horario_aviso }}</small>
                             </div>
                         </div>
                     </div>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4 ">
-        <div class="col">
-            <a href="#">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h4>Converse com o Síndico</h4>
-                        </div>
-                        <div class="card-text">
-                            <span>Mande mensagem para o síndico do seu condomínio</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted text-center mt-3">Nenhum aviso no momento.</p>
+            {% endif %}
         </div>
         <div class="col">
-            <a href="{{ url_for('trabalhos') }}">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h4>Serviços da comunidade</h4>
-                        </div>
-                        <div class="card-text">
-                            <span>Conheça os trabalhos da sua comunidade</span>
+            <h4>Últimos Achados e Perdidos</h4>
+
+            {% if aeps %}
+                {% for aviso in avisos %}
+                <a href="#">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>{{ aviso.nome_aviso }}</h5>
+                            </div>
+                            <div class="card-text">
+                                <span>{{ aviso.descricao }}</span><br>
+                                <small>Dia: {{ aviso.data_aviso }}</small> |
+                                <small>Horário: {{ aviso.horario_aviso }}</small>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted text-center mt-3">Nada <strong>achado ou perdido</strong> no momento.</p>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <hr>
+<!-- AEPS RECENTES -->
+<div class="container">
+    <div class="row mt-4 importante">
+        <div class="col">
+            <h4>Últimos Trabalhos</h4>
 
-    <div class="container">
-        <div class="row mt-4 importante">
-            <div class="col">
+            {% if aeps %}
+                {% for aviso in avisos %}
                 <a href="#">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="card-title">
-                                <h4>Novo Item Perdido Reportado</h4>
+                                <h5>{{ aviso.nome_aviso }}</h5>
                             </div>
                             <div class="card-text">
-                                <span>Um morador reportou ter perdido um <strong>par de chaves</strong> perto do Bloco
-                                    C.</span>
+                                <span>{{ aviso.descricao }}</span><br>
+                                <small>Dia: {{ aviso.data_aviso }}</small> |
+                                <small>Horário: {{ aviso.horario_aviso }}</small>
                             </div>
                         </div>
                     </div>
                 </a>
-            </div>
-        </div>
-        <div class="row mt-4 importante">
-            <div class="col">
-                <a href="#">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <h4>Manutenção na Piscina</h4>
-                            </div>
-                            <div class="card-text">
-                                <span>Informamos que a piscina estará interditada na quarta-feira (22/10) para limpeza e
-                                    manutenção.</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted text-center mt-3">Nenhum <strong>trabalho cadastrado</strong> no momento.</p>
+            {% endif %}
         </div>
     </div>
 </div>

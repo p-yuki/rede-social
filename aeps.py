@@ -7,20 +7,21 @@ from datetime import datetime
 from flask import current_app as app
 
 aeps_bp = Blueprint('aeps_bp', __name__)
-@aeps_bp.route('/aeps/novo')
-def novo():
-    return render_template('novo_aep.html')
 
-@aeps_bp.route('/aeps/criar_aep', methods=['GET', 'POST'])
- 
-def criar_aep():
+@aeps_bp.route('/aeps/novo_aep', methods=['GET', 'POST'])
+def novo_aeps():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
+        titulo = request.files.get('titulo')
+        bloco_aep = request.files.get('bloco_aep')
+        local = request.files.get('local')
+        status = request.files.get('status')
+        data_encontro = request.files.get('data_encontro')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            return render_template('criar_aep.html')
+            return render_template('achados_perdidos_form.html')
         
         foto_id = None
         
@@ -57,10 +58,9 @@ def criar_aep():
         flash('Aep criada com sucesso!', 'success')
         return redirect(url_for('aeps_bp.aep_lista'))
     
-    return render_template('criar_aep.html')
+    return render_template('achados_perdidos_form.html')
 
-@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])
- 
+@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])  
 def excluir_aep(aep_id):
     aep = Aep.query.get_or_404(aep_id)
         

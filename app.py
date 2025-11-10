@@ -13,7 +13,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -80,19 +80,23 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    aviso = (
+    # Último aviso URGENTE (se existir)
+    aviso_urgente = (
         Aviso.query
-        .join(Usuario)
-        .filter(Aviso.status == 'urgente')
-        .add_columns(
-            Aviso.nome_aviso,
-            Aviso.descricao,
-            Aviso.data_aviso
-        )
+        .filter_by(status='urgente')
+        .order_by(Aviso.data_aviso.desc())
         .first()
     )
 
-    return render_template('home.html', aviso=aviso)
+    # Últimos 3 avisos, independente do status
+    ultimos_avisos = (
+        Aviso.query
+        .order_by(Aviso.data_aviso.desc())
+        .limit(3)
+        .all()
+    )
+
+    return render_template('home.html', aviso=aviso_urgente, avisos=ultimos_avisos)
 
 @app.route('/achados_perdidos')
 @login_required
@@ -132,6 +136,11 @@ def painel():
 @login_required
 def avisos():
     return render_template('avisos.html')
+
+@app.route('/aeps')
+@login_required
+def aeps():
+    return render_template('achados_perdidos.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
