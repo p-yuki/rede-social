@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Painel de Controle{% endblock %}
+{% block content %}
+<div class="container">
+    <h4><strong>Painel de Controle</strong></h4>
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col">
+                <a href="{{ url_for('usuarios_bp.novo') }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>Cadastro de Moradores</h5>
+                            </div>
+                            <div class="card-text">
+                                <span>Faça o cadastro de novos moradores.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('usuarios') }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>Listagem de Moradores</h5>
+                            </div>
+                            <div class="card-text">
+                                <span>Acompanhe seus moradores.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('avisos') }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>Criação e Edição de Avisos</h5>
+                            </div>
+                            <div class="card-text">
+                                <span>Acompanhe os avisos.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

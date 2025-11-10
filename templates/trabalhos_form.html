@@ -13,35 +13,31 @@
                     <input type="hidden" name="id">
 
                     <div class="mb-3">
-                        <label for="nome" class="form-label">Título do Trabalho: </label>
-                        <input type="text" name="nome" id="nome" class="form-control"
-                            value="{{ trabalho.nome if trabalho else '' }}" required>
+                        <label for="nome_trabalho" class="form-label">Título do Trabalho: </label>
+                        <input type="text" name="nome_trabalho" id="nome_trabalho" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email do Morador: </label>
-                        <input type="text" name="email" id="email" class="form-control"
-                            value="{{ trabalho.email if trabalho else '' }}" required>
+                        <label for="descricao" class="form-label">Descrição do Trabalho: </label>
+                        <textarea name="descricao" id="descricao" class="form-control" required></textarea>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="senha" class="form-label">Senha (Padrão): </label>
-                        <input type="password" name="senha" id="senha" class="form-control">
-                    </div>
-
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                        <label for="apartamento" class="form-label">Apto.: </label>
-                        <input type="number" min="0" name="estoque" id="estoque" class="form-control"
-                            value="{{ trabalho.estoque if trabalho else '' }}" required>
-                        <label for="bloco" class="form-label">Bloco: </label>
-                        <input type="number" name="bloco" id="bloco" class="form-control">
+                    <!-- add input foto aqui -->
+                    
+                    <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
+                        <label for="categoria" class="form-label">Categoria: </label>
+                        <select name="categoria" id="categoria">
+                            <option value="prestacao_servico">Prestação de Serviços</option>
+                            <option value="alimentacao">Alimentação</option>
+                            <option value="beleza">Beleza</option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                        <button type="submit" class="btn btn-danger rounded-pill px-4">
-                            <i class="bi bi-save"></i> {{ "Salvar" if not trabalho else "Atualizar" }}
-                        </button>
-                    </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                            <button type="submit" class="btn btn-danger rounded-pill px-4">
+                                <i class="bi bi-save"></i> {{ "Salvar" if not trabalho else "Atualizar" }}
+                            </button>
+                        </div>
                 </form>
             </div>
         </div>

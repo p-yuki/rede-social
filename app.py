@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from models import db, Usuario
+from models import db, Usuario, Aviso
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
@@ -13,7 +13,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -55,17 +55,19 @@ with app.app_context():
 @app.context_processor
 def inject_usuario():
     class UsuarioFake:
-        def __init__(self, nome, bloco, apartamento, is_adm):
+        def __init__(self, nome, bloco, apartamento, is_adm, is_sindico):
             self.nome = nome
             self.bloco = bloco
             self.apartamento = apartamento
             self.is_adm = is_adm
+            self.is_sindico = is_sindico
 
     usuario = UsuarioFake(
         session.get('user_name'),
         session.get('user_bloco'),
         session.get('user_apartamento'),
-        session.get('is_adm')
+        session.get('is_adm'),
+        session.get('is_sindico')
     )
     return dict(usuario=usuario)
 
@@ -78,7 +80,19 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home.html')
+    aviso = (
+        Aviso.query
+        .join(Usuario)
+        .filter(Aviso.status == 'urgente')
+        .add_columns(
+            Aviso.nome_aviso,
+            Aviso.descricao,
+            Aviso.data_aviso
+        )
+        .first()
+    )
+
+    return render_template('home.html', aviso=aviso)
 
 @app.route('/achados_perdidos')
 @login_required
@@ -109,6 +123,15 @@ def chat():
 @app.route('/acesso')
 def acesso():
     return render_template('acesso.html')
+@app.route('/painel')
+@login_required
+def painel():
+    return render_template('painel_controle.html')
+
+@app.route('/avisos')
+@login_required
+def avisos():
+    return render_template('avisos.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
