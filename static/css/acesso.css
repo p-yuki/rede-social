@@ -28,7 +28,7 @@ body {
 .wrapper {
     position: relative;
     width: 430px;
-    height: 500px;
+    height: 430px;
     background-color: #fff;
     border-radius: 16px;
     padding: 120px 32px 64px;
@@ -128,7 +128,7 @@ body {
 }
 
 
-.btn-submit {
+.btn-email {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -146,16 +146,26 @@ body {
     transition: .3s;
 }
 
-.btn-submit i {
-    font: 20px;
-}
-
-.acesso {
-    text-align: center;
-}
-
-.acesso a {
+.btn-voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 32px;
+    width: 50%;
+    height: 50px;
+    background-color: #348ce3;
+    color: #fff;
+    font-size: 16px;
     font-weight: 500;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-voltar i {
+    font: 20px;
 }
 
 @media only screen and (max-width:564px) {

@@ -29,13 +29,6 @@
         <i class="bi bi-lock-fill icon"></i>
       </div>
 
-      <div class="form-cols">
-        <div class="col1"></div>
-        <div class="col2">
-          <a href="#">Esqueceu a senha?</a>
-        </div>
-      </div>
-
       <div class="input-box">
         <button type="submit" class="btn-submit" id="SignInBtn">
           Login <i class="bi bi-box-arrow-in-right"></i>
@@ -43,7 +36,7 @@
       </div>
 
       <div class="acesso">
-        <span>Não tem uma conta? <a href="#">Solicite um acesso!</a></span>
+        <span>Não tem uma conta? <a href="{{ url_for('acesso') }}">Solicite um acesso!</a></span>
       </div>
     </form>
 

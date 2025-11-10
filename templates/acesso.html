@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boa Vizinhança - Solicitar Acesso</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/acesso.css') }}">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="form-header">
+            <div class="titles">
+                <div class="title-login">Acesso</div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <h1>Requisite um Acesso</h1>
+                <h3>Não tem um acesso no Boa Vizinhança?</h3>
+                <hr>
+                <p>Solicite seu acesso!</p>
+            </div>
+        </div>
+
+        <a href="#" class="btn-email">Receba um email com instruções</a>
+
+        <a href="{{ url_for('login') }}" class="btn-voltar"><i class="bi bi-box-arrow-in-right"></i> Voltar</a>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+    </div>
+
+
+    </div>
+
+</body>
+
+</html>
