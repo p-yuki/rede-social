@@ -15,8 +15,8 @@ def novo_trabalho():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
-        cateogria = request.files.get('categoria')
-        nome_trabalho = request.files.get('nome_trabalho')
+        categoria = request.form.get('categoria')
+        nome_trabalho = request.form.get('nome_trabalho')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
@@ -50,7 +50,7 @@ def novo_trabalho():
         trabalho = Trabalho()
         trabalho.usuario_id = session['user_id']
         trabalho.foto_id = foto_id
-        trabalho.categoria = cateogria
+        trabalho.categoria = categoria
         trabalho.nome_trabalho = nome_trabalho
         trabalho.descricao = descricao
         db.session.add(trabalho)
@@ -91,7 +91,7 @@ def excluir_post(post_id):
         
     flash('Post excluído com sucesso!', 'success')
     
-    return redirect(url_for('trabalhos_bp.listar_posts'))
+    return redirect(url_for('trabalhos_bp.trabalhos'))
 
 @trabalhos_bp.route('/trabalhos')
 def trabalhos():
