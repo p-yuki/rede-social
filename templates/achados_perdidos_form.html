@@ -15,7 +15,8 @@
 
                     <div class="mb-3">
                         <label for="titulo" class="form-label">Breve Descrição: </label>
-                        <input type="text" name="titulo" id=titulo" class="form-control" required>
+                        <input type="text" name="titulo" id="titulo" class="form-control" required>
+
                     </div>
 
                     <div class="mb-3">
@@ -23,12 +24,11 @@
                         <textarea name="descricao" id="descricao" class="form-control" required></textarea>
                     </div>
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                        <label for="data_aviso" class="form-label">Onde Encontrou?: </label>
-                        <input type="text" name="bloco_aep" id="bloco_aep" class="form-control">
-                        <textarea name="local" id="local" class="local" required placeholder="Encontrou próximo de algo?"></textarea>
+                    <div class="mb-3">
+                        <label for="data_aviso" class="form-label">Onde Encontrou/Perdeu?: </label>
+                        <input type="text" name="local" id="local" class="form-control">
                     </div>
-                    <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
+                    <div class="mb-3">
                         <label for="status" class="form-label">Achou ou Perdeu?: </label>
                         <select name="status" id="status">
                             <option value="achado">Achei</option>
@@ -36,12 +36,12 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="data_encontro" class="form-label">Quando Achou?: </label>
+                        <label for="data_encontro" class="form-label">Quando Achou/Perdeu?: </label>
                         <input type="date" name="data_encontro" id="data_encontro" class="form-control">
                     </div>
 
                     <!-- add input foto aqui -->
-                    
+
                     <div class="mb-3">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
                             <button type="submit" class="btn btn-danger rounded-pill px-4">

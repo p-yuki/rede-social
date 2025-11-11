@@ -13,11 +13,10 @@ def novo_aeps():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
-        titulo = request.files.get('titulo')
-        bloco_aep = request.files.get('bloco_aep')
-        local = request.files.get('local')
-        status = request.files.get('status')
-        data_encontro = request.files.get('data_encontro')
+        titulo = request.form.get('titulo')
+        local = request.form.get('local')
+        status = request.form.get('status')
+        data_encontro = request.form.get('data_encontro')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
@@ -51,12 +50,16 @@ def novo_aeps():
         aep = Aep()
         aep.usuario_id = session['user_id']
         aep.foto_id = foto_id
-        aep.status = 'pendente'
+        aep.descricao = descricao
+        aep.status = status
+        aep.titulo = titulo
+        aep.local = local
+        aep.data_encontro = data_encontro
         db.session.add(aep)
         db.session.commit()
         
         flash('Aep criada com sucesso!', 'success')
-        return redirect(url_for('aeps_bp.aep_lista'))
+        return redirect(url_for('aeps_bp.aeps'))
     
     return render_template('achados_perdidos_form.html')
 
@@ -92,8 +95,8 @@ def excluir_aep(aep_id):
     
     return redirect(url_for('aeps_bp.listar_aeps'))
 
-@aeps_bp.route('/aeps/achados_perdidos')
-def achados_perdidos():
+@aeps_bp.route('/aeps')
+def aeps():
     aeps = Aep.query.join(Usuario).add_columns(
         Aep.id, 
         Aep.descricao, 

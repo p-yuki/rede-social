@@ -53,7 +53,6 @@ class Aep(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
-    bloco_aep = db.Column(db.String(16), nullable=False)
     local = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(16), nullable=False)
     data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())

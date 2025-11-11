@@ -21,15 +21,14 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ aviso.descricao }}</p>
-
-                    <div class="card-footer">
-                        <small class="text-muted">
-                            <p><{{ aviso.usuario_nome }}</p>
-                        </small>
-                    </div>
                 </div>
-                {% endfor %}
+                <div class="card-footer text-body-secondary">
+                    <small class="text-muted">
+                        <p>{{ aviso.usuario_id }}</p>
+                    </small>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
