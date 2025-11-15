@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from models import db, Usuario, Aviso
+from models import db, Usuario, Aviso, Aep, Trabalho
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
@@ -13,7 +13,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -73,10 +73,6 @@ def inject_usuario():
 
 
 # 🧩 Rotas principais
-@app.route('/')
-def login():
-    return render_template('login.html')
-
 @app.route('/home')
 @login_required
 def home():
@@ -96,7 +92,30 @@ def home():
         .all()
     )
 
-    return render_template('home.html', aviso=aviso_urgente, avisos=ultimos_avisos)
+    # 🔹 Últimos 3 Achados e Perdidos
+    ultimos_aeps = (
+        Aep.query
+        .order_by(Aep.data_aep.desc())
+        .limit(3)
+        .all()
+    )
+
+    # 🔹 Últimos 3 Trabalhos
+    ultimos_trabalhos = (
+        Trabalho.query
+        .order_by(Trabalho.data_trabalho.desc())
+        .limit(3)
+        .all()
+    )
+
+    return render_template(
+        'home.html',
+        aviso=aviso_urgente,
+        avisos=ultimos_avisos,
+        aeps=ultimos_aeps,
+        trabalhos=ultimos_trabalhos
+    )
+
 
 @app.route('/achados_perdidos')
 @login_required

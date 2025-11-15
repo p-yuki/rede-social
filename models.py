@@ -57,3 +57,5 @@ class Aep(db.Model):
     status = db.Column(db.String(16), nullable=False)
     data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())
     data_encontro = db.Column(db.Date())
+
+    foto = db.relationship("Foto", backref="aep", lazy=True)

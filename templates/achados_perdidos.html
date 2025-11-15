@@ -12,24 +12,44 @@
                     <i class="bi bi-journal-plus"></i> Achou ou Perdeu Algo? <!-- trocar o nome disso -->
                 </a>
             </div>
-            {% for aep in aeps %}
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title"><strong>{{ aep.titulo }}</strong></h5>
+            {% for aep, usuario in aeps %}
+            <div class="card mt-3 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title m-0"><strong>{{ aep.titulo }}</strong></h5>
+
+                    {% if aep.usuario_id == session['user_id'] %}
+                    <form action="{{ url_for('aeps_bp.excluir_aep', aep_id=aep.id) }}" method="POST"
+                        onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                        <button class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
+
                 <div class="card-body">
-                    <p class="card-text">{{ aep.descricao }}</p>
-                    <p class="card-text">Encontrado em: {{ aep.local }}</p>
-                    <p class="card-text {% if aep.status == 'achado' %}text-success{% elif aep.status == 'perdido' %}text-danger{% endif %}">
-                        {{ aep.status }}
+
+                    {% if aep.foto_id %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ aep.foto.foto_path) }}"
+                        class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
+                    {% endif %}
+
+                    <p class="card-text"><strong>Descrição:</strong> {{ aep.descricao }}</p>
+                    <p class="card-text"><strong>Local:</strong> {{ aep.local }}</p>
+
+                    <p class="card-text {% if aep.status == 'achado' %}text-success {% elif aep.status == 'perdido' %}text-danger{% endif %}">
+                        <strong>Status:</strong> {{ aep.status | capitalize }}
                     </p>
-                    <p class="card-text">Data: {{aep.data_encontro}}</p>
+
+                    <p class="card-text">
+                        <strong>Encontrado em:</strong>
+                        {{ aep.data_encontro.strftime('%d/%m/%Y') if aep.data_encontro else 'Não informado' }}
+                    </p>
                 </div>
-                <div class="card-footer text-body-secondary">
-                    <small class="text-muted">
-                        <p>
-                            <{{ aep.usuario_id }}</p>
-                    </small>
+
+                <div class="card-footer text-muted">
+                    <small>Postado por <strong>{{ usuario.nome }}</strong> em
+                        {{ aep.data_aep.strftime('%d/%m/%Y %H:%M') }}</small>
                 </div>
             </div>
             {% endfor %}

@@ -63,46 +63,41 @@ def novo_aeps():
     
     return render_template('achados_perdidos_form.html')
 
-@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])  
+@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])
 def excluir_aep(aep_id):
     aep = Aep.query.get_or_404(aep_id)
-        
-    #verifica se o usuário logado é o autor do post
+
+    # verifica se o usuário logado é o autor do post
     if aep.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
-        return redirect(url_for('aeps_bp.listar_aeps'))
-        
-    #verifica se o post tem uma foto associada para excluir
+        return redirect(url_for('aeps_bp.aeps'))
+
+    # se tiver foto, excluir foto física e do banco
     if aep.foto_id:
         foto = Foto.query.get(aep.foto_id)
         if foto:
-            #exclui o arquivo físico da foto
             try:
-                caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.caminho)
+                caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.foto_path)
                 if os.path.exists(caminho_foto):
                     os.remove(caminho_foto)
             except Exception as e:
-                print(f"Erro ao excluir arquivo: {e}")
-                
-            #exclui o registro da foto do banco
+                print(f"Erro ao excluir o arquivo da foto: {e}")
+
             db.session.delete(foto)
-        
-        #exclui o post
-        db.session.delete(aep)
-        db.session.commit()
-        
+
+    # excluir o Aep sempre
+    db.session.delete(aep)
+    db.session.commit()
+
     flash('Post excluído com sucesso!', 'success')
-    
-    return redirect(url_for('aeps_bp.listar_aeps'))
+    return redirect(url_for('aeps_bp.aeps'))
 
 @aeps_bp.route('/aeps')
 def aeps():
-    aeps = Aep.query.join(Usuario).add_columns(
-        Aep.id, 
-        Aep.descricao, 
-        Aep.foto_id, 
-        Aep.data_aep,
-        Usuario.nome.label('autor_nome')
-    ).order_by(Aep.data_aep.desc()).all()
-    
+    aeps = (
+        db.session.query(Aep, Usuario)
+        .join(Usuario, Usuario.id == Aep.usuario_id)
+        .order_by(Aep.data_aep.desc())
+        .all()
+    )
     return render_template('achados_perdidos.html', aeps=aeps)
