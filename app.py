@@ -73,6 +73,11 @@ def inject_usuario():
 
 
 # 🧩 Rotas principais
+
+@app.route('/')
+def login():
+    return render_template('login.html')
+
 @app.route('/home')
 @login_required
 def home():
@@ -138,10 +143,10 @@ def usuarios():
     usuarios_lista = Usuario.query.all()
     return render_template('usuarios.html', usuarios=usuarios_lista)
 
-@app.route('/chat')
+@app.route('/reservas')
 @login_required
-def chat():
-    return render_template('chat.html')
+def reservas():
+    return render_template('reservas.html')
 
 @app.route('/acesso')
 def acesso():

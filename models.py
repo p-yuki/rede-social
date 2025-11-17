@@ -15,6 +15,7 @@ class Usuario(db.Model):
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
     trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
     aeps = db.relationship('Aep', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
+    reservas = db.relationship('Reserva', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
 
 class Trabalho(db.Model):
     __tablename__ = 'trabalhos'
@@ -59,3 +60,13 @@ class Aep(db.Model):
     data_encontro = db.Column(db.Date())
 
     foto = db.relationship("Foto", backref="aep", lazy=True)
+
+class Reserva(db.Model):
+    __tablename__ = 'reservas'
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    usuario_bloco = db.Column(db.String(16))
+    usuario_apartamento = db.Column(db.String(16))
+    data_reserva = db.Column(db.DateTime, nullable=False)
+    data_criacao = db.Column(db.DateTime, default=db.func.current_timestamp())
+    local = db.Column(db.String(255), nullable=False)
