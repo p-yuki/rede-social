@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from models import db, Usuario, Aviso, Aep, Trabalho
+from models import db, Usuario, Aviso, Aep, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
@@ -29,6 +29,9 @@ app.register_blueprint(usuarios_bp)
 
 from aeps import aeps_bp
 app.register_blueprint(aeps_bp)
+
+from reservas import reservas_bp
+app.register_blueprint(reservas_bp)
 
 # 🧠 Cria tabelas e o admin padrão
 with app.app_context():
@@ -146,7 +149,16 @@ def usuarios():
 @app.route('/reservas')
 @login_required
 def reservas():
-    return render_template('reservas.html')
+    reservas = Reserva.query.all()
+
+    reservas_por_local = {}
+    for r in reservas:
+        if r.local not in reservas_por_local:
+            reservas_por_local[r.local] = []
+        reservas_por_local[r.local].append(r.data_reserva.strftime("%Y-%m-%d"))
+
+    return render_template("reservas.html", reservas_por_local=reservas_por_local)
+
 
 @app.route('/acesso')
 def acesso():

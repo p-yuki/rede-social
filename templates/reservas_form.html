@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Faça sua Reserva{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header text-center">
+                <h4>Faça sua reserva!</h4>
+            </div>
+
+            <div class="card-body">
+                <form method="POST">
+
+                    <div class="mb-3">
+                        <label for="data_reserva">Data da reserva:</label>
+                        <input type="text" id="data_reserva" name="data_reserva" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="local">Onde:</label>
+                        <select name="local" id="local"
+                                data-reservas='{{ reservas_por_local|tojson|safe }}'
+                                class="form-control">
+                            <option value="churrasqueira">Churrasqueira</option>
+                            <option value="salao_festa">Salão de Festa</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger w-100 rounded-pill">
+                        <i class="bi bi-save"></i> Salvar
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/reservas_form.js') }}"></script>
+{% endblock %}

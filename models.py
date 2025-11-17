@@ -65,8 +65,6 @@ class Reserva(db.Model):
     __tablename__ = 'reservas'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
-    usuario_bloco = db.Column(db.String(16))
-    usuario_apartamento = db.Column(db.String(16))
     data_reserva = db.Column(db.DateTime, nullable=False)
     data_criacao = db.Column(db.DateTime, default=db.func.current_timestamp())
     local = db.Column(db.String(255), nullable=False)
