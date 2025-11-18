@@ -115,13 +115,20 @@ def home():
         .limit(3)
         .all()
     )
+    
+    categoria_trabalho = {
+    "beleza": "Beleza",
+    "prestacao_servico": "Prestação de Serviço",
+    "alimentacao": "Alimentação"
+    }
 
     return render_template(
         'home.html',
         aviso=aviso_urgente,
         avisos=ultimos_avisos,
         aeps=ultimos_aeps,
-        trabalhos=ultimos_trabalhos
+        trabalhos=ultimos_trabalhos,
+        categoria_trabalho=categoria_trabalho
     )
 
 

@@ -99,4 +99,9 @@ def trabalhos():
         .order_by(Trabalho.data_trabalho.desc())
         .all()
     )
-    return render_template('trabalhos.html', trabalhos=trabalhos)
+    categoria_texto = {
+    "beleza": "Beleza",
+    "prestacao_servico": "Prestação de Serviço",
+    "alimentacao": "Alimentação"
+    }
+    return render_template('trabalhos.html', trabalhos=trabalhos, categoria_texto=categoria_texto)

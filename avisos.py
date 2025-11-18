@@ -99,12 +99,18 @@ def excluir_aviso(aviso_id):
 @avisos_bp.route('/avisos')
 def avisos():
     avisos = (
-    db.session.query(Aviso, Usuario)
-    .join(Usuario, Usuario.id == Aviso.usuario_id)
-    .order_by(Aviso.data_criacao.desc())
-    .all()
-)
-
-
+        db.session.query(Aviso, Usuario)
+        .join(Usuario, Usuario.id == Aviso.usuario_id)
+        .order_by(Aviso.data_criacao.desc())
+        .all()
+    )
     
-    return render_template('avisos.html', avisos=avisos)
+    categoria_avisos = {
+    "urgente": "Urgente",
+    "nao_urgente": "Não Urgente",
+    "media": "Média"
+    }
+
+    usuario_logado = Usuario.query.get(session.get("user_id"))
+
+    return render_template('avisos.html', avisos=avisos, usuario_logado=usuario_logado, categoria_avisos= categoria_avisos)

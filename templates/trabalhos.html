@@ -31,7 +31,7 @@
                     <p class="card-text"><strong>Descrição:</strong> {{ trabalho.descricao }}</p>
 
                     <p class="card-text">
-                        <strong>Status:</strong> {{ trabalho.categoria }}
+                        <strong>Status:</strong> {{ categoria_texto.get(trabalho.categoria) }}
                     </p>
                     <!-- adicionar apto -->
                 </div>

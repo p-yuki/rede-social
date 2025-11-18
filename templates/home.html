@@ -134,7 +134,7 @@
                         <h5 class="card-title">{{ trabalho.nome_trabalho }}</h5>
 
                         <p class="card-text m-0">
-                            <strong>Categoria:</strong> {{ trabalho.categoria }}
+                            <strong>Categoria:</strong> {{ categoria_trabalho.get(trabalho.categoria) }}
                         </p>
 
                         <small>
