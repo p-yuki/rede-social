@@ -7,7 +7,7 @@
     <div class="col-md-8 col-lg-6">
         <div class="card shadow-sm">
             <div class="card-header text-center">
-                <h4>{{ "Novo Aviso" if not aviso else "Editar Aviso" }}</h4>
+                <h4>Novo Aviso</h4>
             </div>
             <div class="card-body">
                 <form method="POST">
@@ -15,8 +15,7 @@
 
                     <div class="mb-3">
                         <label for="nome_aviso" class="form-label">Título do Aviso: </label>
-                        <input type="text" name="nome_aviso" id="nome_aviso" class="form-control"
-                            value="{{ aviso.nome if aviso else '' }}" required>
+                        <input type="text" name="nome_aviso" id="nome_aviso" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
@@ -25,7 +24,7 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4 prazo">
-                        <label for="data_aviso" class="form-label">Prazo (caso exista): </label>
+                        <label for="data_aviso" class="form-label">Quando?/Prazo (caso exista): </label>
                         <input type="date" name="data_aviso" id="data_aviso" class="form-control">
                         <input type="time" name="horario_aviso" id="horario_aviso" class="form-control">
                     </div>

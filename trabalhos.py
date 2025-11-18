@@ -15,8 +15,8 @@ def novo_trabalho():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
-        cateogria = request.files.get('categoria')
-        nome_trabalho = request.files.get('nome_trabalho')
+        categoria = request.form.get('categoria')
+        nome_trabalho = request.form.get('nome_trabalho')
         
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
@@ -50,7 +50,7 @@ def novo_trabalho():
         trabalho = Trabalho()
         trabalho.usuario_id = session['user_id']
         trabalho.foto_id = foto_id
-        trabalho.categoria = cateogria
+        trabalho.categoria = categoria
         trabalho.nome_trabalho = nome_trabalho
         trabalho.descricao = descricao
         db.session.add(trabalho)
@@ -61,39 +61,42 @@ def novo_trabalho():
     
     return render_template('trabalhos_form.html')
 
-@trabalhos_bp.route('/trabalhos/excluir/<int:post_id>', methods=['POST'])
-def excluir_post(post_id):
-    post = Trabalho.query.get_or_404(post_id)
-        
-    #verifica se o usuário logado é o autor do post
-    if post.usuario_id != session['user_id']:
+
+@trabalhos_bp.route('/trabalhos/excluir/<int:trabalho_id>', methods=['POST'])
+def excluir_trabalho(trabalho_id):
+    trabalho = Trabalho.query.get_or_404(trabalho_id)
+
+    # verifica se o usuário logado é o autor do post
+    if trabalho.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
         return redirect(url_for('trabalhos_bp.trabalhos'))
-        
-    #verifica se o post tem uma foto associada para excluir
-    if post.foto_id:
-        foto = Foto.query.get(post.foto_id)
+
+    # se tiver foto, excluir foto física e do banco
+    if trabalho.foto_id:
+        foto = Foto.query.get(trabalho.foto_id)
         if foto:
-            #exclui o arquivo físico da foto
             try:
-                caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.caminho)
+                caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.foto_path)
                 if os.path.exists(caminho_foto):
                     os.remove(caminho_foto)
             except Exception as e:
-                print(f"Erro ao excluir arquivo: {e}")
-                
-            #exclui o registro da foto do banco
+                print(f"Erro ao excluir o arquivo da foto: {e}")
+
             db.session.delete(foto)
-        
-        #exclui o post
-        db.session.delete(post)
-        db.session.commit()
-        
+
+    # excluir o Aep sempre
+    db.session.delete(trabalho)
+    db.session.commit()
+
     flash('Post excluído com sucesso!', 'success')
-    
-    return redirect(url_for('trabalhos_bp.listar_posts'))
+    return redirect(url_for('trabalhos_bp.trabalhos'))
 
 @trabalhos_bp.route('/trabalhos')
 def trabalhos():
-    trabalhos = Trabalho.query.all()
+    trabalhos = (
+        db.session.query(Trabalho, Usuario)
+        .join(Usuario, Usuario.id == Trabalho.usuario_id)
+        .order_by(Trabalho.data_trabalho.desc())
+        .all()
+    )
     return render_template('trabalhos.html', trabalhos=trabalhos)

@@ -1,0 +1,55 @@
+h4 {
+    font-weight: 900;
+}
+
+.rules h5 {
+    font-weight: 900;
+}
+.rules li {
+    list-style: unset;
+}
+
+.legenda {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+/* --- Estilo geral do círculo --- */
+.flatpickr-day.dia-festa {
+    background: #6cb8ff33;   /* leve azul */
+    border: 2px solid #007bff;
+    border-radius: 50%;
+}
+
+.flatpickr-day.dia-churras {
+    background: #ff6b6b33;   /* leve vermelho */
+    border: 2px solid #ff3b3b;
+    border-radius: 50%;
+}
+
+.flatpickr-day.dia-duplo {
+    border-radius: 50%;
+    background:
+        linear-gradient(to right, #007bff 50%, #ff3b3b 50%);
+    border: 0;
+}
+
+
+.legenda.azul {
+    border: 3px solid #1e90ff;
+}
+
+.legenda.vermelho {
+    border: 3px solid #ff4d4d;
+}
+
+.legenda.duplo {
+    background: linear-gradient(
+        to right,
+        #1e90ff 50%,
+        #ff4d4d 50%
+    );
+}

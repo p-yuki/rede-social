@@ -15,6 +15,7 @@ class Usuario(db.Model):
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
     trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
     aeps = db.relationship('Aep', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
+    reservas = db.relationship('Reserva', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
 
 class Trabalho(db.Model):
     __tablename__ = 'trabalhos'
@@ -44,13 +45,26 @@ class Aviso(db.Model):
     horario_aviso = db.Column(db.Time(16))
     data_aviso = db.Column(db.Date())
     data_criacao = db.Column(db.DateTime, default=db.func.current_timestamp())
-    nome_aviso =db.Column(db.String(255), nullable=False)
+    nome_aviso = db.Column(db.String(255), nullable=False)
 
 class Aep(db.Model):
     __tablename__ = 'aeps'
     id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(255), nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     descricao = db.Column(db.Text, nullable=False)
+    local = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(16), nullable=False)
     data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())
+    data_encontro = db.Column(db.Date())
+
+    foto = db.relationship("Foto", backref="aep", lazy=True)
+
+class Reserva(db.Model):
+    __tablename__ = 'reservas'
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    data_reserva = db.Column(db.DateTime, nullable=False)
+    data_criacao = db.Column(db.DateTime, default=db.func.current_timestamp())
+    local = db.Column(db.String(255), nullable=False)

@@ -68,53 +68,43 @@ def novo_aviso():
     return render_template('avisos_form.html')
 
 @avisos_bp.route('/avisos/excluir/<int:aviso_id>', methods=['POST'])
-@login_required
 def excluir_aviso(aviso_id):
     aviso = Aviso.query.get_or_404(aviso_id)
-        
-    #verifica se o usuário logado é o autor do aviso
+
+    # verifica se o usuário logado é o autor do post
     if aviso.usuario_id != session['user_id']:
-        flash('Você não tem permissão para excluir este aviso.', 'danger')
+        flash('Você não tem permissão para excluir este post.', 'danger')
         return redirect(url_for('avisos_bp.avisos'))
-        
-    #verifica se o aviso tem uma foto associada para excluir
+
+    # se tiver foto, excluir foto física e do banco
     if aviso.foto_id:
         foto = Foto.query.get(aviso.foto_id)
         if foto:
-            #exclui o arquivo físico da foto
             try:
-                caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.caminho)
+                caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.foto_path)
                 if os.path.exists(caminho_foto):
                     os.remove(caminho_foto)
             except Exception as e:
-                print(f"Erro ao excluir arquivo: {e}")
-                
-            #exclui o registro da foto do banco
+                print(f"Erro ao excluir o arquivo da foto: {e}")
+
             db.session.delete(foto)
-        
-        #exclui o aviso
-        db.session.delete(aviso)
-        db.session.commit()
-        
+
+    # excluir o Aep sempre
+    db.session.delete(aviso)
+    db.session.commit()
+
     flash('Post excluído com sucesso!', 'success')
-    
     return redirect(url_for('avisos_bp.avisos'))
 
 @avisos_bp.route('/avisos')
 def avisos():
     avisos = (
-    Aviso.query
-    .join(Usuario)
-    .add_columns(
-        Aviso.id, 
-        Aviso.descricao, 
-        Aviso.foto_id, 
-        Aviso.data_aviso,
-        Usuario.nome.label('usuario_nome')
-    )
-    .order_by(Aviso.data_aviso.desc())
+    db.session.query(Aviso, Usuario)
+    .join(Usuario, Usuario.id == Aviso.usuario_id)
+    .order_by(Aviso.data_criacao.desc())
     .all()
 )
+
 
     
     return render_template('avisos.html', avisos=avisos)
