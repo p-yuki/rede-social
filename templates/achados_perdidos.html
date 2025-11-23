@@ -17,6 +17,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title m-0"><strong>{{ aep.titulo }}</strong></h5>
 
+                    <!-- somente visível se o id do usuário for o mesmo que o id do criador da postagem -->
                     {% if aep.usuario_id == session['user_id'] %}
                     <form action="{{ url_for('aeps_bp.excluir_aep', aep_id=aep.id) }}" method="POST"
                         onsubmit="return confirm('Tem certeza que deseja excluir?');">
@@ -28,7 +29,6 @@
                 </div>
 
                 <div class="card-body">
-
                     {% if aep.foto_id %}
                     <img src="{{ url_for('static', filename='uploads/' ~ aep.foto.foto_path) }}"
                         class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">

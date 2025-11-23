@@ -48,7 +48,8 @@
           <li class="nav-item">
             <a href="{{ url_for('reservas') }}" class="nav-link text-light">Reservas</a>
           </li>
-
+          
+          <!-- só visível se o usuário for administrador ou síndico -->
           {% if usuario.is_adm or usuario.is_sindico %}
           <li class="nav-item">
             <a href="{{ url_for('painel') }}" class="nav-link text-light">{{ "Painel Síndico" if usuario.is_sindico else

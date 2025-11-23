@@ -1,8 +1,12 @@
+<!-- só visível para síndicos e administradores -->
+
 {% extends "base.html" %}
 {% block title %}Avisos{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/avisos.css') }}">
 
+
+<!-- formulário de avisos -->
 <div class="row justify-content-center mt-4">
     <div class="col-md-8 col-lg-6">
         <div class="card shadow-sm">

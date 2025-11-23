@@ -17,6 +17,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title m-0"><strong>{{ trabalho.nome_trabalho }}</strong></h5>
 
+                    <!-- somente visível se o id do usuário for o mesmo que o id do criador da postagem -->
                     {% if trabalho.usuario_id == session['user_id'] %}
                     <form action="{{ url_for('trabalhos_bp.excluir_trabalho', trabalho_id=trabalho.id) }}" method="POST"
                         onsubmit="return confirm('Tem certeza que deseja excluir?');">
