@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from models import db, Usuario, Aviso, Aep, Trabalho, Reserva
+from models import db, Usuario, Aviso, Achado, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
@@ -27,8 +27,8 @@ app.register_blueprint(avisos_bp)
 from usuarios import usuarios_bp
 app.register_blueprint(usuarios_bp)
 
-from aeps import aeps_bp
-app.register_blueprint(aeps_bp)
+from achados import achados_bp
+app.register_blueprint(achados_bp)
 
 from reservas import reservas_bp
 app.register_blueprint(reservas_bp)
@@ -101,9 +101,9 @@ def home():
     )
 
     # 🔹 Últimos 3 Achados e Perdidos
-    ultimos_aeps = (
-        Aep.query
-        .order_by(Aep.data_aep.desc())
+    ultimos_achados = (
+        Achado.query
+        .order_by(Achado.data_achado.desc())
         .limit(3)
         .all()
     )
@@ -126,7 +126,7 @@ def home():
         'home.html',
         aviso=aviso_urgente,
         avisos=ultimos_avisos,
-        aeps=ultimos_aeps,
+        achados=ultimos_achados,
         trabalhos=ultimos_trabalhos,
         categoria_trabalho=categoria_trabalho
     )
@@ -180,9 +180,9 @@ def painel():
 def avisos():
     return render_template('avisos.html')
 
-@app.route('/aeps')
+@app.route('/achados')
 @login_required
-def aeps():
+def achados():
     return render_template('achados_perdidos.html')
 
 if __name__ == '__main__':

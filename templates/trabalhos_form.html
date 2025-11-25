@@ -22,8 +22,19 @@
                         <textarea name="descricao" id="descricao" class="form-control" required></textarea>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="contato" class="form-label">Contato (Telefone): </label>
+                        <input type="tel" id="contato" name="contato" class="form-control phone-mask"
+                            placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel" maxlength="15" required >
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                        <label for="apartamento" class="form-label">Apto.: </label>
+                        <input type="number" name="apartamento" id="apartamento" class="form-control" required>
+                        <label for="bloco" class="form-label">Bloco: </label>
+                        <input type="number" name="bloco" id="bloco" class="form-control" required>
+                    </div>
                     <!-- add input foto aqui -->
-                    
+
                     <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
                         <label for="categoria" class="form-label">Categoria: </label>
                         <select name="categoria" id="categoria">

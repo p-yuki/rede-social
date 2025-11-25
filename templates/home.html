@@ -94,7 +94,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
 
-                        <h5 class="card-title">{{ aep.titulo }}</h5>
+                        <h5 class="card-title">{{ aep.descricao }}</h5>
 
                         <p class="m-0">
                             <strong>Status:</strong>
@@ -129,12 +129,15 @@
             {% for trabalho in trabalhos %}
             <a href="#">
                 <div class="card mb-3">
-                    <div class="card-body">
+                    <div class="card-body"> 
 
                         <h5 class="card-title">{{ trabalho.nome_trabalho }}</h5>
 
                         <p class="card-text m-0">
                             <strong>Categoria:</strong> {{ categoria_trabalho.get(trabalho.categoria) }}
+                        </p>
+                        <p class="card-text m-0">
+                            <strong>Contato:</strong> {{ trabalho.contato }}
                         </p>
 
                         <small>

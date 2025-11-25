@@ -1,28 +1,34 @@
 {% extends "base.html" %}
 {% block title %}Achados e Perdidos{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/aeps.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/achados.css') }}">
 
 <div class="container mt-4">
     <div class="row">
         <div class="col">
             <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
                 <h4>Achados e Perdidos</h4>
-                <a href="{{ url_for('aeps_bp.novo_aeps') }}" class="btn btn-danger rounded-pill px-4">
+                <a href="{{ url_for('achados_bp.novo_achados') }}" class="btn btn-danger rounded-pill px-4">
                     <i class="bi bi-journal-plus"></i> Achou ou Perdeu Algo? <!-- trocar o nome disso -->
                 </a>
             </div>
             <div class="row mt-4">
 
-                {% for aep, usuario in aeps %}
+                {% for achado, usuario in achados %}
                 <div class="col-md-6 mb-4"> <!-- 2 colunas por linha -->
 
                     <div class="card shadow-sm h-100">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title m-0"><strong>{{ aep.titulo }}</strong></h5>
+                            <h5 class="card-title m-0 {% if achado.status == 'achado' %}text-success
+                            {% elif achado.status == 'perdido' %}text-danger
+                            {% endif %}">
+                                <strong>
+                                    {{ achado.status | capitalize }}
+                                </strong>
+                            </h5>
 
-                            {% if aep.usuario_id == session['user_id'] %}
-                            <form action="{{ url_for('aeps_bp.excluir_aep', aep_id=aep.id) }}" method="POST"
+                            {% if achado.usuario_id == session['user_id'] %}
+                            <form action="{{ url_for('achados_bp.excluir_achado', achado_id=achado.id) }}" method="POST"
                                 onsubmit="return confirm('Tem certeza que deseja excluir?');">
                                 <button class="btn btn-sm btn-outline-danger">
                                     <i class="bi bi-trash"></i>
@@ -32,32 +38,28 @@
                         </div>
 
                         <div class="card-body">
-
-                            {% if aep.foto_id %}
-                            <img src="{{ url_for('static', filename='uploads/' ~ aep.foto.foto_path) }}"
+                            {% if achado.foto_id %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ achado.foto.foto_path) }}"
                                 class="img-fluid rounded mb-3"
                                 style="max-height: 250px; width: 100%; object-fit: cover;">
                             {% endif %}
 
-                            <p class="card-text"><strong>Descrição:</strong> {{ aep.descricao }}</p>
-                            <p class="card-text"><strong>Local:</strong> {{ aep.local }}</p>
-
-                            <p class="card-text 
-                   {% if aep.status == 'achado' %}text-success
-                   {% elif aep.status == 'perdido' %}text-danger
-                   {% endif %}">
-                                <strong>Status:</strong> {{ aep.status | capitalize }}
-                            </p>
+                            <p class="card-text"><strong>Descrição:</strong> {{ achado.descricao }}</p>
+                            <p class="card-text"><strong>Local:</strong> {{ achado.local }}</p>
 
                             <p class="card-text">
                                 <strong>Encontrado em:</strong>
-                                {{ aep.data_encontro.strftime('%d/%m/%Y') if aep.data_encontro else 'Não informado' }}
+                                {{ achado.data_encontro.strftime('%d/%m/%Y') if achado.data_encontro else 'Não
+                                informado' }}
+                            </p>
+                            <p class="card-text">
+                                <strong>Contato:</strong> {{ achado.contato }}
                             </p>
                         </div>
 
                         <div class="card-footer text-muted">
                             <small>Postado por <strong>{{ usuario.nome }}</strong> em
-                                {{ aep.data_aep.strftime('%d/%m/%Y %H:%M') }}</small>
+                                {{ achado.data_achado.strftime('%d/%m/%Y %H:%M') }}</small>
                         </div>
                     </div>
 

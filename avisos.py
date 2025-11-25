@@ -89,7 +89,7 @@ def excluir_aviso(aviso_id):
 
             db.session.delete(foto)
 
-    # excluir o Aep sempre
+    # excluir o Achado sempre
     db.session.delete(aviso)
     db.session.commit()
 

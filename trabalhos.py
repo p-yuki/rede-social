@@ -17,49 +17,51 @@ def novo_trabalho():
         arquivo_foto = request.files.get('foto')
         categoria = request.form.get('categoria')
         nome_trabalho = request.form.get('nome_trabalho')
-        
+        contato = request.form.get('contato')
+        bloco = request.form.get('bloco')
+        apartamento = request.form.get('apartamento')
+
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
             return render_template('trabalhos_form.html')
         
         foto_id = None
         
-        #processar upload da foto se foi enviada
         if arquivo_foto and arquivo_foto.filename != '':
             filename = arquivo_foto.filename
             if filename and allowed_file(filename):
-                #gera nome único para o arquivo
                 nome_seguro = secure_filename(filename)
-                unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+                unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{nome_seguro}"
                 
-                #salva arquivo na pasta de uploads
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 arquivo_foto.save(filepath)
-                
-                #cria registro da foto no banco
+
                 foto = Foto()
                 foto.foto_path = unique_filename
                 foto.usuario_id = session['user_id']
-                
                 db.session.add(foto)
-                db.session.flush()  #gera o id sem commit final
-                foto_id = foto.id  #pega o id da foto criada
-        
-        #cria a trabalho
-        trabalho = Trabalho()
-        trabalho.usuario_id = session['user_id']
-        trabalho.foto_id = foto_id
-        trabalho.categoria = categoria
-        trabalho.nome_trabalho = nome_trabalho
-        trabalho.descricao = descricao
-        db.session.add(trabalho)
+                db.session.flush()
+                foto_id = foto.id  
+
+
+        trabalho = Trabalho() 
+        trabalho.usuario_id = session['user_id'] 
+        trabalho.foto_id = foto_id 
+        trabalho.categoria = categoria 
+        trabalho.nome_trabalho = nome_trabalho 
+        trabalho.descricao = descricao 
+        trabalho.contato = contato
+        trabalho.bloco = bloco 
+        trabalho.apartamento = apartamento 
+        db.session.add(trabalho) 
         db.session.commit()
-        
-        flash('Trabalho criada com sucesso!', 'success')
+
+        flash('Trabalho criado com sucesso!', 'success')
         return redirect(url_for('trabalhos_bp.trabalhos'))
     
     return render_template('trabalhos_form.html')
+
 
 
 @trabalhos_bp.route('/trabalhos/excluir/<int:trabalho_id>', methods=['POST'])
@@ -84,7 +86,7 @@ def excluir_trabalho(trabalho_id):
 
             db.session.delete(foto)
 
-    # excluir o Aep sempre
+    # excluir o Achado sempre
     db.session.delete(trabalho)
     db.session.commit()
 

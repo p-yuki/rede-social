@@ -2,35 +2,30 @@
 {% block title %}Perfil{% endblock %}
 {% block content %}
 
-<body>
-    <div class="perfil-container">
+<div class="perfil-container">
 
-        <div class="row mt-4">
-            <div class="col">
-                <div class="card" style="width: 320px;">
-                    <div class="card-title">
-                        <div class="perfil-info">
-                            <!-- Foto do usuário ou padrão -->
-                            <img src="{{ url_for('static', filename='uploads/' ~ (usuario.foto if usuario.foto else 'default.png')) }}"
-                                alt="Foto de Perfil" class="perfil-foto">
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <span><strong>Nome:</strong> {{ usuario.nome }}</span>
-                        </div>
-                        <div class="card-text">
-                            <span><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</span>
-                        </div>
-                        <div class="card-text">
-                            <span><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</span>
-                        </div>
+    <!-- CARD DO USUÁRIO -->
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card" style="width: 320px;">
+                <div class="card-title">
+                    <div class="perfil-info">
+                        <img src="{{ url_for('static', filename='uploads/' ~ (usuario.foto if usuario.foto else 'default.png')) }}"
+                            alt="Foto de Perfil" class="perfil-foto">
                     </div>
                 </div>
-                <a href="{{ url_for('usuarios_bp.logout') }}" class="btn btn-danger rounded-pill px-4">
-                    Sair <i class="bi bi-box-arrow-in-right"></i>
-                </a>
+                <div class="card-body">
+                    <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+                    <p><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</p>
+                    <p><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</p>
+                </div>
             </div>
+
+            <a href="{{ url_for('usuarios_bp.logout') }}" class="btn btn-danger rounded-pill px-4 mt-3">
+                Sair <i class="bi bi-box-arrow-in-right"></i>
+            </a>
         </div>
-</body>
+    </div>
+</div>
+
 {% endblock %}
