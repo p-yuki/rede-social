@@ -1,44 +1,45 @@
 {% extends "base.html" %}
+{% block title %}Novo Trabalho{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/trabalhos.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/servicos.css') }}">
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-8 col-lg-6">
         <div class="card shadow-sm">
             <div class="card-header text-center">
-                <h4>{{ "Novo Trabalho" if not trabalho else "Editar Trabalho" }}</h4>
+                <h4>Divulgar Trabalho/Serviço</h4>
             </div>
             <div class="card-body">
-                <form method="POST">
+                {# NOVIDADE: Adicionado enctype="multipart/form-data" #}
+                <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id">
 
                     <div class="mb-3">
-                        <label for="nome_trabalho" class="form-label">Título do Trabalho: </label>
+                        <label for="nome_trabalho" class="form-label">Título/Nome do Serviço: </label>
                         <input type="text" name="nome_trabalho" id="nome_trabalho" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="descricao" class="form-label">Descrição do Trabalho: </label>
+                        <label for="categoria" class="form-label">Categoria (Ex: Eletricista, Diarista): </label>
+                        <input type="text" name="categoria" id="categoria" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição Detalhada do Serviço: </label>
                         <textarea name="descricao" id="descricao" class="form-control" required></textarea>
                     </div>
 
-                    <!-- add input foto aqui -->
-                    
-                    <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
-                        <label for="categoria" class="form-label">Categoria: </label>
-                        <select name="categoria" id="categoria">
-                            <option value="prestacao_servico">Prestação de Serviços</option>
-                            <option value="alimentacao">Alimentação</option>
-                            <option value="beleza">Beleza</option>
-                        </select>
-                    </div>
+                    {# NOVIDADE: Campo de upload de foto #}
                     <div class="mb-3">
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                            <button type="submit" class="btn btn-danger rounded-pill px-4">
-                                <i class="bi bi-save"></i>
-                                Salvar
-                            </button>
-                        </div>
+                        <label for="foto" class="form-label">Adicionar Imagem (Opcional):</label>
+                        <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4">
+                            <i class="bi bi-save"></i> Salvar
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
