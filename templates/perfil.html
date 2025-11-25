@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Perfil{% endblock %}
 {% block content %}
-{# Assumindo que você tem um CSS para perfis, senão adicione as regras #}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}"> 
-
 <div class="perfil-container container">
 
     <div class="row mt-4 justify-content-center">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-4" style="width: 500px;">
             <div class="card shadow-sm">
                 <div class="card-header text-center">
                     <h4>Meu Perfil</h4>
