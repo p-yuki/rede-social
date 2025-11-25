@@ -13,9 +13,15 @@ class Usuario(db.Model):
     bloco = db.Column(db.String(16), nullable=False)
     is_adm = db.Column(db.Boolean, default=False, nullable=False)
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
-    trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
-    aeps = db.relationship('Aep', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
-    reservas = db.relationship('Reserva', backref='usuario', lazy=True, cascade='all, delete-orphan') #cascade = deleta os posts se o usuário for excluído
+    
+    # === NOVIDADES PARA FOTO DE PERFIL ===
+    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True) 
+    foto_perfil = db.relationship("Foto", backref="usuario_perfil", lazy=True, primaryjoin="Usuario.foto_id == Foto.id")
+    # ====================================
+    
+    trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') 
+    aeps = db.relationship('Aep', backref='usuario', lazy=True, cascade='all, delete-orphan') 
+    reservas = db.relationship('Reserva', backref='usuario', lazy=True, cascade='all, delete-orphan')
 
 class Trabalho(db.Model):
     __tablename__ = 'trabalhos'
@@ -30,7 +36,9 @@ class Trabalho(db.Model):
 class Foto(db.Model):
     __tablename__ = 'fotos'
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    # ATENÇÃO: O campo usuario_id aqui refere-se a QUEM fez o upload da foto. 
+    # Para foto de perfil, o ID do usuário cadastrado na foto é o ID do ADM/síndico que cadastrou.
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False) 
     filename = db.Column(db.String(255), nullable=False)
     foto_path = db.Column(db.String(500), nullable=False)
     data_upload = db.Column(db.DateTime, default=db.func.current_timestamp())

@@ -53,6 +53,8 @@ with app.app_context():
         admin.apartamento = '0'
         admin.is_adm = True
         admin.is_sindico = False
+        # Novo admin pode precisar do foto_id = None se for novo registro
+        # admin.foto_id = None 
 
         db.session.add(admin)
         db.session.commit()
@@ -65,19 +67,22 @@ with app.app_context():
 @app.context_processor
 def inject_usuario():
     class UsuarioFake:
-        def __init__(self, nome, bloco, apartamento, is_adm, is_sindico):
+        # NOVIDADE: Adicionado 'foto_path' ao construtor
+        def __init__(self, nome, bloco, apartamento, is_adm, is_sindico, foto_path):
             self.nome = nome
             self.bloco = bloco
             self.apartamento = apartamento
             self.is_adm = is_adm
             self.is_sindico = is_sindico
+            self.foto_path = foto_path # NOVIDADE: Campo para o caminho da foto
 
     usuario = UsuarioFake(
         session.get('user_name'),
         session.get('user_bloco'),
         session.get('user_apartamento'),
         session.get('is_adm'),
-        session.get('is_sindico')
+        session.get('is_sindico'),
+        session.get('user_foto_path') # NOVIDADE: Busca o caminho da foto da sessão
     )
     return dict(usuario=usuario)
 

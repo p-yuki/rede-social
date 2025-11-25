@@ -1,36 +1,50 @@
 {% extends "base.html" %}
 {% block title %}Perfil{% endblock %}
 {% block content %}
+{# Assumindo que você tem um CSS para perfis, senão adicione as regras #}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}"> 
 
-<body>
-    <div class="perfil-container">
+<div class="perfil-container container">
 
-        <div class="row mt-4">
-            <div class="col">
-                <div class="card" style="width: 320px;">
-                    <div class="card-title">
-                        <div class="perfil-info">
-                            <!-- Foto do usuário ou padrão -->
-                            <img src="{{ url_for('static', filename='uploads/' ~ (usuario.foto if usuario.foto else 'default.png')) }}"
-                                alt="Foto de Perfil" class="perfil-foto">
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <span><strong>Nome:</strong> {{ usuario.nome }}</span>
-                        </div>
-                        <div class="card-text">
-                            <span><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</span>
-                        </div>
-                        <div class="card-text">
-                            <span><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</span>
-                        </div>
-                    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h4>Meu Perfil</h4>
                 </div>
-                <a href="{{ url_for('usuarios_bp.logout') }}" class="btn btn-danger rounded-pill px-4">
-                    Sair <i class="bi bi-box-arrow-in-right"></i>
-                </a>
+                <div class="card-body text-center">
+                    <div class="perfil-foto-area mb-3">
+                        {# ALTERADO: Usando session['user_foto_path'] e definindo uma foto padrão (default.png) #}
+                        <img src="{{ url_for('static', filename='uploads/' ~ (session['user_foto_path'] if session.get('user_foto_path') else 'default.png')) }}"
+                             alt="Foto de Perfil" 
+                             class="rounded-circle border border-danger border-4"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                    
+                    <div class="text-start">
+                        <p class="card-text"><strong>Nome:</strong> {{ usuario.nome }}</p>
+                        <p class="card-text"><strong>E-mail:</strong> {{ session.get('user_email') or 'Não informado' }}</p>
+                        <p class="card-text"><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</p>
+                        <p class="card-text"><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</p>
+                        <p class="card-text text-muted">
+                            <strong>Status:</strong> 
+                            {% if usuario.is_adm %}
+                                Administrador
+                            {% elif usuario.is_sindico %}
+                                Síndico
+                            {% else %}
+                                Morador
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <a href="{{ url_for('usuarios_bp.logout') }}" class="btn btn-danger rounded-pill px-4 mt-3">
+                        Sair <i class="bi bi-box-arrow-in-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
-</body>
+    </div>
+</div>
+
 {% endblock %}

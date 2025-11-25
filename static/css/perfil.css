@@ -1,0 +1,37 @@
+/* Container principal para centralizar na tela */
+.perfil-container {
+    padding-top: 20px;
+}
+
+/* Estiliza o card que contém o perfil */
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; 
+}
+
+/* Área da foto */
+.perfil-foto-area {
+    margin-bottom: 15px;
+}
+
+/* Estiliza a imagem de perfil */
+.perfil-foto-area img {
+    /* Estilos já definidos no HTML, mas garantindo que sejam aplicados */
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 4px solid #dc3545; /* Cor vermelha do Bootstrap (danger) */
+}
+
+/* Estilo para as informações do texto (opcional) */
+.card-body .text-start p {
+    margin-bottom: 5px;
+    font-size: 1.05rem;
+}
+
+/* Centraliza o botão de Sair */
+.card-body .btn {
+    width: 100%;
+    margin-top: 20px;
+}
