@@ -4,11 +4,18 @@ from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
 
+# --- INICIALIZAÇÃO E CHAVE SECRETA ---
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta_123'
 
-# 📁 Configurações de upload
-app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
+# 🔑 CHAVE SECRETA (CRUCIAL): Deve ser a PRIMEIRA configuração após 'app = Flask()'.
+app.secret_key = 'sua_chave_secreta_123' 
+
+# 📁 CONFIGURAÇÕES DE UPLOAD (CORREÇÃO DO CAMINHO ABSOLUTO)
+# 1. Define o caminho base do projeto de forma absoluta.
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+# 2. Define a pasta de uploads DENTRO de 'static' usando o caminho absoluto.
+app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -163,6 +170,7 @@ def reservas():
 @app.route('/acesso')
 def acesso():
     return render_template('acesso.html')
+    
 @app.route('/painel')
 @login_required
 def painel():
