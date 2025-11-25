@@ -1,4 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+/* ================================================= */
+/* ARQUIVO CSS BASE/GLOBAL - ESTILO CORPORATIVO FINAL */
+/* ================================================= */
+
+/* Fonte Atualizada: De Poppins para Inter (Você deve adicionar o link da Inter no base.html) */
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); */
+
+/* Definições de Cores e Tipografia Global (Variáveis) */
+:root {
+    --primary-color: #0c2461; /* Azul Escuro e Corporativo (Navbar, Destaque) */
+    --accent-color: #e74c3c;  /* Vermelho de Alerta/Perigo */
+    --background-color: #f7f9fc; /* Fundo Suave */
+    --text-color: #2c3e50; /* Cinza Corporativo */
+    --shadow-color: rgba(0, 0, 0, 0.06);
+}
 
 /* ==== BASE ==== */
 *,
@@ -10,10 +24,11 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fff9f1;
-    color: #333;
-    padding-top: 70px; /* espaço pro topo fixo */
+    /* Adota a fonte e o fundo definidos no novo padrão */
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color); 
+    color: var(--text-color);
+    padding-top: 20px; 
 }
 
 a {
@@ -26,20 +41,24 @@ li {
 }
 
 h1 {
-    font-weight: 600;
-    font-size: 1.5rem;
+    font-weight: 700; /* Mais peso para títulos */
+    font-size: 1.8rem;
+    color: var(--primary-color);
 }
 
 /* ==== NAVBAR ==== */
 .navbar {
-    background-color: #348ce3 !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Cor Principal: Azul Escuro */
+    background-color: var(--primary-color) !important;
+    /* Sombra mais forte para destacar a barra */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
     transition: background-color 0.3s ease;
+    padding: 12px 0; /* Alinhamento sutil */
 }
 
 .navbar-brand {
-    color: #fff9f1 !important; /* cor normal */
-    font-weight: 600;
+    color: #ffffff !important; 
+    font-weight: 700;
     font-size: 1.5rem;
     display: flex;
     align-items: center;
@@ -47,25 +66,30 @@ h1 {
     transition: color 0.3s ease;
 }
 
-
 .navbar-nav .nav-link {
-    color: #fafbfe !important;
+    color: #ffffff !important; /* Branco puro no link */
     font-weight: 500;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
+    transition: background-color 0.3s ease;
     box-shadow: none !important;
+    padding: 10px 15px; /* Padding ajustado */
 }
 
 .navbar-nav .nav-link:hover {
-    color: #fff !important;
-    background-color: rgba(255, 255, 255, 0.1);
+    /* Fundo sutilmente mais escuro no hover */
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-radius: 4px; /* Borda leve no hover */
 }
 
 .navbar-nav .nav-link.active,
 .navbar-nav .nav-link:focus,
 .navbar-nav .nav-link:active {
-    border-bottom: none !important; /* remove a linha do "Painel" */
+    border-bottom: none !important;
     box-shadow: none !important;
     outline: none !important;
+    /* Adicionar um toque sutil no ativo */
+    background-color: rgba(255, 255, 255, 0.15); 
+    border-radius: 4px;
 }
 
 /* Ícone do menu (hambúrguer) branco */
@@ -74,49 +98,47 @@ h1 {
 }
 
 .navbar-toggler-icon {
-    filter: invert(1); /* deixa o ícone branco */
+    filter: invert(1);
 }
 
 /* Ajuste do menu quando aberto no mobile */
 .navbar-collapse {
-    background-color: #348ce3;
+    background-color: var(--primary-color);
     text-align: center;
-}
-
-.navbar-collapse .nav-link {
-    padding: 10px;
 }
 
 /* ==== RODAPÉ ==== */
 .footer {
-    background-color: #dbdfe4;
-    color: #000;
+    /* Cores atualizadas para combinar com o fundo e a paleta */
+    background-color: #e0e6ed; 
+    color: var(--text-color);
     text-align: center;
-    border-top: 2px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-    padding: 10px 0;
+    border-top: 2px solid #cfd8e3;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.03);
+    padding: 15px 0; /* Mais padding */
+    margin-top: 40px; /* Mais espaço antes do rodapé */
 }
 
 .footer a {
-    color: #000;
+    color: var(--text-color);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .footer a:hover {
-    color: #555;
+    color: var(--primary-color);
 }
 
 .footer p {
     margin: 4px 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .footer .bi {
     margin-right: 6px;
 }
 
-/* ==== PERFIL ==== */
+/* ==== PERFIL (Ajustes para consistência) ==== */
 .perfil-container {
     display: flex;
     flex-direction: column;
@@ -129,11 +151,13 @@ h1 {
 }
 
 .perfil-foto {
+    /* Mantém o estilo redondo, mas com borda sutil para destaque */
     height: 160px;
-    border: none; /* remove a borda preta */
+    border: 4px solid #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 20px;
-    border-radius: 50%; /* deixa a foto redonda */
-    object-fit: cover; /* mantém a proporção da imagem */
+    border-radius: 50%; 
+    object-fit: cover; 
 }
 
 .perfil-info {
@@ -149,19 +173,14 @@ h1 {
 /* ==== RESPONSIVIDADE EXTRA ==== */
 @media (max-width: 992px) {
     body {
-        padding-top: 100px;
+        padding-top: 70px; /* Reduzido o padding superior */
     }
 
     .navbar-brand {
-        font-size: 1.2rem;
-    }
-
-    .navbar-nav .nav-link {
-        border-bottom: none !important;
+        font-size: 1.5rem;
     }
 
     .navbar-nav .nav-link:hover {
-        border: none;
         background-color: rgba(255, 255, 255, 0.1);
     }
 }
