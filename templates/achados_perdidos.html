@@ -6,22 +6,22 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4>Achados e Perdidos</h4>
-                <a href="{{ url_for('aeps_bp.novo_aeps') }}" class="btn btn-danger rounded-pill px-4">
+                <a href="{{ url_for('aeps_bp.novo_aeps') }}" class="btn btn-danger">
                     <i class="bi bi-journal-plus"></i> Achou ou Perdeu Algo?
                 </a>
             </div>
 
             {% for aep, usuario, foto in aeps %}
-            <div class="card mt-3 shadow-sm">
+            <div class="card mt-3 mb-4 shadow-sm">
 
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title m-0"><strong>{{ aep.titulo }}</strong></h5>
 
                     {% if aep.usuario_id == session['user_id'] %}
                     <form action="{{ url_for('aeps_bp.excluir_aep', aep_id=aep.id) }}" method="POST"
-                          onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                            onsubmit="return confirm('Tem certeza que deseja excluir?');">
                         <button class="btn btn-sm btn-outline-danger">
                             <i class="bi bi-trash"></i>
                         </button>
@@ -33,7 +33,7 @@
                     {# ESTRUTURA DE COLUNAS PARA DEIXAR IMAGEM E TEXTO LADO A LADO #}
                     <div class="row">
                         
-                        {# 1. COLUNA DA IMAGEM (ocupa 4/12 partes da linha em telas médias+) #}
+                        {# 1. COLUNA DA IMAGEM #}
                         {% if foto %}
                         <div class="col-md-4">
                             <img src="{{ url_for('static', filename='uploads/' ~ foto.foto_path) }}"
@@ -41,18 +41,22 @@
                                  style="max-height: 250px; object-fit: cover; width: 100%;">
                         </div>
                         
-                        {# 2. COLUNA DAS INFORMAÇÕES (ocupa 8/12 partes da linha em telas médias+) #}
+                        {# 2. COLUNA DAS INFORMAÇÕES #}
                         <div class="col-md-8">
                         {% else %}
-                        {# 2. COLUNA DAS INFORMAÇÕES (ocupa 12/12 partes se não houver foto) #}
+                        {# 2. COLUNA DAS INFORMAÇÕES (Largura total se não houver foto) #}
                         <div class="col-md-12">
                         {% endif %}
 
                             <p class="card-text"><strong>Descrição:</strong> {{ aep.descricao }}</p>
                             <p class="card-text"><strong>Local:</strong> {{ aep.local }}</p>
 
-                            <p class="card-text {% if aep.status == 'achado' %}text-success{% elif aep.status == 'perdido' %}text-danger{% endif %}">
-                                <strong>Status:</strong> {{ aep.status | capitalize }}
+                            <p class="card-text">
+                                <strong>Status:</strong>
+                                <span class="status-badge 
+                                    {% if aep.status == 'achado' %}status-achado{% elif aep.status == 'perdido' %}status-perdido{% endif %}">
+                                    {{ aep.status | capitalize }}
+                                </span>
                             </p>
 
                             <p class="card-text">

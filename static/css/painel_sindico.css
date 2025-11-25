@@ -1,0 +1,65 @@
+/* ================================================= */
+/* ARQUIVO CSS PAINEL_SINDICO.CSS - DASHBOARD */
+/* ================================================= */
+
+/* Certifique-se de que a página HTML está linkando este CSS no bloco <head> */
+
+/* ==================================== */
+/* 1. TÍTULO DE SEÇÃO */
+/* ==================================== */
+
+.container h4 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color); /* Azul Escuro */
+    margin-top: 40px;
+    margin-bottom: 25px; /* Mais espaço para separar o título dos cartões */
+    border-bottom: 3px solid #e0e6ed; 
+    padding-bottom: 8px;
+}
+
+/* ==================================== */
+/* 2. ESTILO DOS CARTÕES DO PAINEL */
+/* ==================================== */
+
+/* O link <a> que envolve o card */
+.container a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    border: none;
+    border-radius: 10px; 
+    background-color: #ffffff;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 5px 15px var(--shadow-color); 
+    height: 100%; /* Garante que os cards na mesma linha tenham a mesma altura */
+}
+
+/* Efeito Hover: leve elevação e sombra sutilmente maior */
+.container a:hover .card {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-body {
+    padding: 30px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Título do Card de Ação */
+.card-title h5 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary-color); /* Título Azul Escuro */
+    margin-bottom: 5px;
+}
+
+/* Texto Descritivo do Card */
+.card-text span {
+    color: #6c7e8f; /* Cinza suave para descrição */
+    font-size: 0.95rem;
+}

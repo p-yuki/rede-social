@@ -1,48 +1,144 @@
-/* Estilo para títulos principais */
-h4 {
-    font-weight: 900;
+/* ================================================= */
+/* ARQUIVO CSS AEPS.CSS - ACHADOS E PERDIDOS */
+/* ================================================= */
+
+/* As variáveis de cor, body e card-base são importadas do CSS Global/Base */
+
+/* ==================================== */
+/* 1. TÍTULO E BOTÃO (PADRÃO AZUL ESCURO) */
+/* ==================================== */
+
+/* Título de Seção */
+.container h4 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color); /* Azul Escuro */
+    margin-top: 40px;
+    margin-bottom: 10px; /* Consistente */
+    border-bottom: 3px solid #e0e6ed; 
+    padding-bottom: 8px;
 }
 
-/* ❌ ATENÇÃO: Verifique a necessidade deste seletor. 
-   Se for para estilizar um campo específico, use apenas a classe do campo. */
-.form-control .bloco {
-    width: 10px;
+/* Botão de Destaque "Achou ou Perdeu Algo?" */
+.btn-danger {
+    /* Usa o azul escuro, que é a cor primária */
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    padding: 10px 25px; 
+    border-radius: 50px; /* Efeito Pill */
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    text-decoration: none;
 }
 
-/* --- Novos Estilos para a Tela de Achados e Perdidos --- */
-
-/* Garante que o conteúdo do card esteja alinhado verticalmente ao centro */
-.card-body .row {
-    align-items: center; /* Alinha verticalmente a imagem e o texto ao centro */
+.btn-danger:hover {
+    background-color: #081a40; 
+    border-color: #081a40;
+    transform: translateY(-2px); 
 }
 
-/* Estilo específico para a imagem */
-.card-body img {
-    /* Define margem inferior para a imagem (apenas em telas pequenas) 
-       A classe Bootstrap 'mb-3' já deve dar conta na maioria dos casos, 
-       mas esta é uma segurança. */
-    margin-bottom: 1rem;
+.btn-danger i.bi {
+    font-size: 1.2em;
 }
 
-/* Ajuste o tamanho da fonte para as informações (opcional) */
-.card-text {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 0.5rem; /* Reduz o espaçamento entre as linhas de informação */
+
+/* ==================================== */
+/* 2. ESTILO DOS CARTÕES DE AEPS */
+/* ==================================== */
+
+.card {
+    border: none;
+    border-radius: 10px; 
+    background-color: #ffffff;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 5px 15px var(--shadow-color); 
+    height: auto; 
+    margin-bottom: 20px; 
 }
 
-/* Enfatiza o status com uma borda lateral (visual extra) */
-.text-success, .text-danger {
-    padding-left: 5px;
-    border-left: 3px solid;
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Cor da borda para Status 'Achado' */
-.text-success {
-    border-left-color: #198754; 
+.card-header {
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #e9ecef;
+    padding: 15px 25px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
-/* Cor da borda para Status 'Perdido' */
-.text-danger {
-    border-left-color: #dc3545;
+.card-title {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-body p.card-text {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.card-body p strong {
+    color: #34495e;
+    font-weight: 600;
+}
+
+/* Imagem do Item */
+.img-fluid {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); 
+    width: 100%;
+}
+
+.card-footer {
+    background-color: #f7f9fc;
+    border-top: 1px solid #e9ecef;
+    padding: 12px 25px;
+    color: #95a5a6 !important;
+    font-size: 0.9rem;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Botão Excluir (lixeira) */
+.btn-outline-danger {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+
+/* ==================================== */
+/* 3. ESTILO DOS STATUS (BADGES) */
+/* ==================================== */
+
+/* Classe para o status dentro do card */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    margin-left: 8px;
+    line-height: 1;
+}
+
+/* Status: ACHADO (Verde Sucesso) */
+.status-achado {
+    background-color: #27ae60; 
+}
+
+/* Status: PERDIDO (Vermelho Perigo) */
+.status-perdido {
+    background-color: var(--accent-color); /* #e74c3c */
+    box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
 }

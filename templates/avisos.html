@@ -6,16 +6,18 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                <h4>Aviso</h4>
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4>Avisos</h4>
                 {% if usuario.is_adm or usuario.is_sindico %}
-                <a href="{{ url_for('avisos_bp.novo_aviso') }}" class="btn btn-danger rounded-pill px-4">
-                    <i class="bi bi-journal-plus"></i> Emita um novo aviso <!-- trocar o nome disso -->
+                <a href="{{ url_for('avisos_bp.novo_aviso') }}" class="btn btn-danger">
+                    <i class="bi bi-journal-plus"></i> Emita um novo aviso
                 </a>
                 {% endif %}
             </div>
+
             {% for aviso, usuario in avisos %}
-            <div class="card mt-3 shadow-sm">
+            <div class="card mt-3 mb-4 shadow-sm">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title m-0"><strong>{{ aviso.nome_aviso }}</strong></h5>
 
@@ -33,14 +35,18 @@
 
                     {% if aviso.foto_id %}
                     <img src="{{ url_for('static', filename='uploads/' ~ aviso.foto.foto_path) }}"
-                        class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
+                        class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover; width: 100%;">
                     {% endif %}
 
                     <p class="card-text"><strong>Descrição:</strong> {{ aviso.descricao }}</p>
                     <p class="card-text"><strong>Em/Até:</strong> {{ aviso.data_aviso.strftime('%d/%m/%Y') if aviso.data_encontro else 'Não informado' }} - {{ aviso.horario_aviso }}</p>
 
-                    <p class="card-text {% if aviso.status == 'urgente' %}text-danger{% elif aviso.status == 'media' %}text-warning{% elif aviso.status == 'nao_urgente' %}text-success{% endif %}">
-                        <strong>Status:</strong> {{ aviso.status | capitalize }}
+                    <p class="card-text">
+                        <strong>Status:</strong>
+                        <span class="status-badge 
+                            {% if aviso.status == 'urgente' %}status-urgente{% elif aviso.status == 'media' %}status-media{% elif aviso.status == 'nao_urgente' %}status-nao_urgente{% endif %}">
+                            {{ aviso.status | capitalize }}
+                        </span>
                     </p>
                 </div>
 
