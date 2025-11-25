@@ -82,3 +82,4 @@ def logout():
 def usuarios():
     usuarios = Usuario.query.order_by(Usuario.nome).all()
     return render_template('usuarios.html', usuarios=usuarios)
+
