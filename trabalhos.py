@@ -98,12 +98,19 @@ def trabalhos():
     trabalhos = (
         db.session.query(Trabalho, Usuario)
         .join(Usuario, Usuario.id == Trabalho.usuario_id)
+        .filter(Usuario.is_active == True)   # 🔥 só mostra se o usuário estiver ativo
         .order_by(Trabalho.data_trabalho.desc())
         .all()
     )
+
     categoria_texto = {
-    "beleza": "Beleza",
-    "prestacao_servico": "Prestação de Serviço",
-    "alimentacao": "Alimentação"
+        "beleza": "Beleza",
+        "prestacao_servico": "Prestação de Serviço",
+        "alimentacao": "Alimentação"
     }
-    return render_template('trabalhos.html', trabalhos=trabalhos, categoria_texto=categoria_texto)
+
+    return render_template(
+        'trabalhos.html',
+        trabalhos=trabalhos,
+        categoria_texto=categoria_texto
+    )

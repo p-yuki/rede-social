@@ -13,6 +13,7 @@ class Usuario(db.Model):
     bloco = db.Column(db.String(16), nullable=False)
     is_adm = db.Column(db.Boolean, default=False, nullable=False)
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True)
     achados = db.relationship('Achado', backref='usuario', lazy=True)

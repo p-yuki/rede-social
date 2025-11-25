@@ -26,34 +26,10 @@ def novo_aviso():
             flash('A descrição é obrigatória!', 'danger')
             return render_template('avisos_form.html')
         
-        foto_id = None
-        
-        #processar upload da foto se foi enviada
-        if arquivo_foto and arquivo_foto.filename != '':
-            filename = arquivo_foto.filename
-            if filename and allowed_file(filename):
-                #gera nome único para o arquivo
-                nome_seguro = secure_filename(filename)
-                unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
-                
-                #salva arquivo na pasta de uploads
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-                os.makedirs(os.path.dirname(filepath), exist_ok=True)
-                arquivo_foto.save(filepath)
-                
-                #cria registro da foto no banco
-                foto = Foto()
-                foto.foto_path = unique_filename
-                foto.usuario_id = session['user_id']
-                
-                db.session.add(foto)
-                db.session.flush()  #gera o id sem commit final
-                foto_id = foto.id  #pega o id da foto criada
         
         #cria o aviso
         aviso = Aviso()
         aviso.usuario_id = session['user_id']
-        aviso.foto_id = foto_id
         aviso.status = status
         aviso.nome_aviso = nome_aviso
         aviso.descricao = descricao

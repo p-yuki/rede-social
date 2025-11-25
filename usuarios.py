@@ -45,7 +45,11 @@ def login():
         senha = request.form.get('senha', '')
         user = Usuario.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.senha, senha):  # ou check_password_hash
+        if user and not user.is_active:
+            flash('Este usuário está desativado. Fale com o administrador.', 'danger')
+            return render_template('login.html')
+
+        if user and check_password_hash(user.senha, senha):
             session['user_id'] = user.id
             session['user_name'] = user.nome
             session['user_bloco'] = user.bloco
@@ -53,8 +57,19 @@ def login():
             session['is_adm'] = user.is_adm
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('home'))
+
     flash('Email ou senha incorretos!', 'danger')
-    return render_template('login.html', title='Login')
+    return render_template('login.html')
+
+
+@usuarios_bp.route('/usuarios/desativar/<int:user_id>', methods=['POST'])
+def desativar_usuario(user_id):
+    usuario = Usuario.query.get_or_404(user_id)
+    usuario.is_active = False
+    db.session.commit()
+
+    flash(f'O usuário {usuario.nome} foi desativado.', 'warning')
+    return redirect(url_for('usuarios'))
 
 
 @usuarios_bp.route('/usuarios/logout')
@@ -62,3 +77,8 @@ def logout():
     session.clear()
     flash('Você saiu da conta.', 'info')
     return redirect(url_for('login'))
+
+@usuarios_bp.route('/usuarios')
+def usuarios():
+    usuarios = Usuario.query.order_by(Usuario.nome).all()
+    return render_template('usuarios.html', usuarios=usuarios)

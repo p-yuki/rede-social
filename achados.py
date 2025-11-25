@@ -97,7 +97,9 @@ def achados():
     achados = (
         db.session.query(Achado, Usuario)
         .join(Usuario, Usuario.id == Achado.usuario_id)
+        .filter(Usuario.is_active == True)   # 🔥 só mostra se o usuário estiver ativo
         .order_by(Achado.data_achado.desc())
         .all()
     )
+
     return render_template('achados_perdidos.html', achados=achados)
