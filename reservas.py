@@ -60,26 +60,29 @@ def reservas():
         .order_by(Reserva.data_reserva.desc())
         .all()
     )
-
-    datas_ocupadas = [
-        reserva.data_reserva.strftime("%Y-%m-%d")
-        for reserva, usuario in reservas
-    ]
-
+    
     datas_ocupadas = {}
 
     for reserva, usuario in reservas:
         data = reserva.data_reserva.strftime("%Y-%m-%d")
-        tipo = reserva.local  # festa ou churrasqueira
+        local = reserva.local  # "churrasqueira" ou "salao_festa"
 
         if data not in datas_ocupadas:
             datas_ocupadas[data] = []
 
-        datas_ocupadas[data].append(tipo)
+        # Adiciona o local apenas se não estiver já na lista (evita duplicatas)
+        if local not in datas_ocupadas[data]:
+            datas_ocupadas[data].append(local)
 
+    print("Datas ocupadas enviadas para template:", datas_ocupadas)  # Para debug
+
+    local_reservas ={
+        "salao_festa": "Salão de Festas",
+        "churrasqueira": "Churrasqueira"
+    }
+    
     return render_template(
         "reservas.html",
         reservas=reservas,
-        datas_ocupadas=datas_ocupadas
+        datas_ocupadas=datas_ocupadas, local_reservas=local_reservas
     )
-
