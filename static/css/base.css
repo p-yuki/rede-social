@@ -60,6 +60,11 @@ h1 {
     transition: all .3s ease;
 }
 
+.navbar-brand i {
+    font-size: 1.7rem;   /* Aumenta o ícone */
+    margin-right: 10px;  /* Aumenta o espaço entre ícone e texto */
+}
+
 /* Reduz espaço entre navbar fixa e conteúdo */
 body .main {
     margin-top: 65px !important;  /* ajuste de acordo com a altura da navbar */
