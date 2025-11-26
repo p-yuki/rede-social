@@ -1,3 +1,28 @@
+.btn-danger {
+    /* Usa o azul escuro, que é a cor primária */
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    padding: 10px 25px; 
+    border-radius: 50px; /* Efeito Pill */
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    text-decoration: none;
+}
+
+.btn-danger:hover {
+    background-color: #081a40; 
+    border-color: #081a40;
+    transform: translateY(-2px); 
+}
+
+.btn-danger i.bi {
+    font-size: 1.2em;
+}
+
 h4 {
     font-weight: 900;
 }

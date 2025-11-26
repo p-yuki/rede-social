@@ -91,21 +91,25 @@ body {
     font-size: 1.25rem;
 }
 
-.card-body {
-    padding: 25px;
-    margin-bottom: 15px;
-}
-
-.card-body p.card-text {
-    margin-bottom: 8px;
-    line-height: 1.4;
+/* Força a estrutura interna a ficar em coluna */
+.card-body .row {
     display: flex;
-    object-fit: cover;
+    flex-direction: column;
 }
 
-.card-body p strong {
-    color: #34495e;
-    font-weight: 600;
+/* Garante que a imagem fica em cima e com espaçamento */
+.card-body img {
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+/* Garante que o conteúdo textual ocupe 100% da largura */
+.card-body .col-md-4,
+.card-body .col-md-8,
+.card-body .col-md-12 {
+    width: 100% !important;
 }
 
 .img-fluid {
