@@ -46,59 +46,54 @@ h1 {
     color: var(--primary-color);
 }
 
-/* ==== NAVBAR ==== */
-.navbar {
-    /* Cor Principal: Azul Escuro */
-    background-color: var(--primary-color) !important;
-    /* Sombra mais forte para destacar a barra */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
-    transition: background-color 0.3s ease;
-    padding: 12px 0; /* Alinhamento sutil */
-}
+/* ================================
+   ESTILIZAÇÃO DA NAVBAR (LINKS)
+   ================================ */
 
-.navbar-brand {
-    color: #ffffff !important; 
-    font-weight: 700;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: color 0.3s ease;
-}
-
+/* Links padrão */
 .navbar-nav .nav-link {
-    color: #ffffff !important; /* Branco puro no link */
+    position: relative;
     font-weight: 500;
-    transition: background-color 0.3s ease;
-    box-shadow: none !important;
-    padding: 10px 15px; /* Padding ajustado */
+    padding: 8px 14px;
+    margin: 0 4px;
+    border-radius: 5px;
+    transition: all .3s ease;
 }
 
+/* Cor inicial */
+.navbar-nav .nav-link.text-light {
+    color: #f8f9fa !important;
+}
+
+/* Efeito hover: brilho + leve aumento */
 .navbar-nav .nav-link:hover {
-    /* Fundo sutilmente mais escuro no hover */
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.1); 
-    border-radius: 4px; /* Borda leve no hover */
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
-.navbar-nav .nav-link.active,
-.navbar-nav .nav-link:focus,
-.navbar-nav .nav-link:active {
-    border-bottom: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-    /* Adicionar um toque sutil no ativo */
-    background-color: rgba(255, 255, 255, 0.15); 
-    border-radius: 4px;
+/* Link ativo */
+.navbar-nav .nav-link.active {
+    background: rgba(255, 255, 255, 0.35);
+    font-weight: 600;
+    border-radius: 8px;
 }
 
-/* Ícone do menu (hambúrguer) branco */
-.navbar-toggler {
-    border: none;
+/* Efeito underline animado */
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
 }
 
-.navbar-toggler-icon {
-    filter: invert(1);
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: 70%;
 }
 
 /* Ajuste do menu quando aberto no mobile */
