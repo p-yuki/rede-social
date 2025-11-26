@@ -93,11 +93,14 @@ body {
 
 .card-body {
     padding: 25px;
+    margin-bottom: 15px;
 }
 
 .card-body p.card-text {
     margin-bottom: 8px;
     line-height: 1.4;
+    display: flex;
+    object-fit: cover;
 }
 
 .card-body p strong {
