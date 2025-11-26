@@ -1,8 +1,9 @@
 from flask import Flask, render_template, session
-from models import db, Usuario, Aviso, Aep, Trabalho, Reserva
+from models import db, Usuario, Aviso, Achado, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
+from flask_mail import Mail, Message
 
 # --- INICIALIZAÇÃO E CHAVE SECRETA ---
 app = Flask(__name__)
@@ -20,9 +21,20 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'boavizinhanca118@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Boa@Vizinhanca118!'   # não use senha normal!
+app.config['MAIL_DEFAULT_SENDER'] = ('Boa Vizinhança', 'boavizinhanca118@gmail.com')
+
+mail = Mail(app)
+
 
 # 🔧 Importa e registra blueprints
 from trabalhos import trabalhos_bp
@@ -34,8 +46,8 @@ app.register_blueprint(avisos_bp)
 from usuarios import usuarios_bp
 app.register_blueprint(usuarios_bp)
 
-from aeps import aeps_bp
-app.register_blueprint(aeps_bp)
+from achados import achados_bp
+app.register_blueprint(achados_bp)
 
 from reservas import reservas_bp
 app.register_blueprint(reservas_bp)
@@ -113,9 +125,9 @@ def home():
     )
 
     # 🔹 Últimos 3 Achados e Perdidos
-    ultimos_aeps = (
-        Aep.query
-        .order_by(Aep.data_aep.desc())
+    ultimos_achados = (
+        Achado.query
+        .order_by(Achado.data_achado.desc())
         .limit(3)
         .all()
     )
@@ -127,13 +139,20 @@ def home():
         .limit(3)
         .all()
     )
+    
+    categoria_trabalho = {
+    "beleza": "Beleza",
+    "prestacao_servico": "Prestação de Serviço",
+    "alimentacao": "Alimentação"
+    }
 
     return render_template(
         'home.html',
         aviso=aviso_urgente,
         avisos=ultimos_avisos,
-        aeps=ultimos_aeps,
-        trabalhos=ultimos_trabalhos
+        achados=ultimos_achados,
+        trabalhos=ultimos_trabalhos,
+        categoria_trabalho=categoria_trabalho
     )
 
 
@@ -186,9 +205,9 @@ def painel():
 def avisos():
     return render_template('avisos.html')
 
-@app.route('/aeps')
+@app.route('/achados')
 @login_required
-def aeps():
+def achados():
     return render_template('achados_perdidos.html')
 
 if __name__ == '__main__':

@@ -40,7 +40,8 @@
                             {% else %}
                                 <div class="col-md-12">
                             {% endif %}
-                                        <p class="card-text"><strong>Descrição:</strong> {{ trabalho.descricao }}</p>
+                    
+                    <p class="card-text"><strong>Descrição:</strong> {{ trabalho.descricao }}</p>
 
                                         <p class="card-text">
                                             <strong>Categoria:</strong> {{ trabalho.categoria }}
@@ -58,9 +59,13 @@
                         <small>Postado por <strong>{{ usuario.nome }}</strong> em
                             {{ trabalho.data_trabalho.strftime('%d/%m/%Y %H:%M') }}</small>
                     </div>
-                </div>
+    
+            </div>
+
             {% endfor %}
-        </div>
+
     </div>
+    
 </div>
+
 {% endblock %}

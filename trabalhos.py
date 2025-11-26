@@ -18,6 +18,7 @@ def novo_trabalho():
         arquivo_foto = request.files.get('foto')
         categoria = request.form.get('categoria')
         nome_trabalho = request.form.get('nome_trabalho')
+        contato = request.form.get('contato')
 
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
@@ -55,13 +56,17 @@ def novo_trabalho():
         trabalho.categoria = categoria
         trabalho.nome_trabalho = nome_trabalho
         trabalho.descricao = descricao
+        trabalho.contato = contato
         db.session.add(trabalho)
         db.session.commit()
+
+        flash('Trabalho criado com sucesso!', 'success')
 
         flash('Trabalho criado com sucesso!', 'success')
         return redirect(url_for('trabalhos_bp.trabalhos'))
 
     return render_template('trabalhos_form.html')
+
 
 
 @trabalhos_bp.route('/trabalhos/excluir/<int:trabalho_id>', methods=['POST'])
@@ -105,4 +110,14 @@ def trabalhos():
         .all()
     )
 
-    return render_template('trabalhos.html', trabalhos=trabalhos)
+    categoria_texto = {
+        "beleza": "Beleza",
+        "prestacao_servico": "Prestação de Serviço",
+        "alimentacao": "Alimentação"
+    }
+
+    return render_template(
+        'trabalhos.html',
+        trabalhos=trabalhos,
+        categoria_texto=categoria_texto
+    )

@@ -20,7 +20,15 @@
                     <span><span class="legenda duplo"></span> Ambos</span>
                 </div>
             </div>
-
+            <div class="rules text-muted mt-4">
+                <hr>
+                <h5>Regras do Espaço</h5>
+                <ul>
+                    <li><strong>Horário padrão:</strong> 8h às 22h.</li>
+                    <li><strong>Lei do Silêncio:</strong> 22h às 8h.</li>
+                    <li>Mantenha o espaço limpo e cuidado.</li>
+                </ul>
+            </div>
         </div>
 
         <div class="col-md-8">
@@ -34,7 +42,7 @@
             {% for reserva, usuario in reservas %}
             <div class="card mt-3 shadow-sm">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title m-0"><strong>{{ reserva.local | capitalize }}</strong></h5>
+                    <h5 class="card-title m-0"><strong>{{ local_reservas.get(reserva.local) }}</strong></h5>
 
                     {% if reserva.usuario_id == session['user_id'] %}
                     <form action="{{ url_for('reservas_bp.excluir_reserva', reserva_id=reserva.id) }}" method="POST"
@@ -57,16 +65,6 @@
                 </div>
             </div>
             {% endfor %}
-
-            <div class="rules text-muted mt-4">
-                <hr>
-                <h5>Regras do Espaço</h5>
-                <ul>
-                    <li><strong>Horário padrão:</strong> 8h às 22h.</li>
-                    <li><strong>Lei do Silêncio:</strong> 22h às 8h.</li>
-                    <li>Mantenha o espaço limpo e cuidado.</li>
-                </ul>
-            </div>
 
         </div>
     </div>

@@ -1,19 +1,19 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
-from models import db, Aep, Usuario, Foto
+from models import db, Achado, Usuario, Foto
 from utils import login_required, allowed_file
 import os
 from datetime import datetime
 from flask import current_app as app
 
-aeps_bp = Blueprint('aeps_bp', __name__)
+achados_bp = Blueprint('achados_bp', __name__)
 
-@aeps_bp.route('/aeps/novo_aep', methods=['GET', 'POST'])
-def novo_aeps():
+@achados_bp.route('/achados/novo_achado', methods=['GET', 'POST'])
+def novo_achados():
     if request.method == 'POST':
         descricao = request.form.get('descricao', '').strip()
         arquivo_foto = request.files.get('foto')
-        titulo = request.form.get('titulo')
+        contato = request.form.get('contato')
         local = request.form.get('local')
         status = request.form.get('status')
         data_encontro = request.form.get('data_encontro')
@@ -38,47 +38,44 @@ def novo_aeps():
 
                 arquivo_foto.save(filepath)
 
-                foto = Foto(
-                    usuario_id=session['user_id'],
-                    filename=nome_seguro,
-                    foto_path=unique_filename
-                )
+                foto = Foto()
+                foto.foto_path = unique_filename
+                foto.usuario_id = session.get('user_id')
+                foto.filename = nome_seguro
 
                 db.session.add(foto)
-                db.session.flush()
-
-                foto_id = foto.id
-
-        aep = Aep(
-            usuario_id=session['user_id'],
-            foto_id=foto_id,
-            descricao=descricao,
-            status=status,
-            titulo=titulo,
-            local=local,
-            data_encontro=data_encontro
-        )
-
-        db.session.add(aep)
+                db.session.flush()  #gera o id sem commit final
+                foto_id = foto.id  #pega o id da foto criada
+        
+        #cria a postagem
+        achado = Achado()
+        achado.usuario_id = session['user_id']
+        achado.foto_id = foto_id
+        achado.descricao = descricao
+        achado.status = status
+        achado.contato = contato
+        achado.local = local
+        achado.data_encontro = data_encontro
+        db.session.add(achado)
         db.session.commit()
-
-        flash('Aep criado com sucesso!', 'success')
-        return redirect(url_for('aeps_bp.aeps'))
-
+        
+        flash('Achado criada com sucesso!', 'success')
+        return redirect(url_for('achados_bp.achados'))
+    
     return render_template('achados_perdidos_form.html')
 
+@achados_bp.route('/achados/excluir/<int:achado_id>', methods=['POST'])
+def excluir_achado(achado_id):
+    achado = Achado.query.get_or_404(achado_id)
 
-@aeps_bp.route('/aeps/excluir/<int:aep_id>', methods=['POST'])
-def excluir_aep(aep_id):
-    aep = Aep.query.get_or_404(aep_id)
-
-    if aep.usuario_id != session['user_id']:
+    # verifica se o usuário logado é o autor do post
+    if achado.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
-        return redirect(url_for('aeps_bp.aeps'))
+        return redirect(url_for('achados_bp.achados'))
 
-    if aep.foto_id:
-        foto = Foto.query.get(aep.foto_id)
-
+    # se tiver foto, excluir foto física e do banco
+    if achado.foto_id:
+        foto = Foto.query.get(achado.foto_id)
         if foto:
             try:
                 caminho_foto = os.path.join(app.config['UPLOAD_FOLDER'], foto.foto_path)
@@ -89,23 +86,21 @@ def excluir_aep(aep_id):
 
             db.session.delete(foto)
 
-    db.session.delete(aep)
+    # excluir o Achado sempre
+    db.session.delete(achado)
     db.session.commit()
 
     flash('Post excluído com sucesso!', 'success')
-    return redirect(url_for('aeps_bp.aeps'))
+    return redirect(url_for('achados_bp.achados'))
 
-
-@aeps_bp.route('/aeps')
-def aeps():
-
-    # Retornando Aep, Usuario e Foto
-    aeps = (
-        db.session.query(Aep, Usuario, Foto)
-        .join(Usuario, Usuario.id == Aep.usuario_id)
-        .outerjoin(Foto, Foto.id == Aep.foto_id)
-        .order_by(Aep.data_aep.desc())
+@achados_bp.route('/achados')
+def achados():
+    achados = (
+        db.session.query(Achado, Usuario)
+        .join(Usuario, Usuario.id == Achado.usuario_id)
+        .filter(Usuario.is_active == True)   # 🔥 só mostra se o usuário estiver ativo
+        .order_by(Achado.data_achado.desc())
         .all()
     )
 
-    return render_template('achados_perdidos.html', aeps=aeps)
+    return render_template('achados_perdidos.html', achados=achados)

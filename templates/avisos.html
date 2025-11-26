@@ -9,7 +9,7 @@
             
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4>Avisos</h4>
-                {% if usuario.is_adm or usuario.is_sindico %}
+                {% if usuario_logado.is_adm or usuario_logado.is_sindico %}
                 <a href="{{ url_for('avisos_bp.novo_aviso') }}" class="btn btn-danger">
                     <i class="bi bi-journal-plus"></i> Emita um novo aviso
                 </a>
@@ -21,7 +21,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title m-0"><strong>{{ aviso.nome_aviso }}</strong></h5>
 
-                    {% if usuario.is_adm or usuario.is_sindico %}
+                    {% if usuario_logado.is_adm or usuario_logado.is_sindico %}
                     <form action="{{ url_for('avisos_bp.excluir_aviso', aviso_id=aviso.id) }}" method="POST"
                         onsubmit="return confirm('Tem certeza que deseja excluir?');">
                         <button class="btn btn-sm btn-outline-danger">
@@ -39,13 +39,13 @@
                     {% endif %}
 
                     <p class="card-text"><strong>Descrição:</strong> {{ aviso.descricao }}</p>
-                    <p class="card-text"><strong>Em/Até:</strong> {{ aviso.data_aviso.strftime('%d/%m/%Y') if aviso.data_encontro else 'Não informado' }} - {{ aviso.horario_aviso }}</p>
+                    <p class="card-text"><strong>Em/Até:</strong> {{ aviso.data_aviso.strftime('%d/%m/%Y') if aviso.data_aviso else 'Não informado' }} - {{ aviso.horario_aviso }}</p>
 
                     <p class="card-text">
                         <strong>Status:</strong>
                         <span class="status-badge 
                             {% if aviso.status == 'urgente' %}status-urgente{% elif aviso.status == 'media' %}status-media{% elif aviso.status == 'nao_urgente' %}status-nao_urgente{% endif %}">
-                            {{ aviso.status | capitalize }}
+                            {{ categoria_avisos.get(aviso.status) | capitalize }}
                         </span>
                     </p>
                 </div>
