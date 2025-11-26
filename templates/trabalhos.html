@@ -13,8 +13,8 @@
                 </a>
             </div>
 
-            <!-- CARD 1 -->
             {% for trabalho, usuario, foto in trabalhos %}
+
                 <div class="card mt-3 mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title m-0"><strong>{{ trabalho.nome_trabalho }}</strong></h5>
@@ -63,8 +63,6 @@
 
             </div>
 
-            <!-- CARD 2 -->
-            {% for trabalho, usuario, foto in trabalhos %}
                 <div class="card mt-3 mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title m-0"><strong>{{ trabalho.nome_trabalho }}</strong></h5>
@@ -110,7 +108,7 @@
                         <small>Postado por <strong>{{ usuario.nome }}</strong> em
                             {{ trabalho.data_trabalho.strftime('%d/%m/%Y %H:%M') }}</small>
                     </div>
-    
+
             </div>
 
             {% endfor %}
