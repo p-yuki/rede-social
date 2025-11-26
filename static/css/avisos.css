@@ -21,9 +21,8 @@
 
 /* Botão de Destaque "Emita um novo aviso" */
 .btn-danger {
-    /* Usa o azul escuro, que é a cor primária */
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #dc3545;
+    border-color: #dc3545;
     color: #ffffff;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
@@ -36,8 +35,8 @@
 }
 
 .btn-danger:hover {
-    background-color: #081a40; 
-    border-color: #081a40;
+    background-color: #7a1d26; 
+    border-color: #7a1d26;
     transform: translateY(-2px); 
 }
 

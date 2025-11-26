@@ -38,8 +38,8 @@ body {
 
 /* Botão de Destaque */
 .btn-danger {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #dc3545;
+    border-color: #dc3545;
     color: #ffffff;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
@@ -52,8 +52,8 @@ body {
 }
 
 .btn-danger:hover {
-    background-color: #081a40;
-    border-color: #081a40;
+    background-color: #7a1d26;
+    border-color: #7a1d26;
     transform: translateY(-2px); 
 }
 
@@ -97,12 +97,14 @@ body {
     flex-direction: column;
 }
 
-/* Garante que a imagem fica em cima e com espaçamento */
 .card-body img {
-    width: 100%;
-    object-fit: cover;
+    width: 100%;              /* ocupa toda a largura do card */
+    height: auto;             /* ajusta a altura proporcionalmente */
+    max-height: 250px;        /* evita imagens muito altas (pode ajustar) */
+    object-fit: contain;      /* garante que a imagem inteira aparece */
     margin-bottom: 15px;
     border-radius: 6px;
+    display: block;           /* remove espaçamento fantasma */
 }
 
 /* Garante que o conteúdo textual ocupe 100% da largura */
