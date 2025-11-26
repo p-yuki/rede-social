@@ -1,0 +1,53 @@
+/* 1. Estilos gerais para o container e o card */
+
+.perfil-container {
+    padding-top: 30px; /* Espaço superior */
+}
+
+.card {
+    border-radius: 15px; /* Bordas arredondadas */
+    /* Garante que o card ocupe o espaço e tenha sombra suave */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
+}
+
+/* 2. Estilos para a área da foto */
+
+.perfil-foto-area {
+    margin-bottom: 20px;
+    /* Como o card-body tem text-center, a div interna é centralizada */
+}
+
+.perfil-foto-area img {
+    /* Estilos da imagem de perfil (circular, tamanho, borda) */
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-width: 4px !important; /* Força a espessura da borda do Bootstrap */
+    border-color: #dc3545 !important; /* Força a cor vermelha (danger) */
+}
+
+/* 3. Estilos para a área de texto das informações */
+
+.card-body .text-start {
+    /* Define a largura máxima para o bloco de texto, se necessário */
+    width: 90%; 
+    margin: 0 auto; /* Centraliza o bloco de texto na horizontal dentro do card-body */
+    text-align: left; /* Garante que o texto dentro deste bloco fique à esquerda */
+    padding-left: 0;
+}
+
+.card-body .text-start p {
+    margin-bottom: 8px; /* Espaçamento entre as linhas de informação */
+}
+
+/* 4. Estilos para o botão de sair */
+
+.card-body .btn-danger {
+    margin-top: 25px;
+    /* Ajusta a largura do botão para ficar proporcional ao card */
+    max-width: 90%;
+    /* Garante que o botão fique centralizado */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

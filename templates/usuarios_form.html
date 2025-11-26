@@ -10,7 +10,8 @@
                 <h4>Cadastro Morador</h4>
             </div>
             <div class="card-body">
-                <form method="POST">
+                {# ALTERADO: Adicionado enctype="multipart/form-data" para permitir upload de arquivos #}
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('usuarios_bp.novo') }}">
                     <input type="hidden" name="id">
 
                     <div class="mb-3">
@@ -27,6 +28,13 @@
                         <label for="senha" class="form-label">Senha (Padrão): </label>
                         <input type="password" name="senha" id="senha" class="form-control" required>
                     </div>
+                    
+                    {# NOVIDADE: Campo de upload de foto #}
+                    <div class="mb-3">
+                        <label for="foto" class="form-label">Foto de Perfil (Opcional):</label>
+                        <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                    </div>
+                    {# FIM NOVIDADE #}
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
                         <label for="apartamento" class="form-label">Apto.: </label>
@@ -40,13 +48,13 @@
                             <input type="radio" name="is_sindico" value="1">Sim
                             <input type="radio" name="is_sindico" value="0" checked>Não
                         </div>
-                        {% if usuario.is_adm %}
+                        {# OBS: O bloco if usuario.is_adm precisa ser revisado no seu base.html/context_processor #}
+                        {# para garantir que a variável 'usuario' injetada nos templates contenha o is_adm. #}
                         <div class="d-grip gap-2 d-md-flex justify-content-md-between mt-4">
                             <label for="is_adm" class="form-label">É um admistrador?</label>
                             <input type="radio" name="is_adm" value="1">Sim
                             <input type="radio" name="is_adm" value="0" checked>Não
                         </div>
-                        {% endif %}
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
                         <button type="submit" class="btn btn-danger rounded-pill px-4">

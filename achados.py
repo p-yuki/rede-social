@@ -17,31 +17,32 @@ def novo_achados():
         local = request.form.get('local')
         status = request.form.get('status')
         data_encontro = request.form.get('data_encontro')
-        
+
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
             return render_template('achados_perdidos_form.html')
-        
+
         foto_id = None
         
-        #processar upload da foto se foi enviada
+        # Upload da foto
         if arquivo_foto and arquivo_foto.filename != '':
             filename = arquivo_foto.filename
+
             if filename and allowed_file(filename):
-                #gera nome único para o arquivo
                 nome_seguro = secure_filename(filename)
-                unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
-                
-                #salva arquivo na pasta de uploads
+
+                unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{nome_seguro}"
+
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
                 arquivo_foto.save(filepath)
-                
-                #cria registro da foto no banco
+
                 foto = Foto()
                 foto.foto_path = unique_filename
-                foto.usuario_id = session['user_id']
-                
+                foto.usuario_id = session.get('user_id')
+                foto.filename = nome_seguro
+
                 db.session.add(foto)
                 db.session.flush()  #gera o id sem commit final
                 foto_id = foto.id  #pega o id da foto criada
@@ -81,7 +82,7 @@ def excluir_achado(achado_id):
                 if os.path.exists(caminho_foto):
                     os.remove(caminho_foto)
             except Exception as e:
-                print(f"Erro ao excluir o arquivo da foto: {e}")
+                print(f"Erro ao excluir imagem: {e}")
 
             db.session.delete(foto)
 

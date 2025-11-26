@@ -14,10 +14,13 @@ class Usuario(db.Model):
     is_adm = db.Column(db.Boolean, default=False, nullable=False)
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
-
     trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True)
     achados = db.relationship('Achado', backref='usuario', lazy=True)
     reservas = db.relationship('Reserva', backref='usuario', lazy=True)
+
+    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True) 
+    foto_perfil = db.relationship("Foto", backref="usuario_perfil", lazy=True, primaryjoin="Usuario.foto_id == Foto.id")
+    # ====================================
 
 
 class Trabalho(db.Model):
@@ -38,14 +41,15 @@ class Trabalho(db.Model):
 class Foto(db.Model):
     __tablename__ = 'fotos'
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
-    filename = db.Column(db.String(255))
+    # ATENÇÃO: O campo usuario_id aqui refere-se a QUEM fez o upload da foto. 
+    # Para foto de perfil, o ID do usuário cadastrado na foto é o ID do ADM/síndico que cadastrou.
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False) 
+    filename = db.Column(db.String(255), nullable=False)
     foto_path = db.Column(db.String(500), nullable=False)
     data_upload = db.Column(db.DateTime, default=db.func.current_timestamp())
 
     trabalhos = db.relationship('Trabalho', backref='foto', lazy=True)
     achados = db.relationship('Achado', backref='foto', lazy=True)
-
 
 class Aviso(db.Model):
     __tablename__ = 'avisos'

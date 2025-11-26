@@ -1,29 +1,46 @@
 {% extends "base.html" %}
 {% block title %}Perfil{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}"> 
+<div class="perfil-container container">
 
-<div class="perfil-container">
-
-    <!-- CARD DO USUÁRIO -->
-    <div class="row mt-4">
-        <div class="col">
-            <div class="card" style="width: 320px;">
-                <div class="card-title">
-                    <div class="perfil-info">
-                        <img src="{{ url_for('static', filename='uploads/' ~ (usuario.foto if usuario.foto else 'default.png')) }}"
-                            alt="Foto de Perfil" class="perfil-foto">
-                    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-6 col-lg-4" style="width: 500px;">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h4>Meu Perfil</h4>
                 </div>
-                <div class="card-body">
-                    <p><strong>Nome:</strong> {{ usuario.nome }}</p>
-                    <p><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</p>
-                    <p><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</p>
+                <div class="card-body text-center">
+                    <div class="perfil-foto-area mb-3">
+                        {# ALTERADO: Usando session['user_foto_path'] e definindo uma foto padrão (default.png) #}
+                        <img src="{{ url_for('static', filename='uploads/' ~ (session['user_foto_path'] if session.get('user_foto_path') else 'default.png')) }}"
+                             alt="Foto de Perfil" 
+                             class="rounded-circle border border-danger border-4"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                    
+                    <div class="text-start">
+                        <p class="card-text"><strong>Nome:</strong> {{ usuario.nome }}</p>
+                        <p class="card-text"><strong>E-mail:</strong> {{ session.get('user_email') or 'Não informado' }}</p>
+                        <p class="card-text"><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</p>
+                        <p class="card-text"><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</p>
+                        <p class="card-text text-muted">
+                            <strong>Status:</strong> 
+                            {% if usuario.is_adm %}
+                                Administrador
+                            {% elif usuario.is_sindico %}
+                                Síndico
+                            {% else %}
+                                Morador
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <a href="{{ url_for('usuarios_bp.logout') }}" class="btn btn-danger rounded-pill px-4 mt-3">
+                        Sair <i class="bi bi-box-arrow-in-right"></i>
+                    </a>
                 </div>
             </div>
-
-            <a href="{{ url_for('usuarios_bp.logout') }}" class="btn btn-danger rounded-pill px-4 mt-3">
-                Sair <i class="bi bi-box-arrow-in-right"></i>
-            </a>
         </div>
     </div>
 </div>
