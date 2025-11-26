@@ -100,16 +100,17 @@ body {
     flex-direction: column;
 }
 
-.card-body img {
+.instagram-card {
     width: 100%;
-    height: 350px;
-    object-fit: cover;
-    border-radius: 8px;
+    max-width: 380px; /* tamanho Instagram */
+    border-radius: 12px;
 }
 
-.card-body img {
-    margin-left: auto;
-    margin-right: auto;
+.instagram-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 /* Garante que o conteúdo textual ocupe 100% da largura */
