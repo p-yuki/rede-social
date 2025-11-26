@@ -23,4 +23,3 @@ def perfil():
         trabalhos=trabalhos_usuario,
         achados=achados_usuario
     )
-
