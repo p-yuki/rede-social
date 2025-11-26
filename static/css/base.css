@@ -67,7 +67,7 @@ h1 {
 
 /* Reduz espaço entre navbar fixa e conteúdo */
 body .main {
-    margin-top: 65px !important;  /* ajuste de acordo com a altura da navbar */
+    margin-top: 80px !important;  /* ajuste de acordo com a altura da navbar */
 }
 
 /* Cor inicial */
