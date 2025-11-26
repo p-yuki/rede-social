@@ -21,7 +21,7 @@
                     
                     <div class="text-start">
                         <p class="card-text"><strong>Nome:</strong> {{ usuario.nome }}</p>
-                        <p class="card-text"><strong>E-mail:</strong> {{ usuario.email or 'Não informado' }}</p>
+                        <p class="card-text"><strong>E-mail:</strong> {{ ('usuario.email') or 'Não informado' }}</p>
                         <p class="card-text"><strong>Bloco:</strong> {{ usuario.bloco or 'Não informado' }}</p>
                         <p class="card-text"><strong>Apartamento:</strong> {{ usuario.apartamento or 'Não informado' }}</p>
                         <p class="card-text text-muted">
