@@ -202,13 +202,22 @@ def index():
 def chat():
     return render_template('chat.html')
 
-@socketio.on('mensagem')
-def handle_message(msg):
-    print("Usuário:", msg)
+@socketio.on("message")
+def receive_message(data):
+    username = data["username"]
+    msg = data["msg"]
+    room = data["room"]
 
-    resposta = f"Você disse: {msg}"  # Aqui você coloca seu chatbot, IA, etc.
+    # Envia a mensagem para todos na sala
+    emit("message", {"username": username, "msg": msg}, room=room)
 
-    emit('resposta', resposta)
+@socketio.on("join")
+def join_room_event(data):
+    username = data["username"]
+    room_name = data["room"]
+    join_room(room_name)
+
+    emit("system_message", {"msg": f"{username} entrou na sala."}, room=room_name)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
