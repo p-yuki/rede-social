@@ -92,6 +92,7 @@ def login():
                     foto_path = foto.foto_path  # ou check_password_hash
             session['user_id'] = user.id
             session['user_name'] = user.nome
+            session['user_email'] = user.email
             session['user_bloco'] = user.bloco
             session['user_apartamento'] = user.apartamento
             session['is_adm'] = user.is_adm

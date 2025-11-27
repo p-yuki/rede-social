@@ -25,7 +25,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:2007@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -63,7 +63,7 @@ with app.app_context():
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
         admin.nome = 'Administrador'
-        admin.email = 'adm@gmail.com'
+        admin.email = 'adm@email.com'
         admin.senha = generate_password_hash('12345')
         admin.bloco = '0'
         admin.apartamento = '0'
@@ -84,22 +84,25 @@ with app.app_context():
 def inject_usuario():
     class UsuarioFake:
         # NOVIDADE: Adicionado 'foto_path' ao construtor
-        def __init__(self, nome, bloco, apartamento, is_adm, is_sindico, foto_path):
+        def __init__(self, nome, email, bloco, apartamento, is_adm, is_sindico, foto_path):
             self.nome = nome
+            self.email = email
             self.bloco = bloco
             self.apartamento = apartamento
             self.is_adm = is_adm
             self.is_sindico = is_sindico
-            self.foto_path = foto_path # NOVIDADE: Campo para o caminho da foto
+            self.foto_path = foto_path  # NOVIDADE: Campo para o caminho da foto
 
     usuario = UsuarioFake(
         session.get('user_name'),
+        session.get('user_email'),  # <-- ADICIONE AQUI
         session.get('user_bloco'),
         session.get('user_apartamento'),
         session.get('is_adm'),
         session.get('is_sindico'),
-        session.get('user_foto_path') # NOVIDADE: Busca o caminho da foto da sessão
+        session.get('user_foto_path')
     )
+
     return dict(usuario=usuario)
 
 

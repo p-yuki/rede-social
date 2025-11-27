@@ -8,6 +8,7 @@
             <tr>
                 <th>Nome de usuário</th>
                 <th>Apartamento e Bloco</th>
+                <th>Email</th>
                 <th>Síndico</th>
                 <th>Administrador</th>
                 <th>Status</th>
@@ -22,6 +23,7 @@
             <tr class="{% if not usuario.is_active %}table-danger{% endif %}">
                 <td>{{ usuario.nome }}</td>
                 <td>{{ usuario.apartamento }} - {{ usuario.bloco }}</td>
+                <td>{{ usuario.email }}</td>
                 <td>{{ 'Sim' if usuario.is_sindico else 'Não' }}</td>
                 <td>{{ 'Sim' if usuario.is_adm else 'Não' }}</td>
                 <td>
