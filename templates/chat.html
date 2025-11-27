@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Chat do Condomínio</title>
-
-    <!-- CSS do chat -->
-    <link rel="stylesheet" href="/static/chat.css">
-
-    <!-- Socket.IO -->
-    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <meta charset="utf-8" />
+  <title>Chat do Condomínio</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
 </head>
 
 <body>

@@ -1,6 +1,4 @@
-/* ============================
-   BASE
-============================ */
+/* chat.css - estilização funcional idêntica ao exemplo pedido */
 body {
     margin: 0;
     height: 100vh;
@@ -11,9 +9,6 @@ body {
     font-family: "Inter", sans-serif;
 }
 
-/* ============================
-   CONTAINER
-============================ */
 .chat-container {
     width: 95%;
     height: 90%;
@@ -24,9 +19,7 @@ body {
     box-shadow: 0 0 25px rgba(0,0,0,0.12);
 }
 
-/* ============================
-   SIDEBAR
-============================ */
+/* SIDEBAR */
 .sidebar {
     width: 270px;
     background: #0b4fa8;
@@ -39,10 +32,7 @@ body {
     font-size: 22px;
 }
 
-.sidebar ul {
-    padding: 0;
-}
-
+.sidebar ul { padding: 0; }
 .sidebar li {
     list-style: none;
     background: rgba(255,255,255,0.15);
@@ -56,16 +46,13 @@ body {
     background: rgba(255,255,255,0.25);
 }
 
-/* ============================
-   ÁREA DO CHAT
-============================ */
+/* CHAT AREA */
 .chat-area {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-/* Título */
 .chat-area header {
     background: #0b4fa8;
     color: white;
@@ -74,7 +61,6 @@ body {
     font-weight: bold;
 }
 
-/* Lista de mensagens */
 #messages {
     flex: 1;
     padding: 20px;
@@ -92,14 +78,12 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.12);
 }
 
-/* Minha mensagem */
 .bubble.me {
     background: #0b77ff;
     color: white;
     margin-left: auto;
 }
 
-/* Sistema */
 .system {
     text-align: center;
     font-size: 13px;
@@ -107,9 +91,7 @@ body {
     margin: 10px;
 }
 
-/* ============================
-   FORMULÁRIO
-============================ */
+/* FORM */
 form {
     display: flex;
     padding: 15px;
