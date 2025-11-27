@@ -54,109 +54,118 @@
     </div>
 
 <script>
-/* ========================
-   VARIÁVEIS PRINCIPAIS
-   ======================== */
-let username = prompt("Seu nome:") || "Usuário";
-let room = "bloco";
+/* =====================================================
+   PEGAR NOME DO USUÁRIO VINDO DO FLASK
+   ===================================================== */
+// Se não tiver usuário, usamos "Visitante"
+let username = "{{ usuario.nome or 'Visitante' }}";
+let room = "bloco"; // sala padrão
 
-// Controle de acesso à assembleia (síndicos)
-let isAdmin = ["admin", "síndico", "sindico", "administrador"]
-    .includes(username.toLowerCase());
+// Síndico = acesso à sala assembleia
+let isAdmin = ("{{ usuario.is_sindico }}" === "True");
 
-document.getElementById("meinfo").innerText = `Você: ${username}`;
+/* =====================================================
+   ELEMENTOS QUE EXISTEM NO chat.html
+   (evita erros ao carregar outras páginas)
+   ===================================================== */
+const elMessages = document.getElementById("messages");
+const elUsers = document.getElementById("users");
+const elRoomTitle = document.getElementById("roomTitle");
+const elForm = document.getElementById("form");
+const elInput = document.getElementById("input");
 
+const elTabBloco = document.getElementById("tab-bloco");
+const elTabAssembleia = document.getElementById("tab-assembleia");
+
+if (!elMessages) {
+    console.warn("⚠️ Script do chat carregado em outra página — ignorado.");
+}
+else {
+
+/* =====================================================
+   SOCKET
+   ===================================================== */
 const socket = io();
 
-/* ========================
-   FUNÇÃO PARA TROCAR DE SALA
-   ======================== */
+/* =====================================================
+   TROCAR DE SALA
+   ===================================================== */
 function joinRoom(newRoom) {
 
-    // Segurança: Assembleia é apenas para admin
     if (newRoom === "assembleia" && !isAdmin) {
-        alert("Apenas síndicos podem entrar no chat da Assembleia.");
+        alert("Apenas síndicos podem acessar o chat da Assembleia.");
         return;
     }
 
     room = newRoom;
 
-    // Atualiza título
-    document.getElementById("roomTitle").innerText =
-        room === "bloco" ? "Chat do Bloco" : "Chat da Assembleia 🏛️";
+    if (elRoomTitle) {
+        elRoomTitle.innerText =
+            room === "bloco" ? "Chat do Bloco" : "Chat da Assembleia 🏛️";
+    }
 
-    // Limpa tela
-    document.getElementById("messages").innerHTML = "";
-
-    // Entra no Socket.IO
+    elMessages.innerHTML = "";
     socket.emit("join", { username, room });
 }
 
-/* ========================
+/* =====================================================
    EVENTOS SOCKET.IO
-   ======================== */
+   ===================================================== */
 socket.on("connect", () => joinRoom("bloco"));
 
 socket.on("users", users => {
-    const list = document.getElementById("users");
-    list.innerHTML = "";
+    if (!elUsers) return;
+    elUsers.innerHTML = "";
     users.forEach(u => {
-        const li = document.createElement("li");
+        let li = document.createElement("li");
         li.textContent = u;
-        list.appendChild(li);
+        elUsers.appendChild(li);
     });
 });
 
 socket.on("system_message", data => addSystemMessage(data.msg));
-
 socket.on("message", data => addMessage(data.username, data.msg));
 
-/* ========================
+/* =====================================================
    EXIBIR MENSAGENS
-   ======================== */
+   ===================================================== */
 function addMessage(user, msg) {
-    const box = document.getElementById("messages");
-
-    const div = document.createElement("div");
+    let div = document.createElement("div");
     div.classList.add("bubble");
 
     if (user === username) div.classList.add("me");
 
     div.innerHTML = `<strong>${user}:</strong> <span>${msg}</span>`;
-    box.appendChild(div);
+    elMessages.appendChild(div);
 
-    box.scrollTop = box.scrollHeight;
+    elMessages.scrollTop = elMessages.scrollHeight;
 }
 
 function addSystemMessage(msg) {
-    const box = document.getElementById("messages");
-    const div = document.createElement("div");
+    let div = document.createElement("div");
     div.classList.add("system");
     div.textContent = msg;
-    box.appendChild(div);
+    elMessages.appendChild(div);
 }
 
-/* ========================
+/* =====================================================
    ENVIAR MENSAGEM
-   ======================== */
-document.getElementById("form").addEventListener("submit", e => {
+   ===================================================== */
+elForm.addEventListener("submit", e => {
     e.preventDefault();
-    const input = document.getElementById("input");
-
-    if (input.value.trim() !== "") {
-        socket.emit("message", { username, msg: input.value, room });
-        input.value = "";
+    if (elInput.value.trim() !== "") {
+        socket.emit("message", { username, msg: elInput.value, room });
+        elInput.value = "";
     }
 });
 
-/* ========================
-   EVENTOS DOS BOTÕES
-   ======================== */
-document.getElementById("tab-bloco")
-    .addEventListener("click", () => joinRoom("bloco"));
+/* =====================================================
+   BOTÕES DE TROCA DE SALA
+   ===================================================== */
+if (elTabBloco) elTabBloco.addEventListener("click", () => joinRoom("bloco"));
+if (elTabAssembleia) elTabAssembleia.addEventListener("click", () => joinRoom("assembleia"));
 
-document.getElementById("tab-assembleia")
-    .addEventListener("click", () => joinRoom("assembleia"));
+} // fim verificação chat.html
 </script>
 
 </body>

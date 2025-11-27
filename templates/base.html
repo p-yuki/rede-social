@@ -67,19 +67,38 @@
   </div>
 
   <!-- CHAT -->
-  <!-- Botão flutuante -->
-  <div id="chatFloatBtn">💬</div>
+  <!-- Chat flutuante - botão e janela -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat_float.css') }}">
 
-  <!-- Janela flutuante -->
-  <div id="chatFloatWindow">
-    <iframe src="/chat" frameborder="0"></iframe>
+<div id="chatFloatBtn" title="Abrir chat">💬</div>
+
+<div id="chatFloatWindow" aria-hidden="true">
+  <div class="header">
+    <div>Chat</div>
+    <button class="closeBtn" id="chatCloseBtn" aria-label="Fechar">✕</button>
   </div>
+  <iframe id="chatFloatFrame" src="/chat"></iframe>
+</div>
 
-  <script>
-  document.getElementById("chatFloatBtn").onclick = () => {
-    document.getElementById("chatFloatWindow").classList.toggle("open");
-  };
-  </script>
+<script>
+  // Toggle do float
+  (function(){
+    const btn = document.getElementById('chatFloatBtn');
+    const win = document.getElementById('chatFloatWindow');
+    const closeBtn = document.getElementById('chatCloseBtn');
+
+    btn.addEventListener('click', () => {
+      win.classList.toggle('open');
+      // acessibilidade
+      win.setAttribute('aria-hidden', win.classList.contains('open') ? 'false' : 'true');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      win.classList.remove('open');
+      win.setAttribute('aria-hidden', 'true');
+    });
+  })();
+</script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
