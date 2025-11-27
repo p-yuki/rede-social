@@ -7,8 +7,9 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
 
-# CONFIGURAÇÃO INICIAL
+# configuração inicial crítica
 app.secret_key = 'sua_chave_secreta_123' 
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 app.config['SECRET_KEY'] = '123'
@@ -17,32 +18,36 @@ app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# CONFIGURAÇÃO DO BANCO
+# configuração do banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:2007@localhost/redesocialdb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # <- corrigido
+app.config['SQLALCHECHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# BLUEPRINTS
+# registro dos blueprints
 from trabalhos import trabalhos_bp
-from avisos import avisos_bp
-from usuarios import usuarios_bp
-from achados import achados_bp
-from reservas import reservas_bp
-
 app.register_blueprint(trabalhos_bp)
+
+from avisos import avisos_bp
 app.register_blueprint(avisos_bp)
+
+from usuarios import usuarios_bp
 app.register_blueprint(usuarios_bp)
+
+from achados import achados_bp
 app.register_blueprint(achados_bp)
+
+from reservas import reservas_bp
 app.register_blueprint(reservas_bp)
 
-# INICIALIZAÇÃO DO BANCO + ADMIN
+# inicialização do banco e usuário admin
 with app.app_context():
     db.create_all()
     
+    # cria usuário admin padrão se não existir
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
         admin.nome = 'Administrador'
-        admin.email = 'adm@gmail.com'
+        admin.email = 'adm@email.com'
         admin.senha = generate_password_hash('12345')
         admin.bloco = '0'
         admin.apartamento = '0'
@@ -51,8 +56,10 @@ with app.app_context():
 
         db.session.add(admin)
         db.session.commit()
+    else:
+        print("conta de administrador já existe.")
 
-# INJEÇÃO DE USUÁRIO
+# injeta dados do usuário logado nos templates
 @app.context_processor
 def inject_usuario():
     class UsuarioFake:
@@ -77,19 +84,46 @@ def inject_usuario():
 
     return dict(usuario=usuario)
 
-# ROTAS PRINCIPAIS
+# rotas principais
 @app.route('/')
 def login():
-    return render_template('login.html')  # <- deixei esta como raiz
+    return render_template('login.html')
 
 @app.route('/home')
 @login_required
 def home():
-    aviso_urgente = Aviso.query.filter_by(status='urgente').order_by(Aviso.data_aviso.desc()).first()
-    ultimos_avisos = Aviso.query.order_by(Aviso.data_aviso.desc()).limit(3).all()
-    ultimos_achados = Achado.query.order_by(Achado.data_achado.desc()).limit(3).all()
-    ultimos_trabalhos = Trabalho.query.order_by(Trabalho.data_trabalho.desc()).limit(3).all()
+    # busca aviso urgente mais recente
+    aviso_urgente = (
+        Aviso.query
+        .filter_by(status='urgente')
+        .order_by(Aviso.data_aviso.desc())
+        .first()
+    )
 
+    # últimos 3 avisos gerais
+    ultimos_avisos = (
+        Aviso.query
+        .order_by(Aviso.data_aviso.desc())
+        .limit(3)
+        .all()
+    )
+
+    # últimos 3 achados e perdidos
+    ultimos_achados = (
+        Achado.query
+        .order_by(Achado.data_achado.desc())
+        .limit(3)
+        .all()
+    )
+
+    # últimos 3 trabalhos
+    ultimos_trabalhos = (
+        Trabalho.query
+        .order_by(Trabalho.data_trabalho.desc())
+        .limit(3)
+        .all()
+    )
+    
     categoria_trabalho = {
         "beleza": "Beleza",
         "prestacao_servico": "Prestação de Serviço", 
@@ -130,15 +164,20 @@ def usuarios():
 @login_required
 def reservas():
     reservas = Reserva.query.all()
+
+    # agrupa reservas por local para facilitar no template
     reservas_por_local = {}
     for r in reservas:
-        reservas_por_local.setdefault(r.local, []).append(r.data_reserva.strftime("%Y-%m-%d"))
+        if r.local not in reservas_por_local:
+            reservas_por_local[r.local] = []
+        reservas_por_local[r.local].append(r.data_reserva.strftime("%Y-%m-%d"))
+
     return render_template("reservas.html", reservas_por_local=reservas_por_local)
 
 @app.route('/acesso')
 def acesso():
     return render_template('acesso.html')
-
+    
 @app.route('/painel')
 @login_required
 def painel():
@@ -154,26 +193,56 @@ def avisos():
 def achados():
     return render_template('achados_perdidos.html')
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/chat')
 @login_required
 def chat():
     return render_template('chat.html')
 
-# =======================
-# CHAT TEMPO REAL (ORIGINAL SEM ALTERAR LÓGICA)
-# =======================
+@socketio.on("message")
+def receive_message(data):
+    username = data["username"]
+    msg = data["msg"]
+    room = data["room"]
 
-users_online = {}
-rooms_users = {}
+    # Envia a mensagem para todos na sala
+    emit("message", {"username": username, "msg": msg}, room=room)
 
+@socketio.on("join")
+def join_room_event(data):
+    username = data["username"]
+    room_name = data["room"]
+    join_room(room_name)
+
+    emit("system_message", {"msg": f"{username} entrou na sala."}, room=room_name)
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
+
+# CHAT TEMPO REAL COMPATÍVEL COM O HTML ENVIADO
+
+users_online = {}      # { sid: {"username": x, "room": y} }
+rooms_users = {}       # { "bloco": [nomes], "assembleia": [nomes] }
+
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
+
+# Usuário entrou em uma sala
 @socketio.on("join")
 def join_room_event(data):
     username = data.get("username")
     room = data.get("room")
     sid = str(request.sid)
 
+    # salva usuário conectado
     users_online[sid] = {"username": username, "room": room}
 
+    # adiciona usuário na lista da sala
     if room not in rooms_users:
         rooms_users[room] = []
 
@@ -181,9 +250,14 @@ def join_room_event(data):
         rooms_users[room].append(username)
 
     join_room(room)
+
+    # mensagem do sistema
     emit("system_message", {"msg": f"{username} entrou no chat."}, to=room)
+
+    # envia lista atualizada de usuários
     emit("users", rooms_users[room], to=room)
 
+# Mensagem normal
 @socketio.on("message")
 def handle_message(data):
     username = data.get("username")
@@ -192,6 +266,7 @@ def handle_message(data):
 
     emit("message", {"username": username, "msg": msg}, to=room)
 
+# Desconexão
 @socketio.on("disconnect")
 def disconnect_user():
     sid = str(request.sid)
@@ -202,14 +277,14 @@ def disconnect_user():
     username = users_online[sid]["username"]
     room = users_online[sid]["room"]
 
+    # remove usuário das listas
     if room in rooms_users and username in rooms_users[room]:
         rooms_users[room].remove(username)
 
     del users_online[sid]
 
+    # avisa a sala
     emit("system_message", {"msg": f"{username} saiu do chat."}, to=room)
-    emit("users", rooms_users.get(room, []), to=room)
 
-# EXECUÇÃO
-if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    # atualiza lista de usuários
+    emit("users", rooms_users.get(room, []), to=room)
