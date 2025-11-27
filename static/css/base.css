@@ -184,3 +184,44 @@ h1 {
         background-color: rgba(255, 255, 255, 0.1);
     }
 }
+
+/* CHAT */
+
+/* BOTÃO FLUTUANTE */
+#chat-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0C2461;
+    color: white;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 9999;
+}
+
+/* POPUP DO CHAT */
+#chat-popup {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 380px;
+    height: 520px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 9999;
+    display: none; /* Escondido até clicar */
+    overflow: hidden;
+}
+
+/* GARANTE que o CSS original funcione dentro do popup */
+#chat-popup .chat-container {
+    height: 100%;
+}
