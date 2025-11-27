@@ -111,7 +111,7 @@ body {
     height: 280px;
     object-fit: cover;
     border-radius: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 /* Garante que o conteúdo textual ocupe 100% da largura */
