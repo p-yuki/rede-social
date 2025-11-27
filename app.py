@@ -4,6 +4,7 @@ from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
 from flask_mail import Mail, Message
+from flask_socketio import SocketIO, emit
 
 # --- INICIALIZAÇÃO E CHAVE SECRETA ---
 app = Flask(__name__)
@@ -14,6 +15,9 @@ app.secret_key = 'sua_chave_secreta_123'
 # 📁 CONFIGURAÇÕES DE UPLOAD (CORREÇÃO DO CAMINHO ABSOLUTO)
 # 1. Define o caminho base do projeto de forma absoluta.
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+app.config['SECRET_KEY'] = '123'
+socketio = SocketIO(app)
 
 # 2. Define a pasta de uploads DENTRO de 'static' usando o caminho absoluto.
 app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
@@ -212,3 +216,18 @@ def achados():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@socketio.on('mensagem')
+def handle_message(msg):
+    print("Usuário:", msg)
+
+    resposta = f"Você disse: {msg}"  # Aqui você coloca seu chatbot, IA, etc.
+
+    emit('resposta', resposta)
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
