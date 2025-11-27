@@ -208,12 +208,15 @@ def handle_message(msg):
 if __name__ == '__main__':
     socketio.run(app, debug=True)
 
-# ============================================================
 # CHAT TEMPO REAL COMPATÍVEL COM O HTML ENVIADO
-# ============================================================
 
 users_online = {}      # { sid: {"username": x, "room": y} }
 rooms_users = {}       # { "bloco": [nomes], "assembleia": [nomes] }
+
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
 
 # Usuário entrou em uma sala
 @socketio.on("join")
