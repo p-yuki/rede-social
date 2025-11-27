@@ -1,5 +1,4 @@
 let room = "bloco";
-let username = prompt("Seu nome:") ?? "Usuário";
 const socket = io();
 
 // Trocar de sala
