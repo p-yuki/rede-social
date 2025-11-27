@@ -1,9 +1,9 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, request
 from models import db, Usuario, Aviso, Achado, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
 
@@ -19,7 +19,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:2007@localhost/redesocialdb'
 app.config['SQLALCHECHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -193,9 +193,6 @@ def avisos():
 def achados():
     return render_template('achados_perdidos.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -210,3 +207,67 @@ def handle_message(msg):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+
+# ============================================================
+# CHAT TEMPO REAL COMPATÍVEL COM O HTML ENVIADO
+# ============================================================
+
+users_online = {}      # { sid: {"username": x, "room": y} }
+rooms_users = {}       # { "bloco": [nomes], "assembleia": [nomes] }
+
+# Usuário entrou em uma sala
+@socketio.on("join")
+def join_room_event(data):
+    username = data.get("username")
+    room = data.get("room")
+    sid = str(request.sid)
+
+    # salva usuário conectado
+    users_online[sid] = {"username": username, "room": room}
+
+    # adiciona usuário na lista da sala
+    if room not in rooms_users:
+        rooms_users[room] = []
+
+    if username not in rooms_users[room]:
+        rooms_users[room].append(username)
+
+    join_room(room)
+
+    # mensagem do sistema
+    emit("system_message", {"msg": f"{username} entrou no chat."}, to=room)
+
+    # envia lista atualizada de usuários
+    emit("users", rooms_users[room], to=room)
+
+# Mensagem normal
+@socketio.on("message")
+def handle_message(data):
+    username = data.get("username")
+    msg = data.get("msg")
+    room = data.get("room")
+
+    emit("message", {"username": username, "msg": msg}, to=room)
+
+# Desconexão
+@socketio.on("disconnect")
+def disconnect_user():
+    sid = str(request.sid)
+
+    if sid not in users_online:
+        return
+
+    username = users_online[sid]["username"]
+    room = users_online[sid]["room"]
+
+    # remove usuário das listas
+    if room in rooms_users and username in rooms_users[room]:
+        rooms_users[room].remove(username)
+
+    del users_online[sid]
+
+    # avisa a sala
+    emit("system_message", {"msg": f"{username} saiu do chat."}, to=room)
+
+    # atualiza lista de usuários
+    emit("users", rooms_users.get(room, []), to=room)

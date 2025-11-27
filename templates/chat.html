@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat do Condomínio</title>
+
+    <!-- CSS do chat -->
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+
+<body>
+
+    <!-- TABS SUPERIORES -->
+    <div class="tabs">
+        <button class="tab-btn" id="tab-bloco">Chat do Bloco</button>
+        <button class="tab-btn" id="tab-assembleia">Chat da Assembleia</button>
+    </div>
+
+    <div class="chat-container">
+
+        <!-- SIDEBAR ORIGINAL DO PRIMEIRO HTML -->
+        <aside class="sidebar">
+            <h2>Conversas</h2>
+
+            <ul>
+                <li onclick="joinRoom('bloco')">Chat do Bloco</li>
+                <li onclick="joinRoom('assembleia')">Chat da Assembleia 🏛️</li>
+            </ul>
+
+            <h3>Online</h3>
+            <ul id="users"></ul>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL DO CHAT -->
+        <main class="chat-area">
+
+            <header>
+                <h1 id="roomTitle">Chat do Bloco</h1>
+                <div id="meinfo"></div>
+            </header>
+
+            <div id="messages" class="messages"></div>
+
+            <form id="form">
+                <input id="input" autocomplete="off" placeholder="Digite uma mensagem...">
+                <button type="submit">Enviar</button>
+            </form>
+
+        </main>
+
+    </div>
+
+<script>
+/* ========================
+   VARIÁVEIS PRINCIPAIS
+   ======================== */
+let username = prompt("Seu nome:") || "Usuário";
+let room = "bloco";
+
+// Controle de acesso à assembleia (síndicos)
+let isAdmin = ["admin", "síndico", "sindico", "administrador"]
+    .includes(username.toLowerCase());
+
+document.getElementById("meinfo").innerText = `Você: ${username}`;
+
+const socket = io();
+
+/* ========================
+   FUNÇÃO PARA TROCAR DE SALA
+   ======================== */
+function joinRoom(newRoom) {
+
+    // Segurança: Assembleia é apenas para admin
+    if (newRoom === "assembleia" && !isAdmin) {
+        alert("Apenas síndicos podem entrar no chat da Assembleia.");
+        return;
+    }
+
+    room = newRoom;
+
+    // Atualiza título
+    document.getElementById("roomTitle").innerText =
+        room === "bloco" ? "Chat do Bloco" : "Chat da Assembleia 🏛️";
+
+    // Limpa tela
+    document.getElementById("messages").innerHTML = "";
+
+    // Entra no Socket.IO
+    socket.emit("join", { username, room });
+}
+
+/* ========================
+   EVENTOS SOCKET.IO
+   ======================== */
+socket.on("connect", () => joinRoom("bloco"));
+
+socket.on("users", users => {
+    const list = document.getElementById("users");
+    list.innerHTML = "";
+    users.forEach(u => {
+        const li = document.createElement("li");
+        li.textContent = u;
+        list.appendChild(li);
+    });
+});
+
+socket.on("system_message", data => addSystemMessage(data.msg));
+
+socket.on("message", data => addMessage(data.username, data.msg));
+
+/* ========================
+   EXIBIR MENSAGENS
+   ======================== */
+function addMessage(user, msg) {
+    const box = document.getElementById("messages");
+
+    const div = document.createElement("div");
+    div.classList.add("bubble");
+
+    if (user === username) div.classList.add("me");
+
+    div.innerHTML = `<strong>${user}:</strong> <span>${msg}</span>`;
+    box.appendChild(div);
+
+    box.scrollTop = box.scrollHeight;
+}
+
+function addSystemMessage(msg) {
+    const box = document.getElementById("messages");
+    const div = document.createElement("div");
+    div.classList.add("system");
+    div.textContent = msg;
+    box.appendChild(div);
+}
+
+/* ========================
+   ENVIAR MENSAGEM
+   ======================== */
+document.getElementById("form").addEventListener("submit", e => {
+    e.preventDefault();
+    const input = document.getElementById("input");
+
+    if (input.value.trim() !== "") {
+        socket.emit("message", { username, msg: input.value, room });
+        input.value = "";
+    }
+});
+
+/* ========================
+   EVENTOS DOS BOTÕES
+   ======================== */
+document.getElementById("tab-bloco")
+    .addEventListener("click", () => joinRoom("bloco"));
+
+document.getElementById("tab-assembleia")
+    .addEventListener("click", () => joinRoom("assembleia"));
+</script>
+
+</body>
+</html>
