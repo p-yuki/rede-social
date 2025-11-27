@@ -16,8 +16,8 @@
 
             <div class="row mt-4">
 
-                {% for achado, usuario, foto in achados %}
-                <div class="col-md-4 mb-4"> <!-- 2 colunas por linha -->
+                {% for achado, usuario in achados %}
+                <div class="col-md-4 mb-4">
 
                     <div class="card shadow-sm h-100">
 
@@ -43,9 +43,9 @@
                         <div class="card-body">
                             <div class="row">
 
-                                {% if foto %}
+                                {% if achado.foto %}
                                 <div class="col-md-4">
-                                    <img src="{{ url_for('static', filename='uploads/' ~ foto.foto_path) }}"
+                                    <img src="{{ url_for('static', filename='uploads/' ~ achado.foto.foto_path) }}"
                                         class="img-fluid rounded mb-3"
                                         style="max-height: 250px; object-fit: cover; width: 100%;">
                                 </div>
