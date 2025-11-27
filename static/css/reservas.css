@@ -5,7 +5,7 @@
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
     padding: 10px 25px; 
-    border-radius: 50px; /* Efeito Pill */
+    border-radius: 50px;
     display: inline-flex; 
     align-items: center; 
     gap: 8px; 
@@ -41,10 +41,9 @@ h4 {
     margin-right: 6px;
 }
 
-/* --- Estilos para os dias com reservas --- */
 .flatpickr-day {
     position: relative;
-    border: 1px solid transparent; /* Mantém o layout consistente */
+    border: 1px solid transparent;
 }
 
 .flatpickr-day.dia-festa::before {
@@ -85,14 +84,12 @@ h4 {
     border-radius: 50%;
     pointer-events: none;
     border: 2px solid transparent;
-    /* Borda azul na metade esquerda */
     border-left-color: #007bff;
     border-top-color: #007bff;
-    /* Borda vermelha na metade direita */
     border-right-color: #ff3b3b;
     border-bottom-color: #ff3b3b;
 }
-/* Mantenha os estilos padrão do flatpickr */
+
 .flatpickr-day:hover {
     background: #e6e6e6;
 }
@@ -106,7 +103,6 @@ h4 {
     border-color: #959ea9;
 }
 
-/* Legenda */
 .legenda.azul {
     background: #007bff;
 }

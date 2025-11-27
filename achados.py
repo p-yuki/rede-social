@@ -24,15 +24,13 @@ def novo_achados():
 
         foto_id = None
         
-        # Upload da foto
+        # processa o upload da foto se existir
         if arquivo_foto and arquivo_foto.filename != '':
             filename = arquivo_foto.filename
 
             if filename and allowed_file(filename):
                 nome_seguro = secure_filename(filename)
-
                 unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{nome_seguro}"
-
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
@@ -44,10 +42,10 @@ def novo_achados():
                 foto.filename = nome_seguro
 
                 db.session.add(foto)
-                db.session.flush()  #gera o id sem commit final
-                foto_id = foto.id  #pega o id da foto criada
+                db.session.flush()
+                foto_id = foto.id
         
-        #cria a postagem
+        # cria a postagem de achado
         achado = Achado()
         achado.usuario_id = session['user_id']
         achado.foto_id = foto_id
@@ -68,12 +66,12 @@ def novo_achados():
 def excluir_achado(achado_id):
     achado = Achado.query.get_or_404(achado_id)
 
-    # verifica se o usuário logado é o autor do post
+    # verifica se o usuário é o autor do post
     if achado.usuario_id != session['user_id']:
         flash('Você não tem permissão para excluir este post.', 'danger')
         return redirect(url_for('achados_bp.achados'))
 
-    # se tiver foto, excluir foto física e do banco
+    # exclui a foto associada se existir
     if achado.foto_id:
         foto = Foto.query.get(achado.foto_id)
         if foto:
@@ -82,11 +80,10 @@ def excluir_achado(achado_id):
                 if os.path.exists(caminho_foto):
                     os.remove(caminho_foto)
             except Exception as e:
-                print(f"Erro ao excluir imagem: {e}")
+                print(f"erro ao excluir imagem: {e}")
 
             db.session.delete(foto)
 
-    # excluir o Achado sempre
     db.session.delete(achado)
     db.session.commit()
 
@@ -95,10 +92,11 @@ def excluir_achado(achado_id):
 
 @achados_bp.route('/achados')
 def achados():
+    # busca todos os achados com usuários ativos
     achados = (
         db.session.query(Achado, Usuario)
         .join(Usuario, Usuario.id == Achado.usuario_id)
-        .filter(Usuario.is_active == True)   # 🔥 só mostra se o usuário estiver ativo
+        .filter(Usuario.is_active == True)
         .order_by(Achado.data_achado.desc())
         .all()
     )

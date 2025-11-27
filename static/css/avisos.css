@@ -1,25 +1,13 @@
-/* ================================================= */
-/* ARQUIVO CSS AVISOS.CSS - CONSISTÊNCIA VISUAL */
-/* ================================================= */
-
-/* As variáveis de cor, body e card-base são importadas do CSS Global/Base */
-
-/* ==================================== */
-/* 1. TÍTULO E BOTÃO (PADRÃO TRABALHOS) */
-/* ==================================== */
-
-/* Título de Seção */
 .container h4 {
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--primary-color); /* Azul Escuro */
+    color: var(--primary-color);
     margin-top: 40px;
-    margin-bottom: 10px; /* Consistente com a correção de espaçamento */
+    margin-bottom: 10px;
     border-bottom: 3px solid #e0e6ed; 
     padding-bottom: 8px;
 }
 
-/* Botão de Destaque "Emita um novo aviso" */
 .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
@@ -27,7 +15,7 @@
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
     padding: 10px 25px; 
-    border-radius: 50px; /* Efeito Pill */
+    border-radius: 50px;
     display: inline-flex; 
     align-items: center; 
     gap: 8px; 
@@ -44,12 +32,6 @@
     font-size: 1.2em;
 }
 
-
-/* ==================================== */
-/* 2. ESTILO DOS CARTÕES DE AVISOS */
-/* ==================================== */
-
-/* Aplicamos o estilo flutuante e de espaçamento definido no home.css */
 .card {
     border: none;
     border-radius: 10px; 
@@ -92,11 +74,10 @@
     font-weight: 600;
 }
 
-/* Imagem do Aviso */
 .img-fluid {
     border-radius: 6px !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); 
-    width: 100%; /* Garante que a imagem preencha o espaço disponível */
+    width: 100%;
 }
 
 .card-footer {
@@ -109,18 +90,11 @@
     border-bottom-right-radius: 10px;
 }
 
-/* Botão Excluir (lixeira) */
 .btn-outline-danger {
     color: var(--accent-color);
     border-color: var(--accent-color);
 }
 
-
-/* ==================================== */
-/* 3. ESTILO DOS STATUS (BADGES) */
-/* ==================================== */
-
-/* Classe para o status dentro do card */
 .status-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -132,19 +106,16 @@
     line-height: 1;
 }
 
-/* Status: URGENTE (Vermelho Forte) */
 .status-urgente {
     background-color: var(--accent-color); /* #e74c3c */
     box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
 }
 
-/* Status: MEDIA (Amarelo/Laranja Profissional) */
 .status-media {
     background-color: #f39c12; 
     box-shadow: 0 2px 5px rgba(243, 156, 18, 0.4);
 }
 
-/* Status: NAO_URGENTE (Verde Sucesso) */
 .status-nao_urgente {
     background-color: #27ae60; 
 }

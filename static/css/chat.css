@@ -44,7 +44,7 @@ body {
     background: rgba(255,255,255,0.25);
 }
 
-/* CHAT */
+/* chat */
 .chat-area {
     flex: 1;
     display: flex;
@@ -82,7 +82,7 @@ header {
     margin-left: auto;
 }
 
-/* Sistema */
+/* sistema */
 .system {
     text-align: center;
     font-size: 13px;
@@ -90,7 +90,7 @@ header {
     margin: 10px;
 }
 
-/* INPUT */
+/* input */
 form {
     display: flex;
     padding: 15px;

@@ -3,44 +3,27 @@ from models import db, Usuario, Aviso, Achado, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
-from flask_mail import Mail, Message
 from flask_socketio import SocketIO, emit
 
-# --- INICIALIZAÇÃO E CHAVE SECRETA ---
 app = Flask(__name__)
 
-# 🔑 CHAVE SECRETA (CRUCIAL): Deve ser a PRIMEIRA configuração após 'app = Flask()'.
+# configuração inicial crítica
 app.secret_key = 'sua_chave_secreta_123' 
 
-# 📁 CONFIGURAÇÕES DE UPLOAD (CORREÇÃO DO CAMINHO ABSOLUTO)
-# 1. Define o caminho base do projeto de forma absoluta.
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 app.config['SECRET_KEY'] = '123'
 socketio = SocketIO(app)
-
-# 2. Define a pasta de uploads DENTRO de 'static' usando o caminho absoluto.
 app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:2007@localhost/redesocialdb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# configuração do banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
+app.config['SQLALCHECHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'boavizinhanca118@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Boa@Vizinhanca118!'   # não use senha normal!
-app.config['MAIL_DEFAULT_SENDER'] = ('Boa Vizinhança', 'boavizinhanca118@gmail.com')
-
-mail = Mail(app)
-
-
-# 🔧 Importa e registra blueprints
+# registro dos blueprints
 from trabalhos import trabalhos_bp
 app.register_blueprint(trabalhos_bp)
 
@@ -56,10 +39,11 @@ app.register_blueprint(achados_bp)
 from reservas import reservas_bp
 app.register_blueprint(reservas_bp)
 
-# 🧠 Cria tabelas e o admin padrão
+# inicialização do banco e usuário admin
 with app.app_context():
-    db.create_all()  # garante que as tabelas existem
-    # Verifica se o admin já existe
+    db.create_all()
+    
+    # cria usuário admin padrão se não existir
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
         admin.nome = 'Administrador'
@@ -69,21 +53,16 @@ with app.app_context():
         admin.apartamento = '0'
         admin.is_adm = True
         admin.is_sindico = False
-        # Novo admin pode precisar do foto_id = None se for novo registro
-        # admin.foto_id = None 
 
         db.session.add(admin)
         db.session.commit()
-
     else:
-        print("⚙️ Conta de administrador já existe.")
+        print("conta de administrador já existe.")
 
-
-# 📡 Injeção de dados do usuário logado no template
+# injeta dados do usuário logado nos templates
 @app.context_processor
 def inject_usuario():
     class UsuarioFake:
-        # NOVIDADE: Adicionado 'foto_path' ao construtor
         def __init__(self, nome, email, bloco, apartamento, is_adm, is_sindico, foto_path):
             self.nome = nome
             self.email = email
@@ -91,11 +70,11 @@ def inject_usuario():
             self.apartamento = apartamento
             self.is_adm = is_adm
             self.is_sindico = is_sindico
-            self.foto_path = foto_path  # NOVIDADE: Campo para o caminho da foto
+            self.foto_path = foto_path
 
     usuario = UsuarioFake(
         session.get('user_name'),
-        session.get('user_email'),  # <-- ADICIONE AQUI
+        session.get('user_email'),
         session.get('user_bloco'),
         session.get('user_apartamento'),
         session.get('is_adm'),
@@ -105,9 +84,7 @@ def inject_usuario():
 
     return dict(usuario=usuario)
 
-
-# 🧩 Rotas principais
-
+# rotas principais
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -115,7 +92,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    # Último aviso URGENTE (se existir)
+    # busca aviso urgente mais recente
     aviso_urgente = (
         Aviso.query
         .filter_by(status='urgente')
@@ -123,7 +100,7 @@ def home():
         .first()
     )
 
-    # Últimos 3 avisos, independente do status
+    # últimos 3 avisos gerais
     ultimos_avisos = (
         Aviso.query
         .order_by(Aviso.data_aviso.desc())
@@ -131,7 +108,7 @@ def home():
         .all()
     )
 
-    # 🔹 Últimos 3 Achados e Perdidos
+    # últimos 3 achados e perdidos
     ultimos_achados = (
         Achado.query
         .order_by(Achado.data_achado.desc())
@@ -139,7 +116,7 @@ def home():
         .all()
     )
 
-    # 🔹 Últimos 3 Trabalhos
+    # últimos 3 trabalhos
     ultimos_trabalhos = (
         Trabalho.query
         .order_by(Trabalho.data_trabalho.desc())
@@ -148,9 +125,9 @@ def home():
     )
     
     categoria_trabalho = {
-    "beleza": "Beleza",
-    "prestacao_servico": "Prestação de Serviço",
-    "alimentacao": "Alimentação"
+        "beleza": "Beleza",
+        "prestacao_servico": "Prestação de Serviço", 
+        "alimentacao": "Alimentação"
     }
 
     return render_template(
@@ -161,7 +138,6 @@ def home():
         trabalhos=ultimos_trabalhos,
         categoria_trabalho=categoria_trabalho
     )
-
 
 @app.route('/achados_perdidos')
 @login_required
@@ -189,6 +165,7 @@ def usuarios():
 def reservas():
     reservas = Reserva.query.all()
 
+    # agrupa reservas por local para facilitar no template
     reservas_por_local = {}
     for r in reservas:
         if r.local not in reservas_por_local:
@@ -196,7 +173,6 @@ def reservas():
         reservas_por_local[r.local].append(r.data_reserva.strftime("%Y-%m-%d"))
 
     return render_template("reservas.html", reservas_por_local=reservas_por_local)
-
 
 @app.route('/acesso')
 def acesso():
