@@ -1,80 +1,76 @@
-/* ======================
-   CHAT FLUTUANTE COMPLETO
-   ====================== */
-.chat-float {
-    position: fixed;
-    bottom: 90px;
-    right: 25px;
-
-    /* ⬆ AQUI ESTÁ O QUE VOCÊ PRECISA */
-    width: 900px;      /* largura suficiente para sidebar + chat */
-    height: 600px;     /* altura para caber header, mensagens e input */
-
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.30);
-
-    display: none;     /* só aparece ao clicar */
-    flex-direction: row;
-    overflow: hidden;
-    z-index: 999999;
+/* chat.css - estilização funcional idêntica ao exemplo pedido */
+body {
+    margin: 0;
+    height: 100vh;
+    background: #e5e9f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Inter", sans-serif;
 }
 
-/* ========= SIDEBAR ========= */
-.chat-float .sidebar {
-    width: 260px;
+.chat-container {
+    width: calc(100% - 20px);
+    height: calc(100vh - 20px);
+    margin: 10px;
+    background: white;
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0,0,0,0.12);
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 270px;
     background: #0b4fa8;
     color: white;
     padding: 20px;
-    height: 100%;
-    overflow-y: auto;
 }
 
-.chat-float .sidebar h2 {
-    margin-bottom: 15px;
-    font-size: 20px;
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
 }
 
-.chat-float .sidebar li {
+.sidebar ul { padding: 0; }
+.sidebar li {
     list-style: none;
     background: rgba(255,255,255,0.15);
     padding: 10px;
     border-radius: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     cursor: pointer;
 }
 
-.chat-float .sidebar li:hover {
-    background: rgba(255,255,255,0.30);
+.sidebar li:hover {
+    background: rgba(255,255,255,0.25);
 }
 
-/* ========= ÁREA DO CHAT ========= */
-.chat-float .chat-area {
+/* CHAT AREA */
+.chat-area {
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
-/* HEADER */
-.chat-float header {
+.chat-area header {
     background: #0b4fa8;
     color: white;
-    padding: 15px;
-    font-size: 19px;
+    padding: 18px;
+    font-size: 20px;
     font-weight: bold;
 }
 
-/* MENSAGENS */
-.chat-float #messages {
+#messages {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
     background: #dfe7f3;
 }
 
-/* BOLHAS */
-.chat-float .bubble {
+/* Bolhas */
+.bubble {
     background: white;
     padding: 12px 16px;
     max-width: 65%;
@@ -83,37 +79,39 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.12);
 }
 
-.chat-float .bubble.me {
+.bubble.me {
     background: #0b77ff;
     color: white;
     margin-left: auto;
 }
 
-/* SISTEMA */
-.chat-float .system {
+.system {
     text-align: center;
     font-size: 13px;
     color: #555;
     margin: 10px;
 }
 
-/* INPUT */
-.chat-float form {
+/* FORM */
+form {
     display: flex;
     padding: 15px;
     background: white;
 }
 
-.chat-float form input {
+form input {
     flex: 1;
     padding: 12px;
     border-radius: 20px;
     border: 1px solid #ccc;
 }
 
-.chat-float form button {
+form button {
     margin-left: 10px;
     padding: 12px 20px;
     border: none;
     background: #0b4fa8;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
 }
