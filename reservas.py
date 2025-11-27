@@ -9,7 +9,7 @@ def nova_reserva():
         data_reserva = request.form.get('data_reserva', '').strip()
         local = request.form.get('local')
 
-        # Evita reservas duplicadas
+        # verifica se já existe reserva para mesma data e local
         reserva_existente = Reserva.query.filter_by(local=local, data_reserva=data_reserva).first()
 
         if reserva_existente:
@@ -27,7 +27,7 @@ def nova_reserva():
         flash('Reserva criada com sucesso!', 'success')
         return redirect(url_for('reservas_bp.reservas'))
 
-    # Monta datas ocupadas por local (para o calendário)
+    # prepara datas ocupadas para o calendário
     reservas_por_local = {}
     reservas = Reserva.query.all()
 
@@ -51,7 +51,6 @@ def excluir_reserva(reserva_id):
     flash('Reserva excluída com sucesso!', 'success')
     return redirect(url_for('reservas_bp.reservas'))
 
-
 @reservas_bp.route('/reservas')
 def reservas():
     reservas = (
@@ -61,22 +60,20 @@ def reservas():
         .all()
     )
     
+    # organiza datas ocupadas por local para o template
     datas_ocupadas = {}
 
     for reserva, usuario in reservas:
         data = reserva.data_reserva.strftime("%Y-%m-%d")
-        local = reserva.local  # "churrasqueira" ou "salao_festa"
+        local = reserva.local
 
         if data not in datas_ocupadas:
             datas_ocupadas[data] = []
 
-        # Adiciona o local apenas se não estiver já na lista (evita duplicatas)
         if local not in datas_ocupadas[data]:
             datas_ocupadas[data].append(local)
 
-    print("Datas ocupadas enviadas para template:", datas_ocupadas)  # Para debug
-
-    local_reservas ={
+    local_reservas = {
         "salao_festa": "Salão de Festas",
         "churrasqueira": "Churrasqueira"
     }
@@ -84,5 +81,6 @@ def reservas():
     return render_template(
         "reservas.html",
         reservas=reservas,
-        datas_ocupadas=datas_ocupadas, local_reservas=local_reservas
+        datas_ocupadas=datas_ocupadas, 
+        local_reservas=local_reservas
     )
