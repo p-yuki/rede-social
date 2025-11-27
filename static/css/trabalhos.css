@@ -38,8 +38,8 @@ body {
 
 /* Botão de Destaque */
 .btn-danger {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #dc3545;
+    border-color: #dc3545;
     color: #ffffff;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
@@ -52,8 +52,8 @@ body {
 }
 
 .btn-danger:hover {
-    background-color: #081a40;
-    border-color: #081a40;
+    background-color: #9a2632;
+    border-color: #9a2632;
     transform: translateY(-2px); 
 }
 
@@ -71,6 +71,9 @@ body {
     background-color: #ffffff;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     box-shadow: 0 5px 15px var(--shadow-color); 
+    max-width: 400px;        /* largura máxima do card */
+    margin: 20px auto;       /* centraliza e dá espaçamento */
+    border-radius: 12px;
 }
 
 .card:hover {
@@ -97,12 +100,18 @@ body {
     flex-direction: column;
 }
 
-/* Garante que a imagem fica em cima e com espaçamento */
-.card-body img {
+.instagram-card {
     width: 100%;
+    max-width: 380px; /* tamanho Instagram */
+    border-radius: 12px;
+}
+
+.instagram-card img {
+    width: 100%;
+    height: 280px;
     object-fit: cover;
-    margin-bottom: 15px;
-    border-radius: 6px;
+    border-radius: 10px;
+    margin-bottom: 3px;
 }
 
 /* Garante que o conteúdo textual ocupe 100% da largura */

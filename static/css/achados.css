@@ -21,9 +21,8 @@
 
 /* Botão de Destaque "Achou ou Perdeu Algo?" */
 .btn-danger {
-    /* Usa o azul escuro, que é a cor primária */
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #dc3545;
+    border-color: #dc3545;
     color: #ffffff;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
@@ -36,8 +35,8 @@
 }
 
 .btn-danger:hover {
-    background-color: #081a40; 
-    border-color: #081a40;
+    background-color: #9a2632; 
+    border-color: #9a2632;
     transform: translateY(-2px); 
 }
 
@@ -114,7 +113,6 @@
     color: var(--accent-color);
     border-color: var(--accent-color);
 }
-
 
 /* ==================================== */
 /* 3. ESTILO DOS STATUS (BADGES) */

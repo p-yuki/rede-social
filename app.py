@@ -3,6 +3,7 @@ from models import db, Usuario, Aviso, Achado, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 
@@ -10,6 +11,9 @@ app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_123' 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+app.config['SECRET_KEY'] = '123'
+socketio = SocketIO(app)
 app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -191,3 +195,18 @@ def achados():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@socketio.on('mensagem')
+def handle_message(msg):
+    print("Usuário:", msg)
+
+    resposta = f"Você disse: {msg}"  # Aqui você coloca seu chatbot, IA, etc.
+
+    emit('resposta', resposta)
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)

@@ -6,19 +6,20 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col">
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4>Achados e Perdidos</h4>
                 <a href="{{ url_for('achados_bp.novo_achados') }}" class="btn btn-danger">
                     <i class="bi bi-journal-plus"></i> Achou ou Perdeu Algo?
                 </a>
             </div>
+
             <div class="row mt-4">
 
+                {% for achado, usuario in achados %}
+                <div class="col-md-4 mb-4">
 
-                {% for achado, usuario, foto in achados %}
-                <div class="col-md-6 mb-4"> <!-- 2 colunas por linha -->
-
-                    <div class="card mb-4 shadow-sm h-100">
+                    <div class="card shadow-sm h-100">
 
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="card-title m-0 {% if achado.status == 'achado' %}text-success
@@ -40,62 +41,56 @@
                         </div>
 
                         <div class="card-body">
-                            {# ESTRUTURA DE COLUNAS PARA DEIXAR IMAGEM E TEXTO LADO A LADO #}
                             <div class="row">
 
-                                {# 1. COLUNA DA IMAGEM #}
-                                {% if foto %}
+                                {% if achado.foto %}
                                 <div class="col-md-4">
-                                    <img src="{{ url_for('static', filename='uploads/' ~ foto.foto_path) }}"
+                                    <img src="{{ url_for('static', filename='uploads/' ~ achado.foto.foto_path) }}"
                                         class="img-fluid rounded mb-3"
                                         style="max-height: 250px; object-fit: cover; width: 100%;">
                                 </div>
 
-                                {# 2. COLUNA DAS INFORMAÇÕES #}
                                 <div class="col-md-8">
-                                    {% else %}
-                                    {# 2. COLUNA DAS INFORMAÇÕES (Largura total se não houver foto) #}
-                                    <div class="col-md-12">
-                                        {% endif %}
+                                {% else %}
+                                <div class="col-md-12">
+                                {% endif %}
 
-                                        <p class="card-text"><strong>Descrição:</strong> {{ achado.descricao }}</p>
-                                        <p class="card-text"><strong>Local:</strong> {{ achado.local }}</p>
+                                    <p class="card-text"><strong>Descrição:</strong> {{ achado.descricao }}</p>
+                                    <p class="card-text"><strong>Local:</strong> {{ achado.local }}</p>
 
-                                        <p class="card-text">
-                                            <strong>Status:</strong>
-                                            <span
-                                                class="status-badge 
-                                    {% if achado.status == 'achado' %}status-achado{% elif achado.status == 'perdido' %}status-perdido{% endif %}">
-                                                {{ achado.status | capitalize }}
-                                            </span>
-                                        </p>
+                                    <p class="card-text">
+                                        <strong>Status:</strong>
+                                        <span class="status-badge 
+                                            {% if achado.status == 'achado' %}status-achado{% elif achado.status == 'perdido' %}status-perdido{% endif %}">
+                                            {{ achado.status | capitalize }}
+                                        </span>
+                                    </p>
 
-                                        <p class="card-text">
-                                            <strong>Encontrado em:</strong>
-                                            {{ achado.data_encontro.strftime('%d/%m/%Y') if achado.data_encontro else
-                                            'Não
-                                            informado' }}
-                                        </p>
-                                        <p class="card-text">
-                                            <strong>Contato:</strong> {{ achado.contato }}
-                                        </p>
-                                    </div>
+                                    <p class="card-text">
+                                        <strong>Encontrado em:</strong>
+                                        {{ achado.data_encontro.strftime('%d/%m/%Y') if achado.data_encontro else 'Não informado' }}
+                                    </p>
+
+                                    <p class="card-text">
+                                        <strong>Contato:</strong> {{ achado.contato }}
+                                    </p>
+
                                 </div>
-                            </div>
-
-                            <div class="card-footer text-muted">
-                                <small>Postado por <strong>{{ usuario.nome }}</strong> em
-                                    {{ achado.data_achado.strftime('%d/%m/%Y %H:%M') }}</small>
                             </div>
                         </div>
 
+                        <div class="card-footer text-muted">
+                            <small>Postado por <strong>{{ usuario.nome }}</strong> em
+                                {{ achado.data_achado.strftime('%d/%m/%Y %H:%M') }}</small>
+                        </div>
+
                     </div>
-                    {% endfor %}
-
-
                 </div>
+                {% endfor %}
 
             </div>
+
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}
