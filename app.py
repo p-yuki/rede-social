@@ -25,7 +25,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 💾 Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:2007@localhost/redesocialdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
