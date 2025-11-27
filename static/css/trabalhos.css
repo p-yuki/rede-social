@@ -1,6 +1,3 @@
-/* ARQUIVO CSS TRABALHOS.CSS - Finalizado */
-
-/* Definições de Cores e Tipografia */
 :root {
     --primary-color: #0c2461;
     --accent-color: #e74c3c;
@@ -15,28 +12,21 @@ body {
     color: var(--text-color);
 }
 
-/* Garante o espaçamento da seção principal */
 .container.mt-4 {
     padding-top: 25px;
     padding-bottom: 50px;
 }
 
-/* ==================================== */
-/* 1. TÍTULO E BOTÃO "MOSTRA SEU TRABALHO" */
-/* ==================================== */
-
-/* Título de Seção (Igual ao da Home) */
 .container h4 {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--primary-color); 
     margin-top: 40px;
-    margin-bottom: 0; /* Ajustado para melhor alinhamento com o botão */
+    margin-bottom: 0;
     border-bottom: 3px solid #e0e6ed; 
     padding-bottom: 8px;
 }
 
-/* Botão de Destaque */
 .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
@@ -44,8 +34,8 @@ body {
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
     padding: 10px 25px; 
-    border-radius: 50px; /* Efeito Pill */
-    display: inline-flex; /* Alinhamento do Ícone */
+    border-radius: 50px;
+    display: inline-flex;
     align-items: center; 
     gap: 8px; 
     text-decoration: none;
@@ -61,18 +51,14 @@ body {
     font-size: 1.2em;
 }
 
-/* ==================================== */
-/* 2. ESTILO DOS CARTÕES DE TRABALHOS */
-/* ==================================== */
-
 .card {
     border: none;
     border-radius: 10px; 
     background-color: #ffffff;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     box-shadow: 0 5px 15px var(--shadow-color); 
-    max-width: 400px;        /* largura máxima do card */
-    margin: 20px auto;       /* centraliza e dá espaçamento */
+    max-width: 400px; 
+    margin: 20px auto;
     border-radius: 12px;
 }
 
@@ -94,7 +80,6 @@ body {
     font-size: 1.25rem;
 }
 
-/* Força a estrutura interna a ficar em coluna */
 .card-body .row {
     display: flex;
     flex-direction: column;
@@ -102,7 +87,7 @@ body {
 
 .instagram-card {
     width: 100%;
-    max-width: 380px; /* tamanho Instagram */
+    max-width: 380px;
     border-radius: 12px;
 }
 
@@ -114,7 +99,6 @@ body {
     margin-bottom: 3px;
 }
 
-/* Garante que o conteúdo textual ocupe 100% da largura */
 .card-body .col-md-4,
 .card-body .col-md-8,
 .card-body .col-md-12 {
