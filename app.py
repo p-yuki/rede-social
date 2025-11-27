@@ -197,6 +197,11 @@ def achados():
 def index():
     return render_template('index.html')
 
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
+
 @socketio.on('mensagem')
 def handle_message(msg):
     print("Usuário:", msg)
