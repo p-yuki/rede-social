@@ -10,9 +10,10 @@ body {
 }
 
 .chat-container {
-    width: calc(100% - 20px);
-    height: calc(100vh - 20px);
-    margin: 10px;
+    width: 75%;
+    max-width: 1100px;
+    height: 80vh;
+    margin: 20px auto;
     background: white;
     display: flex;
     border-radius: 16px;
