@@ -10,15 +10,17 @@ body {
 }
 
 .chat-container {
-    width: calc(100% - 40px);   /* Aumenta a largura útil */
-    max-width: 1300px;          /* Mais largo */
-    height: calc(100vh - 40px);
+    width: 82%;
+    max-width: 1180px;   /* aumentei só um pouco */
+    height: 85vh;        /* aumentei levemente */
     margin: 20px auto;
     background: white;
     display: flex;
     border-radius: 16px;
-    overflow: visible;
-    box-shadow: 0 0 25px rgba(0,0,0,0.12);
+    overflow: hidden;
+    
+    /* sombra leve para efeito “flutuante” */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
 /* SIDEBAR */
@@ -53,6 +55,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    flex: 1;
 }
 
 .chat-area header {
@@ -94,25 +97,44 @@ body {
 }
 
 /* FORM */
-form {
-    flex-shrink: 0;
-    padding: 15px;
-    background: white;
+#form {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #fff;
+    position: sticky;
+    bottom: 0;
 }
 
-form input {
+#input {
     flex: 1;
     padding: 12px;
-    border-radius: 20px;
     border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
 }
 
-form button {
-    margin-left: 10px;
-    padding: 12px 20px;
-    border: none;
-    background: #0b4fa8;
+#input:focus {
+    border-color: #4b8df8;
+    box-shadow: 0 0 0 2px rgba(75, 141, 248, 0.2);
+}
+
+/* Botão de enviar */
+#form button {
+    background: #4b8df8;
     color: white;
-    border-radius: 20px;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
     cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+#form button:hover {
+    background: #357ae8;
 }
