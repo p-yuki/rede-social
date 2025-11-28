@@ -10,9 +10,9 @@ body {
 }
 
 .chat-container {
-    width: 75%;
-    max-width: 1100px;
-    height: 80vh;
+    width: calc(100% - 40px);   /* Aumenta a largura útil */
+    max-width: 1300px;          /* Mais largo */
+    height: calc(100vh - 40px);
     margin: 20px auto;
     background: white;
     display: flex;
