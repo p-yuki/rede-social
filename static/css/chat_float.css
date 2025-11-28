@@ -23,12 +23,21 @@
   position: fixed;
   bottom: 100px;
   right: 25px;
-  width: 900px;
+
+  width: 600px;
+  max-width: 95vw;
+  
   height: 650px;
+  max-height: 85vh;
+
+  /* NOVO — garante espaço para o header */
+  display: flex;
+  flex-direction: column;
+
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  display: none;             /* aparece com a classe .open */
+  display: none;
   z-index: 2147483646;
   overflow: hidden;
 }
@@ -41,6 +50,8 @@
   padding:8px 12px;
   background:#0C2461;
   color:white;
+  z-index: 2;
+  position: relative;
 }
 #chatFloatWindow .closeBtn {
   background: transparent;
@@ -52,8 +63,9 @@
 
 /* iframe ocupa o espaço todo */
 #chatFloatFrame {
-  width:100%;
-  height: calc(100% - 60px); /* deixa espaço para header */
+  width: 100%;
+  height: 100%;
+  flex: 1;   /* iframe ocupa o restante */
   border: none;
   display: block;
 }
