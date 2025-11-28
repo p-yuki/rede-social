@@ -67,3 +67,12 @@
   border: none;
   display: block;
 }
+
+/* Centraliza o conteúdo dentro do chat float */
+#chat-float .chat-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* Centraliza verticalmente */
+    align-items: center;       /* Centraliza horizontalmente */
+    height: 100%;
+}
