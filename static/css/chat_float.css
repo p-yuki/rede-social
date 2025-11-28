@@ -21,14 +21,12 @@
 
 #chatFloatWindow {
   position: fixed;
-  bottom: 100px;
-  right: 25px;
+  bottom: 40px;
+  right: 40px;
 
-  width: 600px;
-  max-width: 95vw;
-  
-  height: 650px;
-  max-height: 85vh;
+  width: 75vw;
+  max-width: 1100px;
+  height: 80vh;
 
   /* NOVO — garante espaço para o header */
   display: flex;
