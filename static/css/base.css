@@ -87,6 +87,10 @@ h1 {
     text-align: center;
 }
 
+.navbar-toggler-icon {
+    filter: brightness(0) invert(1); /* deixa branco */
+}
+
 .footer {
     background-color: #e0e6ed; 
     color: var(--text-color);
