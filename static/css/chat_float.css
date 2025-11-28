@@ -1,4 +1,4 @@
-/* chat_float.css — card flutuante, header visível e iframe ajustável */
+/* chat_float.css - botão e janela flutuante */
 #chatFloatBtn {
   position: fixed;
   bottom: 25px;
@@ -14,44 +14,56 @@
   font-size: 28px;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  z-index: 2147483647;
+  z-index: 2147483647; /* muito alto para aparecer por cima */
+  transition: transform .15s ease;
 }
-#chatFloatBtn:hover { transform: scale(1.06); }
+#chatFloatBtn:hover { transform: scale(1.08); }
 
-/* Card flutuante — usamos flex-column: header + iframe (iframe ocupa restante) */
 #chatFloatWindow {
   position: fixed;
   bottom: 40px;
   right: 40px;
+
   width: 75vw;
-  max-width: 1150px;
+  max-width: 1100px;
   height: 80vh;
-  max-height: 900px;
-  display: none;            /* toggled via JS */
+
+  /* NOVO — garante espaço para o header */
+  display: flex;
   flex-direction: column;
+
   background: #fff;
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  display: none;
   z-index: 2147483646;
   overflow: hidden;
 }
+#chatFloatWindow.open { display: block; }
 
-/* header do card (sempre visível) */
 #chatFloatWindow .header {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:10px 16px;
+  padding:8px 12px;
   background:#0C2461;
   color:white;
   z-index: 2;
-  flex-shrink: 0;
+  position: relative;
+}
+#chatFloatWindow .closeBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
 }
 
-/* iframe — ocupa todo o espaço restante do card */
+/* iframe ocupa o espaço todo */
 #chatFloatFrame {
   width: 100%;
-  flex: 1;       /* ESSENCIAL: preenche restante abaixo do header */
+  height: 100%;
+  flex: 1;   /* iframe ocupa o restante */
   border: none;
   display: block;
 }

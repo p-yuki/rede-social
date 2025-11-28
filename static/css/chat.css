@@ -1,22 +1,23 @@
-/* chat.css — versão corrigida para layout estável dentro do iframe */
-
-/* base */
-* { box-sizing: border-box; }
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #e5e9f0;
+/* chat.css - estilização funcional idêntica ao exemplo pedido */
+body {
+    margin: 0;
+    height: 100vh;
+    background: #e5e9f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Inter", sans-serif;
 }
 
-/* garante que o container ocupe todo o iframe */
 .chat-container {
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 40px);   /* Aumenta a largura útil */
+    max-width: 1300px;          /* Mais largo */
+    height: calc(100vh - 40px);
+    margin: 20px auto;
     background: white;
     display: flex;
     border-radius: 16px;
-    overflow: visible; /* NÃO cortar conteúdo */
+    overflow: visible;
     box-shadow: 0 0 25px rgba(0,0,0,0.12);
 }
 
@@ -26,13 +27,14 @@ html, body {
     background: #0b4fa8;
     color: white;
     padding: 20px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
 }
 
-.sidebar h2 { margin-bottom: 20px; font-size: 22px; }
-.sidebar ul { padding: 0; margin: 0; }
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.sidebar ul { padding: 0; }
 .sidebar li {
     list-style: none;
     background: rgba(255,255,255,0.15);
@@ -41,31 +43,29 @@ html, body {
     margin-bottom: 10px;
     cursor: pointer;
 }
-.sidebar li:hover { background: rgba(255,255,255,0.25); }
 
-/* ÁREA DO CHAT - coluna flexível */
-.chat-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* ESSENCIAL para que os filhos possam encolher corretamente */
+.sidebar li:hover {
+    background: rgba(255,255,255,0.25);
 }
 
-/* Header menor (conforme pediu) */
+/* CHAT AREA */
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .chat-area header {
     background: #0b4fa8;
     color: white;
-    padding: 8px 18px; /* altura reduzida */
+    padding: 8px 18px;
     font-size: 20px;
     font-weight: bold;
-    flex-shrink: 0;
 }
 
-/* ÁREA DE MENSAGENS — ocupa o restante e rola internamente */
 #messages {
-    flex: 1;            /* preenche o espaço restante */
-    min-height: 0;      /* ESSENCIAL para evitar overflow cortando */
-    padding: 20px;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     background: #dfe7f3;
 }
@@ -79,11 +79,13 @@ html, body {
     margin-bottom: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.12);
 }
+
 .bubble.me {
     background: #0b77ff;
     color: white;
     margin-left: auto;
 }
+
 .system {
     text-align: center;
     font-size: 13px;
@@ -91,15 +93,11 @@ html, body {
     margin: 10px;
 }
 
-/* FORM (fica fixo na base do chat-area) */
+/* FORM */
 form {
-    flex-shrink: 0;     /* não será cortado */
-    display: flex;
+    flex-shrink: 0;
     padding: 15px;
     background: white;
-    align-items: center;
-    gap: 10px;
-    border-top: 1px solid rgba(0,0,0,0.05);
 }
 
 form input {
@@ -107,20 +105,14 @@ form input {
     padding: 12px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    outline: none;
 }
 
 form button {
+    margin-left: 10px;
     padding: 12px 20px;
     border: none;
     background: #0b4fa8;
     color: white;
     border-radius: 20px;
     cursor: pointer;
-}
-
-/* Responsividade: se a janela for pequena, sidebar vira colapsável visualmente */
-@media (max-width: 900px) {
-    .sidebar { display: none; }
-    .chat-container { border-radius: 0; }
 }
