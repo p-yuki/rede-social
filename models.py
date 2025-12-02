@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-#cria tabela usuarios
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
@@ -13,35 +12,44 @@ class Usuario(db.Model):
     bloco = db.Column(db.String(16), nullable=False)
     is_adm = db.Column(db.Boolean, default=False, nullable=False)
     is_sindico = db.Column(db.Boolean, default=False, nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
     
-    # === NOVIDADES PARA FOTO DE PERFIL ===
-    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True) 
+    # relacionamentos
+    trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True)
+    achados = db.relationship('Achado', backref='usuario', lazy=True)
+    reservas = db.relationship('Reserva', backref='usuario', lazy=True)
+
+    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
     foto_perfil = db.relationship("Foto", backref="usuario_perfil", lazy=True, primaryjoin="Usuario.foto_id == Foto.id")
-    # ====================================
-    
-    trabalhos = db.relationship('Trabalho', backref='usuario', lazy=True, cascade='all, delete-orphan') 
-    aeps = db.relationship('Aep', backref='usuario', lazy=True, cascade='all, delete-orphan') 
-    reservas = db.relationship('Reserva', backref='usuario', lazy=True, cascade='all, delete-orphan')
+
 
 class Trabalho(db.Model):
     __tablename__ = 'trabalhos'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
-    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
+    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'))
+    
     descricao = db.Column(db.Text, nullable=False)
     categoria = db.Column(db.String(255), nullable=False)
     data_trabalho = db.Column(db.DateTime, default=db.func.current_timestamp())
-    nome_trabalho =db.Column(db.String(255), nullable=False)
+    nome_trabalho = db.Column(db.String(255), nullable=False)
+    bloco = db.Column(db.String(16))
+    apartamento = db.Column(db.String(16))
+    contato = db.Column(db.String(255), nullable=False)
+
 
 class Foto(db.Model):
     __tablename__ = 'fotos'
     id = db.Column(db.Integer, primary_key=True)
-    # ATENÇÃO: O campo usuario_id aqui refere-se a QUEM fez o upload da foto. 
-    # Para foto de perfil, o ID do usuário cadastrado na foto é o ID do ADM/síndico que cadastrou.
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False) 
+    # usuário que fez o upload da foto
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
     filename = db.Column(db.String(255), nullable=False)
     foto_path = db.Column(db.String(500), nullable=False)
     data_upload = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    trabalhos = db.relationship('Trabalho', backref='foto', lazy=True)
+    achados = db.relationship('Achado', backref='foto', lazy=True)
+
 
 class Aviso(db.Model):
     __tablename__ = 'avisos'
@@ -55,19 +63,21 @@ class Aviso(db.Model):
     data_criacao = db.Column(db.DateTime, default=db.func.current_timestamp())
     nome_aviso = db.Column(db.String(255), nullable=False)
 
-class Aep(db.Model):
-    __tablename__ = 'aeps'
+
+class Achado(db.Model):
+    __tablename__ = 'achados'
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(255), nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
-    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'), nullable=True)
-    descricao = db.Column(db.Text, nullable=False)
+    foto_id = db.Column(db.Integer, db.ForeignKey('fotos.id'))
+
+    descricao = db.Column(db.String(255), nullable=False)
     local = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(16), nullable=False)
-    data_aep = db.Column(db.DateTime, default=db.func.current_timestamp())
+    contato = db.Column(db.String(20), nullable=False)
+
+    data_achado = db.Column(db.DateTime, default=db.func.current_timestamp())
     data_encontro = db.Column(db.Date())
 
-    foto = db.relationship("Foto", backref="aep", lazy=True)
 
 class Reserva(db.Model):
     __tablename__ = 'reservas'

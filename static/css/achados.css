@@ -1,0 +1,116 @@
+.container h4 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: 40px;
+    margin-bottom: 10px;
+    border-bottom: 3px solid #e0e6ed;
+    padding-bottom: 8px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-danger:hover {
+    background-color: #9a2632;
+    border-color: #9a2632;
+    transform: translateY(-2px);
+}
+
+.btn-danger i.bi {
+    font-size: 1.2em;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #e9ecef;
+    padding: 15px 25px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-body p.card-text {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.card-body p strong {
+    color: #34495e;
+    font-weight: 600;
+}
+
+.img-fluid {
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    width: 100%;
+}
+
+.card-footer {
+    background-color: #f7f9fc;
+    border-top: 1px solid #e9ecef;
+    padding: 12px 25px;
+    color: #95a5a6;
+    font-size: 0.9rem;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.btn-outline-danger {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    margin-left: 8px;
+    line-height: 1;
+}
+
+.status-achado {
+    background-color: #27ae60;
+}
+
+.status-perdido {
+    background-color: var(--accent-color);
+    box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
+}

@@ -16,7 +16,7 @@
 <body>
   <!-- NAVBAR FIXA + RESPONSIVA -->
   <nav class="navbar navbar-expand-lg fixed-top"
-    style="background-color: #348ce3; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    style="background-color: #0C2461; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <div class="container-fluid">
       <a class="navbar-brand text-light fw-semibold" href="{{ url_for('home') }}">
         <i class="bi bi-house-heart-fill"></i> Boa Vizinhança
@@ -32,7 +32,7 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="{{ url_for('home') }}" class="nav-link text-light active">Home</a>
+            <a href="{{ url_for('home') }}" class="nav-link text-light">Home</a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('trabalhos') }}" class="nav-link text-light">Trabalhos</a>
@@ -44,7 +44,7 @@
             <a href="{{ url_for('avisos') }}" class="nav-link text-light">Avisos</a>
           </li>
           <li class="nav-item">
-            <a href="{{ url_for('aeps') }}" class="nav-link text-light">Achados e Perdidos</a>
+            <a href="{{ url_for('achados') }}" class="nav-link text-light">Achados e Perdidos</a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('reservas') }}" class="nav-link text-light">Reservas</a>
@@ -62,14 +62,48 @@
   </nav>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <div class="main p-3 mt-5">
+  <div class="main p-3 mt-3">
     {% block content %}{% endblock %}
   </div>
+
+  <!-- CHAT -->
+  <!-- Chat flutuante - botão e janela -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat_float.css') }}">
+
+<div id="chatFloatBtn" title="Abrir chat">💬</div>
+
+<div id="chatFloatWindow" aria-hidden="true">
+  <div class="header">
+    <div>Chat</div>
+    <button class="closeBtn" id="chatCloseBtn" aria-label="Fechar">✕</button>
+  </div>
+  <iframe id="chatFloatFrame" src="/chat"></iframe>
+</div>
+
+<script>
+  // Toggle do float
+  (function(){
+    const btn = document.getElementById('chatFloatBtn');
+    const win = document.getElementById('chatFloatWindow');
+    const closeBtn = document.getElementById('chatCloseBtn');
+
+    btn.addEventListener('click', () => {
+      win.classList.toggle('open');
+      // acessibilidade
+      win.setAttribute('aria-hidden', win.classList.contains('open') ? 'false' : 'true');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      win.classList.remove('open');
+      win.setAttribute('aria-hidden', 'true');
+    });
+  })();
+</script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
-</body>
 
+</body>
 </html>

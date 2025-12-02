@@ -13,14 +13,18 @@
                 </a>
             </div>
 
+            <!-- CARD 1 -->
+            <div class="row">
             {% for trabalho, usuario, foto in trabalhos %}
-                <div class="card mt-3 mb-4">
+                <div class="col-md-4 d-flex justify-content-center">
+                    <div class="card instagram-card mt-3 mb-4">
+
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title m-0"><strong>{{ trabalho.nome_trabalho }}</strong></h5>
 
                         {% if trabalho.usuario_id == session['user_id'] %}
                             <form action="{{ url_for('trabalhos_bp.excluir_trabalho', trabalho_id=trabalho.id) }}" method="POST"
-                                    onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                onsubmit="return confirm('Tem certeza que deseja excluir?');">
                                 <button class="btn btn-sm btn-outline-danger">
                                     <i class="bi bi-trash"></i>
                                 </button>
@@ -29,38 +33,28 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="row">
                             {% if foto %}
-                                <div class="col-md-4">
                                     <img src="{{ url_for('static', filename='uploads/' ~ foto.foto_path) }}"
-                                            class="img-fluid rounded mb-3"
-                                            style="max-height: 250px; object-fit: cover; width: 100%;">
-                                </div>
-                                <div class="col-md-8">
-                            {% else %}
-                                <div class="col-md-12">
+                                        class="card-img-top">
                             {% endif %}
-                                        <p class="card-text"><strong>Descrição:</strong> {{ trabalho.descricao }}</p>
 
-                                        <p class="card-text">
-                                            <strong>Categoria:</strong> {{ trabalho.categoria }}
-                                        </p>
-
-                                        <p class="card-text">
-                                            <strong>Morador:</strong> {{ usuario.nome }}
-                                            (Apto: {{ usuario.apartamento }}, Bloco: {{ usuario.bloco }})
-                                        </p>
-                                </div>
+                            <p class="card-text"><strong>Descrição:</strong> {{ trabalho.descricao }}</p>
+                            <p class="card-text"><strong>Categoria:</strong> {{ trabalho.categoria }}</p>
+                            <p class="card-text">
+                                <strong>Morador:</strong> {{ usuario.nome }}
+                                (Apto: {{ usuario.apartamento }}, Bloco: {{ usuario.bloco }})
+                            </p>
                         </div>
-                    </div>
 
-                    <div class="card-footer text-muted">
-                        <small>Postado por <strong>{{ usuario.nome }}</strong> em
-                            {{ trabalho.data_trabalho.strftime('%d/%m/%Y %H:%M') }}</small>
+                        <div class="card-footer text-muted">
+                            <small>Postado por <strong>{{ usuario.nome }}</strong> em 
+                                {{ trabalho.data_trabalho.strftime('%d/%m/%Y %H:%M') }}
+                            </small>
+                        </div>
+
                     </div>
                 </div>
             {% endfor %}
-        </div>
-    </div>
-</div>
+            </div>
+
 {% endblock %}

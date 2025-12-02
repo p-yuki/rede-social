@@ -8,19 +8,44 @@
             <tr>
                 <th>Nome de usuário</th>
                 <th>Apartamento e Bloco</th>
-                {% if usuario.is_adm %}
-                <th>É síndico?</th>
-                <th>É admistrador?</th>
+                <th>Email</th>
+                <th>Síndico</th>
+                <th>Administrador</th>
+                <th>Status</th>
+                {% if session.is_adm %}
+                <th>Ações</th>
                 {% endif %}
             </tr>
         </thead>
+
         <tbody>
             {% for usuario in usuarios %}
-            <tr>
+            <tr class="{% if not usuario.is_active %}table-danger{% endif %}">
                 <td>{{ usuario.nome }}</td>
-                <td>{{ usuario.apartamento }} - {{ usuario.bloco}} </td>
-                <td>{{ usuario.is_sindico }}</td>
-                <td>{{ usuario.is_adm }}</td>
+                <td>{{ usuario.apartamento }} - {{ usuario.bloco }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ 'Sim' if usuario.is_sindico else 'Não' }}</td>
+                <td>{{ 'Sim' if usuario.is_adm else 'Não' }}</td>
+                <td>
+                    {% if usuario.is_active %}
+                    <span class="badge bg-success">Ativo</span>
+                    {% else %}
+                    <span class="badge bg-danger">Desativado</span>
+                    {% endif %}
+                </td>
+
+                {% if session.is_adm %}
+                <td>
+                    {% if usuario.is_active %}
+                    <form method="POST" action="{{ url_for('usuarios_bp.desativar_usuario', user_id=usuario.id) }}"
+                        onsubmit="return confirm('Tem certeza que deseja DESATIVAR este usuário?');">
+                        <button class="btn btn-sm btn-warning">Desativar</button>
+                    </form>
+                    {% else %}
+                    <em>—</em>
+                    {% endif %}
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

@@ -26,7 +26,7 @@
             </div>
         </div>
         {% else %}
-        <p class="text-muted text-center mt-4">Nenhum aviso **urgente** no momento.</p>
+        <p class="text-muted text-center mt-4">Nenhum aviso urgente no momento</p>
         {% endif %}
     </div>
 
@@ -83,20 +83,23 @@
 
             <div class="col-12 col-md-6 mb-4">
                 <h4>Últimos Achados e Perdidos</h4>
-                {% if aeps %}
-                {% for aep in aeps %}
+                {% if achados %}
+                {% for achado in achados %}
                 <a href="#" class="card-link">
                     <div class="card small-card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">{{ aep.titulo }}</h5>
+                            <h5 class="card-title">{{ achado.descricao }}</h5>
                             <p class="m-0">
                                 <strong>Status:</strong>
-                                <span class="badge {% if aep.status == 'achado' %}badge-success{% else %}badge-danger{% endif %}">
-                                    {{ aep.status|upper }}
+                                <span class="badge {% if achado.status == 'achado' %}badge-success{% else %}badge-danger{% endif %}">
+                                    {{ achado.status|upper }}
                                 </span>
                             </p>
+                        <p class="card-text m-0">
+                            <strong>Contato:</strong> {{ achado.contato }}
+                        </p>
                             <small class="text-secondary">
-                                Dia: {{ aep.data_encontro.strftime('%d/%m/%Y') if aep.data_encontro else 'Não informado' }}
+                                Dia: {{ achado.data_encontro.strftime('%d/%m/%Y') if achado.data_encontro else 'Não informado' }}
                             </small>
                         </div>
                     </div>
@@ -122,7 +125,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ trabalho.nome_trabalho }}</h5>
                             <p class="card-text m-0">
-                                **Categoria:** <span class="text-info">{{ trabalho.categoria }}</span>
+                                Categoria: <span class="text-info">{{ trabalho.categoria }}</span>
                             </p>
                             <small class="text-secondary">
                                 Publicado em: {{ trabalho.data_trabalho.strftime('%d/%m/%Y %H:%M') }}

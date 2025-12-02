@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Chat do Condomínio</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+
+<body>
+
+    <div class="chat-container">
+
+        <!-- SIDEBAR ORIGINAL DO PRIMEIRO HTML -->
+        <aside class="sidebar">
+            <h2>Conversas</h2>
+
+            <ul>
+                <li onclick="joinRoom('bloco')">Chat do Bloco</li>
+                <li onclick="joinRoom('assembleia')">Chat da Assembleia 🏛️</li>
+            </ul>
+
+            <h3>Online</h3>
+            <ul id="users"></ul>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL DO CHAT -->
+        <main class="chat-area">
+
+            <header>
+                <h1 id="roomTitle">Chat do Bloco</h1>
+                <div id="meinfo"></div>
+            </header>
+
+            <div id="messages" class="messages"></div>
+
+            <form id="form">
+                <input id="input" autocomplete="off" placeholder="Digite uma mensagem...">
+                <button type="submit">Enviar</button>
+            </form>
+
+        </main>
+
+    </div>
+
+<script>
+/* =====================================================
+   PEGAR NOME DO USUÁRIO VINDO DO FLASK
+   ===================================================== */
+// Se não tiver usuário, usamos "Visitante"
+let username = "{{ usuario.nome or 'Visitante' }}";
+let room = "bloco"; // sala padrão
+
+// Síndico = acesso à sala assembleia
+let isAdmin = ("{{ usuario.is_sindico }}" === "True");
+
+/* =====================================================
+   ELEMENTOS QUE EXISTEM NO chat.html
+   (evita erros ao carregar outras páginas)
+   ===================================================== */
+const elMessages = document.getElementById("messages");
+const elUsers = document.getElementById("users");
+const elRoomTitle = document.getElementById("roomTitle");
+const elForm = document.getElementById("form");
+const elInput = document.getElementById("input");
+
+const elTabBloco = document.getElementById("tab-bloco");
+const elTabAssembleia = document.getElementById("tab-assembleia");
+
+if (!elMessages) {
+    console.warn("⚠️ Script do chat carregado em outra página — ignorado.");
+}
+else {
+
+/* =====================================================
+   SOCKET
+   ===================================================== */
+const socket = io();
+
+/* =====================================================
+   TROCAR DE SALA
+   ===================================================== */
+function joinRoom(newRoom) {
+
+    if (newRoom === "assembleia" && !isAdmin) {
+        alert("Apenas síndicos podem acessar o chat da Assembleia.");
+        return;
+    }
+
+    room = newRoom;
+
+    if (elRoomTitle) {
+        elRoomTitle.innerText =
+            room === "bloco" ? "Chat do Bloco" : "Chat da Assembleia 🏛️";
+    }
+
+    elMessages.innerHTML = "";
+    socket.emit("join", { username, room });
+}
+
+/* =====================================================
+   EVENTOS SOCKET.IO
+   ===================================================== */
+socket.on("connect", () => joinRoom("bloco"));
+
+socket.on("users", users => {
+    if (!elUsers) return;
+    elUsers.innerHTML = "";
+    users.forEach(u => {
+        let li = document.createElement("li");
+        li.textContent = u;
+        elUsers.appendChild(li);
+    });
+});
+
+socket.on("system_message", data => addSystemMessage(data.msg));
+socket.on("message", data => addMessage(data.username, data.msg));
+
+/* =====================================================
+   EXIBIR MENSAGENS
+   ===================================================== */
+function addMessage(user, msg) {
+    let div = document.createElement("div");
+    div.classList.add("bubble");
+
+    if (user === username) div.classList.add("me");
+
+    div.innerHTML = `<strong>${user}:</strong> <span>${msg}</span>`;
+    elMessages.appendChild(div);
+
+    elMessages.scrollTop = elMessages.scrollHeight;
+}
+
+function addSystemMessage(msg) {
+    let div = document.createElement("div");
+    div.classList.add("system");
+    div.textContent = msg;
+    elMessages.appendChild(div);
+}
+
+/* =====================================================
+   ENVIAR MENSAGEM
+   ===================================================== */
+elForm.addEventListener("submit", e => {
+    e.preventDefault();
+    if (elInput.value.trim() !== "") {
+        socket.emit("message", { username, msg: elInput.value, room });
+        elInput.value = "";
+    }
+});
+
+/* =====================================================
+   BOTÕES DE TROCA DE SALA
+   ===================================================== */
+if (elTabBloco) elTabBloco.addEventListener("click", () => joinRoom("bloco"));
+if (elTabAssembleia) elTabAssembleia.addEventListener("click", () => joinRoom("assembleia"));
+
+} // fim verificação chat.html
+</script>
+
+</body>
+</html>

@@ -1,30 +1,29 @@
-from flask import Flask, render_template, session
-from models import db, Usuario, Aviso, Aep, Trabalho, Reserva
+from flask import Flask, render_template, session, request
+from models import db, Usuario, Aviso, Achado, Trabalho, Reserva
 from utils import login_required
 import os
 from werkzeug.security import generate_password_hash
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
-# --- INICIALIZAÇÃO E CHAVE SECRETA ---
 app = Flask(__name__)
 
-# 🔑 CHAVE SECRETA (CRUCIAL): Deve ser a PRIMEIRA configuração após 'app = Flask()'.
+# configuração inicial crítica
 app.secret_key = 'sua_chave_secreta_123' 
 
-# 📁 CONFIGURAÇÕES DE UPLOAD (CORREÇÃO DO CAMINHO ABSOLUTO)
-# 1. Define o caminho base do projeto de forma absoluta.
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# 2. Define a pasta de uploads DENTRO de 'static' usando o caminho absoluto.
+app.config['SECRET_KEY'] = '123'
+socketio = SocketIO(app)
 app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# 💾 Configuração do banco de dados
+# configuração do banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHECHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# 🔧 Importa e registra blueprints
+# registro dos blueprints
 from trabalhos import trabalhos_bp
 app.register_blueprint(trabalhos_bp)
 
@@ -34,20 +33,21 @@ app.register_blueprint(avisos_bp)
 from usuarios import usuarios_bp
 app.register_blueprint(usuarios_bp)
 
-from aeps import aeps_bp
-app.register_blueprint(aeps_bp)
+from achados import achados_bp
+app.register_blueprint(achados_bp)
 
 from reservas import reservas_bp
 app.register_blueprint(reservas_bp)
 
-# 🧠 Cria tabelas e o admin padrão
+# inicialização do banco e usuário admin
 with app.app_context():
-    db.create_all()  # garante que as tabelas existem
-    # Verifica se o admin já existe
+    db.create_all()
+    
+    # cria usuário admin padrão se não existir
     if not Usuario.query.filter_by(email='adm@gmail.com').first():
         admin = Usuario()
         admin.nome = 'Administrador'
-        admin.email = 'adm@gmail.com'
+        admin.email = 'adm@email.com'
         admin.senha = generate_password_hash('12345')
         admin.bloco = '0'
         admin.apartamento = '0'
@@ -56,37 +56,35 @@ with app.app_context():
 
         db.session.add(admin)
         db.session.commit()
-
     else:
-        print("⚙️ Conta de administrador já existe.")
+        print("conta de administrador já existe.")
 
-
-# 📡 Injeção de dados do usuário logado no template
+# injeta dados do usuário logado nos templates
 @app.context_processor
 def inject_usuario():
     class UsuarioFake:
-        # NOVIDADE: Adicionado 'foto_path' ao construtor
-        def __init__(self, nome, bloco, apartamento, is_adm, is_sindico, foto_path):
+        def __init__(self, nome, email, bloco, apartamento, is_adm, is_sindico, foto_path):
             self.nome = nome
+            self.email = email
             self.bloco = bloco
             self.apartamento = apartamento
             self.is_adm = is_adm
             self.is_sindico = is_sindico
-            self.foto_path = foto_path # NOVIDADE: Campo para o caminho da foto
+            self.foto_path = foto_path
 
     usuario = UsuarioFake(
         session.get('user_name'),
+        session.get('user_email'),
         session.get('user_bloco'),
         session.get('user_apartamento'),
         session.get('is_adm'),
         session.get('is_sindico'),
-        session.get('user_foto_path') # NOVIDADE: Busca o caminho da foto da sessão
+        session.get('user_foto_path')
     )
+
     return dict(usuario=usuario)
 
-
-# 🧩 Rotas principais
-
+# rotas principais
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -94,7 +92,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    # Último aviso URGENTE (se existir)
+    # busca aviso urgente mais recente
     aviso_urgente = (
         Aviso.query
         .filter_by(status='urgente')
@@ -102,7 +100,7 @@ def home():
         .first()
     )
 
-    # Últimos 3 avisos, independente do status
+    # últimos 3 avisos gerais
     ultimos_avisos = (
         Aviso.query
         .order_by(Aviso.data_aviso.desc())
@@ -110,30 +108,36 @@ def home():
         .all()
     )
 
-    # 🔹 Últimos 3 Achados e Perdidos
-    ultimos_aeps = (
-        Aep.query
-        .order_by(Aep.data_aep.desc())
+    # últimos 3 achados e perdidos
+    ultimos_achados = (
+        Achado.query
+        .order_by(Achado.data_achado.desc())
         .limit(3)
         .all()
     )
 
-    # 🔹 Últimos 3 Trabalhos
+    # últimos 3 trabalhos
     ultimos_trabalhos = (
         Trabalho.query
         .order_by(Trabalho.data_trabalho.desc())
         .limit(3)
         .all()
     )
+    
+    categoria_trabalho = {
+        "beleza": "Beleza",
+        "prestacao_servico": "Prestação de Serviço", 
+        "alimentacao": "Alimentação"
+    }
 
     return render_template(
         'home.html',
         aviso=aviso_urgente,
         avisos=ultimos_avisos,
-        aeps=ultimos_aeps,
-        trabalhos=ultimos_trabalhos
+        achados=ultimos_achados,
+        trabalhos=ultimos_trabalhos,
+        categoria_trabalho=categoria_trabalho
     )
-
 
 @app.route('/achados_perdidos')
 @login_required
@@ -161,6 +165,7 @@ def usuarios():
 def reservas():
     reservas = Reserva.query.all()
 
+    # agrupa reservas por local para facilitar no template
     reservas_por_local = {}
     for r in reservas:
         if r.local not in reservas_por_local:
@@ -168,7 +173,6 @@ def reservas():
         reservas_por_local[r.local].append(r.data_reserva.strftime("%Y-%m-%d"))
 
     return render_template("reservas.html", reservas_por_local=reservas_por_local)
-
 
 @app.route('/acesso')
 def acesso():
@@ -184,10 +188,103 @@ def painel():
 def avisos():
     return render_template('avisos.html')
 
-@app.route('/aeps')
+@app.route('/achados')
 @login_required
-def aeps():
+def achados():
     return render_template('achados_perdidos.html')
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
+
+@socketio.on("message")
+def receive_message(data):
+    username = data["username"]
+    msg = data["msg"]
+    room = data["room"]
+
+    # Envia a mensagem para todos na sala
+    emit("message", {"username": username, "msg": msg}, room=room)
+
+@socketio.on("join")
+def join_room_event(data):
+    username = data["username"]
+    room_name = data["room"]
+    join_room(room_name)
+
+    emit("system_message", {"msg": f"{username} entrou na sala."}, room=room_name)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
+
+# CHAT TEMPO REAL COMPATÍVEL COM O HTML ENVIADO
+
+users_online = {}      # { sid: {"username": x, "room": y} }
+rooms_users = {}       # { "bloco": [nomes], "assembleia": [nomes] }
+
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
+
+# Usuário entrou em uma sala
+@socketio.on("join")
+def join_room_event(data):
+    username = data.get("username")
+    room = data.get("room")
+    sid = str(request.sid)
+
+    # salva usuário conectado
+    users_online[sid] = {"username": username, "room": room}
+
+    # adiciona usuário na lista da sala
+    if room not in rooms_users:
+        rooms_users[room] = []
+
+    if username not in rooms_users[room]:
+        rooms_users[room].append(username)
+
+    join_room(room)
+
+    # mensagem do sistema
+    emit("system_message", {"msg": f"{username} entrou no chat."}, to=room)
+
+    # envia lista atualizada de usuários
+    emit("users", rooms_users[room], to=room)
+
+# Mensagem normal
+@socketio.on("message")
+def handle_message(data):
+    username = data.get("username")
+    msg = data.get("msg")
+    room = data.get("room")
+
+    emit("message", {"username": username, "msg": msg}, to=room)
+
+# Desconexão
+@socketio.on("disconnect")
+def disconnect_user():
+    sid = str(request.sid)
+
+    if sid not in users_online:
+        return
+
+    username = users_online[sid]["username"]
+    room = users_online[sid]["room"]
+
+    # remove usuário das listas
+    if room in rooms_users and username in rooms_users[room]:
+        rooms_users[room].remove(username)
+
+    del users_online[sid]
+
+    # avisa a sala
+    emit("system_message", {"msg": f"{username} saiu do chat."}, to=room)
+
+    # atualiza lista de usuários
+    emit("users", rooms_users.get(room, []), to=room)

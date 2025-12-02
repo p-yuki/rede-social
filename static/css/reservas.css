@@ -1,3 +1,27 @@
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    padding: 10px 25px; 
+    border-radius: 50px;
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    text-decoration: none;
+}
+
+.btn-danger:hover {
+    background-color: #9a2632; 
+    border-color: #9a2632;
+    transform: translateY(-2px); 
+}
+
+.btn-danger i.bi {
+    font-size: 1.2em;
+}
+
 h4 {
     font-weight: 900;
 }
@@ -17,39 +41,80 @@ h4 {
     margin-right: 6px;
 }
 
-/* --- Estilo geral do círculo --- */
-.flatpickr-day.dia-festa {
-    background: #6cb8ff33;   /* leve azul */
-    border: 2px solid #007bff;
-    border-radius: 50%;
+.flatpickr-day {
+    position: relative;
+    border: 1px solid transparent;
 }
 
-.flatpickr-day.dia-churras {
-    background: #ff6b6b33;   /* leve vermelho */
+.flatpickr-day.dia-festa::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.flatpickr-day.dia-churras::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
     border: 2px solid #ff3b3b;
     border-radius: 50%;
+    pointer-events: none;
 }
 
 .flatpickr-day.dia-duplo {
-    border-radius: 50%;
-    background:
-        linear-gradient(to right, #007bff 50%, #ff3b3b 50%);
-    border: 0;
+    position: relative;
 }
 
+.flatpickr-day.dia-duplo::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border-radius: 50%;
+    pointer-events: none;
+    border: 2px solid transparent;
+    border-left-color: #007bff;
+    border-top-color: #007bff;
+    border-right-color: #ff3b3b;
+    border-bottom-color: #ff3b3b;
+}
+
+.flatpickr-day:hover {
+    background: #e6e6e6;
+}
+
+.flatpickr-day.selected {
+    background: #569ff7;
+    color: white;
+}
+
+.flatpickr-day.today {
+    border-color: #959ea9;
+}
 
 .legenda.azul {
-    border: 3px solid #1e90ff;
+    background: #007bff;
 }
 
 .legenda.vermelho {
-    border: 3px solid #ff4d4d;
+    background: #ff3b3b;
 }
 
 .legenda.duplo {
     background: linear-gradient(
         to right,
-        #1e90ff 50%,
-        #ff4d4d 50%
+        #007bff 50%,
+        #ff3b3b 50%
     );
 }

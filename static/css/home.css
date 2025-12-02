@@ -1,10 +1,3 @@
-/* ==================================== */
-/* 1. CONFIGURAÇÃO GERAL E TIPOGRAFIA */
-/* ==================================== */
-
-/* Recomendação de Fonte: 'Inter' (Adicionar link no base.html) */
-/* As variáveis de cor global estão no seu CSS base/global */
-
 body {
     background-color: #f7f9fc; 
     font-family: 'Inter', sans-serif; 
@@ -16,17 +9,12 @@ body {
     padding-bottom: 50px;
 }
 
-/* Títulos de Seção (Alinhamento e Destaque) */
 h4 {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #0c2461; 
-    /* AJUSTE: Reduzimos a margem superior (mt) para dar mais espaço */
-    margin-top: 30px; 
-    /* AJUSTE: Reduzimos a margem inferior (mb) para juntar ao conteúdo */
+    color: #0c2461;
+    margin-top: 30px;
     margin-bottom: 10px; 
-    
-    /* Linha sutil abaixo dos títulos de seção */
     border-bottom: 3px solid #e0e6ed; 
     padding-bottom: 8px;
 }
@@ -37,32 +25,24 @@ h5 {
     color: #34495e;
 }
 
-/* ==================================== */
-/* 2. ESTILO DOS CARTÕES (MAIS ALINHADOS E BONITOS) */
-/* ==================================== */
-
 .card {
     border: none;
     border-radius: 10px; 
     background-color: #ffffff;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06); 
-    /* AJUSTE: Removendo height: 100% dos cards pequenos */
-    /* Para os cards pequenos (listas), é melhor que eles se ajustem ao conteúdo */
     height: auto; 
-    margin-bottom: 20px; /* Adiciona margem inferior para separar do próximo card */
+    margin-bottom: 20px;
 }
 
-/* Efeito Hover: leve elevação e sombra sutilmente maior */
 .card-link:hover .card {
     transform: translateY(-4px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* AJUSTE: Define height: 100% apenas para os cards da primeira linha */
 .main-card {
     height: 100%; 
-    margin-bottom: 0; /* Remove margem inferior se estiver na primeira linha */
+    margin-bottom: 0;
 }
 
 
@@ -70,7 +50,6 @@ h5 {
     padding: 30px; 
 }
 
-/* Cards Principais (Síndico/Serviços) - Ajuste de Tipografia */
 .main-card h4 {
     font-size: 1.5rem;
     color: #0c2461;
@@ -82,7 +61,6 @@ h5 {
     color: #6c7e8f;
 }
 
-/* Cards Pequenos (Listas) - Alinhamento e Leitura */
 .small-card .card-body {
     padding: 18px 25px; 
 }
@@ -95,12 +73,7 @@ h5 {
     color: #95a5a6;
 }
 
-/* ==================================== */
-/* 3. AVISO URGENTE (DESTAQUE) */
-/* ==================================== */
-
 .urgent-alert {
-    /* AJUSTE: Adiciona uma margem inferior para separar o card de baixo */
     margin-bottom: 20px; 
     border: 1px solid #c0392b; 
     border-left: 6px solid #e74c3c; 
@@ -112,10 +85,6 @@ h5 {
 .urgent-alert h5 {
     color: #e74c3c;
 }
-
-/* ==================================== */
-/* 4. ACHADOS E PERDIDOS (BADGES) */
-/* ==================================== */
 
 .badge-success {
     background-color: #27ae60;

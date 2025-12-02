@@ -7,35 +7,27 @@
     <title>Boa Vizinhança - Solicitar Acesso</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/acesso.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='uploads/logo2.png') }}" type="image/x-icon">
 </head>
 
 <body>
     <div class="wrapper">
-        <div class="form-header">
-            <div class="titles">
-                <div class="title-login">Acesso</div>
-            </div>
-        </div>
-        <div>
-            <div>
-                <h3>Não tem um acesso no Boa Vizinhança?</h3>
-                <hr>
-                <p>Solicite seu acesso!</p>
-            </div>
-        </div>
+        <h3>Não tem um acesso no Boa Vizinhança?</h3>
+        <hr>
+        <p>Solicite seu acesso!</p>
 
-        <a href="#" class="btn-email">Receba um email com instruções</a>
+        <form action="#" method="POST">
+            <input type="email" name="email" placeholder="Digite seu e-mail" required class="input-field">
 
-        <a href="{{ url_for('login') }}" class="btn-voltar"><i class="bi bi-box-arrow-in-right"></i> Voltar</a>
+            <button type="submit" class="btn-email">
+                Receba um email com instruções
+            </button>
+        </form>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous"></script>
+        <a href="{{ url_for('login') }}" class="btn-voltar">
+            <i class="bi bi-box-arrow-in-right"></i> Voltar
+        </a>
     </div>
-
-
-    </div>
-
 </body>
 
 </html>

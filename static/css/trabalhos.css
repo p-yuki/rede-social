@@ -1,6 +1,3 @@
-/* ARQUIVO CSS TRABALHOS.CSS - Finalizado */
-
-/* Definições de Cores e Tipografia */
 :root {
     --primary-color: #0c2461;
     --accent-color: #e74c3c;
@@ -15,45 +12,38 @@ body {
     color: var(--text-color);
 }
 
-/* Garante o espaçamento da seção principal */
 .container.mt-4 {
     padding-top: 25px;
     padding-bottom: 50px;
 }
 
-/* ==================================== */
-/* 1. TÍTULO E BOTÃO "MOSTRA SEU TRABALHO" */
-/* ==================================== */
-
-/* Título de Seção (Igual ao da Home) */
 .container h4 {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--primary-color); 
     margin-top: 40px;
-    margin-bottom: 0; /* Ajustado para melhor alinhamento com o botão */
+    margin-bottom: 0;
     border-bottom: 3px solid #e0e6ed; 
     padding-bottom: 8px;
 }
 
-/* Botão de Destaque */
 .btn-danger {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #dc3545;
+    border-color: #dc3545;
     color: #ffffff;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.2s;
     padding: 10px 25px; 
-    border-radius: 50px; /* Efeito Pill */
-    display: inline-flex; /* Alinhamento do Ícone */
+    border-radius: 50px;
+    display: inline-flex;
     align-items: center; 
     gap: 8px; 
     text-decoration: none;
 }
 
 .btn-danger:hover {
-    background-color: #081a40;
-    border-color: #081a40;
+    background-color: #9a2632;
+    border-color: #9a2632;
     transform: translateY(-2px); 
 }
 
@@ -61,16 +51,15 @@ body {
     font-size: 1.2em;
 }
 
-/* ==================================== */
-/* 2. ESTILO DOS CARTÕES DE TRABALHOS */
-/* ==================================== */
-
 .card {
     border: none;
     border-radius: 10px; 
     background-color: #ffffff;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     box-shadow: 0 5px 15px var(--shadow-color); 
+    max-width: 400px; 
+    margin: 20px auto;
+    border-radius: 12px;
 }
 
 .card:hover {
@@ -91,18 +80,29 @@ body {
     font-size: 1.25rem;
 }
 
-.card-body {
-    padding: 25px;
+.card-body .row {
+    display: flex;
+    flex-direction: column;
 }
 
-.card-body p.card-text {
-    margin-bottom: 8px;
-    line-height: 1.4;
+.instagram-card {
+    width: 100%;
+    max-width: 380px;
+    border-radius: 12px;
 }
 
-.card-body p strong {
-    color: #34495e;
-    font-weight: 600;
+.instagram-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
+
+.card-body .col-md-4,
+.card-body .col-md-8,
+.card-body .col-md-12 {
+    width: 100% !important;
 }
 
 .img-fluid {

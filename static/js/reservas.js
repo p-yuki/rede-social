@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     const calendarDiv = document.getElementById("calendario_reservas");
 
     console.log("reservas.js carregou!");
@@ -9,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
         datasOcupadas = JSON.parse(calendarDiv.dataset.datasOcupadas || "{}");
-        console.log("Parsed:", datasOcupadas);
+        console.log("Datas ocupadas parseadas:", datasOcupadas);
     } catch (e) {
         console.error("Erro ao ler JSON:", e);
         return;
@@ -20,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         locale: "pt",
         disableMobile: true,
 
-        onDayCreate: function (_, __, ___, dayElem) {
+        onDayCreate: function (dObj, dStr, fp, dayElem) {
             const d = dayElem.dateObj;
 
             const yyyy = d.getFullYear();
@@ -30,14 +29,23 @@ document.addEventListener("DOMContentLoaded", function () {
             const key = `${yyyy}-${mm}-${dd}`;
 
             if (datasOcupadas[key]) {
-                const tipos = datasOcupadas[key];
+                const locais = datasOcupadas[key];
+                
+                console.log(`Data ${key} tem locais:`, locais);
 
-                if (tipos.length === 2) {
+                // Verificar quais locais estão reservados nesta data
+                const temChurrasqueira = locais.includes("churrasqueira");
+                const temSalao = locais.includes("salao_festa");
+
+                if (temChurrasqueira && temSalao) {
                     dayElem.classList.add("dia-duplo");
-                } else if (tipos[0] === "festa") {
-                    dayElem.classList.add("dia-festa");
-                } else if (tipos[0] === "churrasqueira") {
+                    console.log(`✅ Aplicado dia-duplo para ${key}`);
+                } else if (temChurrasqueira) {
                     dayElem.classList.add("dia-churras");
+                    console.log(`🔴 Aplicado dia-churras para ${key}`);
+                } else if (temSalao) {
+                    dayElem.classList.add("dia-festa");
+                    console.log(`🔵 Aplicado dia-festa para ${key}`);
                 }
             }
         }
