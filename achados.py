@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
 from models import db, Achado, Usuario, Foto
-from utils import login_required, allowed_file
+from utils import allowed_file
 import os
 from datetime import datetime
 from flask import current_app as app
