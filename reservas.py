@@ -73,10 +73,12 @@ def reservas():
         "salao_festa": "Salão de Festas",
         "churrasqueira": "Churrasqueira"
     }
+    usuario_logado = Usuario.query.get(session.get("user_id"))
     
     return render_template(
         "reservas.html",
         reservas=reservas,
         datas_ocupadas=datas_ocupadas, 
-        local_reservas=local_reservas
+        local_reservas=local_reservas, 
+        usuario_logado= usuario_logado
     )
