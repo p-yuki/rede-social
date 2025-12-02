@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
 from models import db, Achado, Usuario, Foto
-from utils import allowed_file
+from utils import login_required, allowed_file
 import os
 from datetime import datetime
 from flask import current_app as app
@@ -20,13 +20,7 @@ def novo_achados():
 
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            # Adicione os valores do formulário para manter os dados digitados
-            return render_template('achados_perdidos_form.html', 
-                                    descricao=descricao,
-                                    contato=contato,
-                                    local=local,
-                                    status=status,
-                                    data_encontro=data_encontro)
+            return render_template('achados_perdidos_form.html')
 
         foto_id = None
         

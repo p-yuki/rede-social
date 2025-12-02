@@ -61,59 +61,44 @@
     </div>
   </nav>
 
-
-
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main p-3 mt-3">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="container mt-3">
-      {% for category, message in messages %}
-      <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show"
-        role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
     {% block content %}{% endblock %}
   </div>
 
   <!-- CHAT -->
   <!-- Chat flutuante - botão e janela -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_float.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat_float.css') }}">
 
-  <div id="chatFloatBtn" title="Abrir chat">💬</div>
+<div id="chatFloatBtn" title="Abrir chat">💬</div>
 
-  <div id="chatFloatWindow" aria-hidden="true">
-    <div class="header">
-      <div>Chat</div>
-      <button class="closeBtn" id="chatCloseBtn" aria-label="Fechar">✕</button>
-    </div>
-    <iframe id="chatFloatFrame" src="/chat"></iframe>
+<div id="chatFloatWindow" aria-hidden="true">
+  <div class="header">
+    <div>Chat</div>
+    <button class="closeBtn" id="chatCloseBtn" aria-label="Fechar">✕</button>
   </div>
+  <iframe id="chatFloatFrame" src="/chat"></iframe>
+</div>
 
-  <script>
-    // Toggle do float
-    (function () {
-      const btn = document.getElementById('chatFloatBtn');
-      const win = document.getElementById('chatFloatWindow');
-      const closeBtn = document.getElementById('chatCloseBtn');
+<script>
+  // Toggle do float
+  (function(){
+    const btn = document.getElementById('chatFloatBtn');
+    const win = document.getElementById('chatFloatWindow');
+    const closeBtn = document.getElementById('chatCloseBtn');
 
-      btn.addEventListener('click', () => {
-        win.classList.toggle('open');
-        // acessibilidade
-        win.setAttribute('aria-hidden', win.classList.contains('open') ? 'false' : 'true');
-      });
+    btn.addEventListener('click', () => {
+      win.classList.toggle('open');
+      // acessibilidade
+      win.setAttribute('aria-hidden', win.classList.contains('open') ? 'false' : 'true');
+    });
 
-      closeBtn.addEventListener('click', () => {
-        win.classList.remove('open');
-        win.setAttribute('aria-hidden', 'true');
-      });
-    })();
-  </script>
+    closeBtn.addEventListener('click', () => {
+      win.classList.remove('open');
+      win.setAttribute('aria-hidden', 'true');
+    });
+  })();
+</script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -121,5 +106,4 @@
     crossorigin="anonymous"></script>
 
 </body>
-
 </html>

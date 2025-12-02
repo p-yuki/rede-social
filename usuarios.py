@@ -113,7 +113,8 @@ def desativar_usuario(user_id):
 @usuarios_bp.route('/usuarios/logout')
 def logout():
     session.clear()
-    return redirect(url_for('usuarios_bp.login') + '?logout=true')
+    flash('Você saiu da conta.', 'info')
+    return redirect(url_for('login'))
 
 @usuarios_bp.route('/usuarios')
 def usuarios():

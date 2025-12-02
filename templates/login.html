@@ -11,16 +11,6 @@
 </head>
 
 <body>
-  {% if request.args.get('logout') == 'true' %}
-  <div class="container mt-3"
-    style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;">
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-      Você saiu da conta.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-  {% endif %}
-
   <div class="wrapper">
     <div class="form-header">
       <div class="titles">
