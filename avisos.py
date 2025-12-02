@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from werkzeug.utils import secure_filename
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from models import db, Aviso, Usuario, Foto
 from utils import login_required, allowed_file
 import os
@@ -13,7 +12,6 @@ avisos_bp = Blueprint('avisos_bp', __name__)
 def novo_aviso():
     # verifica se usuário tem permissão para criar avisos
     if not session.get('is_adm') and not session.get('is_sindico'):
-        flash('Acesso negado. apenas administradores podem criar avisos.', 'danger')
         return redirect(url_for('avisos_bp.avisos'))
 
     if request.method == 'POST':
@@ -25,7 +23,6 @@ def novo_aviso():
         arquivo_foto = request.files.get('foto')
         
         if not descricao:
-            flash('A descrição é obrigatória!', 'danger')
             return render_template('avisos_form.html')
         
         # cria o aviso
@@ -39,7 +36,6 @@ def novo_aviso():
         db.session.add(aviso)
         db.session.commit()
         
-        flash('aviso criado com sucesso!', 'success')
         return redirect(url_for('avisos_bp.avisos'))
     
     return render_template('avisos_form.html')
@@ -50,7 +46,6 @@ def excluir_aviso(aviso_id):
 
     # verifica se o usuário é o autor do post
     if aviso.usuario_id != session['user_id']:
-        flash('Você não tem permissão para excluir este post.', 'danger')
         return redirect(url_for('avisos_bp.avisos'))
 
     # exclui a foto associada se existir
@@ -69,7 +64,6 @@ def excluir_aviso(aviso_id):
     db.session.delete(aviso)
     db.session.commit()
 
-    flash('Post excluído com sucesso!', 'success')
     return redirect(url_for('avisos_bp.avisos'))
 
 @avisos_bp.route('/avisos')

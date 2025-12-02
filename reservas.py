@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from models import db, Reserva, Usuario
 
 reservas_bp = Blueprint('reservas_bp', __name__)
@@ -13,7 +13,6 @@ def nova_reserva():
         reserva_existente = Reserva.query.filter_by(local=local, data_reserva=data_reserva).first()
 
         if reserva_existente:
-            flash('Esta data já está reservada para este local.', 'danger')
             return redirect(url_for('reservas_bp.nova_reserva'))
 
         reserva = Reserva()
@@ -24,7 +23,6 @@ def nova_reserva():
         db.session.add(reserva)
         db.session.commit()
 
-        flash('Reserva criada com sucesso!', 'success')
         return redirect(url_for('reservas_bp.reservas'))
 
     # prepara datas ocupadas para o calendário
@@ -42,13 +40,11 @@ def excluir_reserva(reserva_id):
     reserva = Reserva.query.get_or_404(reserva_id)
 
     if reserva.usuario_id != session['user_id']:
-        flash('Você não tem permissão para excluir esta reserva.', 'danger')
         return redirect(url_for('reservas_bp.reservas'))
 
     db.session.delete(reserva)
     db.session.commit()
 
-    flash('Reserva excluída com sucesso!', 'success')
     return redirect(url_for('reservas_bp.reservas'))
 
 @reservas_bp.route('/reservas')

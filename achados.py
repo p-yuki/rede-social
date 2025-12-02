@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 from models import db, Achado, Usuario, Foto
-from utils import login_required, allowed_file
+from utils import allowed_file
 import os
 from datetime import datetime
 from flask import current_app as app
@@ -19,7 +19,6 @@ def novo_achados():
         data_encontro = request.form.get('data_encontro')
 
         if not descricao:
-            flash('A descrição é obrigatória!', 'danger')
             return render_template('achados_perdidos_form.html')
 
         foto_id = None
@@ -57,7 +56,6 @@ def novo_achados():
         db.session.add(achado)
         db.session.commit()
         
-        flash('Achado criada com sucesso!', 'success')
         return redirect(url_for('achados_bp.achados'))
     
     return render_template('achados_perdidos_form.html')
@@ -68,7 +66,6 @@ def excluir_achado(achado_id):
 
     # verifica se o usuário é o autor do post
     if achado.usuario_id != session['user_id']:
-        flash('Você não tem permissão para excluir este post.', 'danger')
         return redirect(url_for('achados_bp.achados'))
 
     # exclui a foto associada se existir
@@ -87,7 +84,6 @@ def excluir_achado(achado_id):
     db.session.delete(achado)
     db.session.commit()
 
-    flash('Post excluído com sucesso!', 'success')
     return redirect(url_for('achados_bp.achados'))
 
 @achados_bp.route('/achados')
