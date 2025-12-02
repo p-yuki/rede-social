@@ -16,54 +16,61 @@
                 {% endif %}
             </div>
 
+            <!-- CONTAINER DO GRID -->
             <div class="row g-4">
 
-            {% for aviso, usuario in avisos %}
-            <div class="col-md-4 col-sm-6">
-                <div class="card shadow-sm h-100">
+                {% for aviso, usuario in avisos %}
+                <div class="col-md-4 col-sm-6">
+                    <div class="card shadow-sm h-100">
 
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title m-0"><strong>{{ aviso.nome_aviso }}</strong></h5>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title m-0"><strong>{{ aviso.nome_aviso }}</strong></h5>
 
-                        {% if usuario_logado.is_adm or usuario_logado.is_sindico %}
-                        <form action="{{ url_for('avisos_bp.excluir_aviso', aviso_id=aviso.id) }}" method="POST"
-                            onsubmit="return confirm('Tem certeza que deseja excluir?');">
-                            <button class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
-                        {% endif %}
-                    </div>
+                            {% if usuario_logado.is_adm or usuario_logado.is_sindico %}
+                            <form action="{{ url_for('avisos_bp.excluir_aviso', aviso_id=aviso.id) }}" method="POST"
+                                onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
 
-                    <div class="card-body">
+                        <div class="card-body">
 
-                        {% if aviso.foto_id %}
-                        <img src="{{ url_for('static', filename='uploads/' ~ aviso.foto.foto_path) }}"
-                            class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover; width: 100%;">
-                        {% endif %}
+                            {% if aviso.foto_id %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ aviso.foto.foto_path) }}"
+                                class="img-fluid rounded mb-3"
+                                style="max-height: 250px; object-fit: cover; width: 100%;">
+                            {% endif %}
 
-                        <p class="card-text"><strong>Descrição:</strong> {{ aviso.descricao }}</p>
-                        <p class="card-text"><strong>Em/Até:</strong> {{ aviso.data_aviso.strftime('%d/%m/%Y') if aviso.data_aviso else 'Não informado' }} - {{ aviso.horario_aviso }}</p>
+                            <p class="card-text"><strong>Descrição:</strong> {{ aviso.descricao }}</p>
+                            <p class="card-text"><strong>Em/Até:</strong> {{ aviso.data_aviso.strftime('%d/%m/%Y') if aviso.data_aviso else 'Não informado' }} - {{ aviso.horario_aviso }}</p>
 
-                        <p class="card-text">
-                            <strong>Status:</strong>
-                            <span class="status-badge 
-                                {% if aviso.status == 'urgente' %}status-urgente{% elif aviso.status == 'media' %}status-media{% elif aviso.status == 'nao_urgente' %}status-nao_urgente{% endif %}">
-                                {{ categoria_avisos.get(aviso.status) | capitalize }}
-                            </span>
-                        </p>
-                        
-                    </div>
+                            <p class="card-text">
+                                <strong>Status:</strong>
+                                <span class="status-badge 
+                                    {% if aviso.status == 'urgente' %}status-urgente{% 
+                                    elif aviso.status == 'media' %}status-media{% 
+                                    elif aviso.status == 'nao_urgente' %}status-nao_urgente{% 
+                                    endif %}">
+                                    {{ categoria_avisos.get(aviso.status) | capitalize }}
+                                </span>
+                            </p>
+                            
+                        </div>
 
-                    <div class="card-footer text-muted">
-                        <small>Postado por <strong>{{ usuario.nome }}</strong> em
-                            {{ aviso.data_criacao.strftime('%d/%m/%Y %H:%M') }}</small>
+                        <div class="card-footer text-muted">
+                            <small>Postado por <strong>{{ usuario.nome }}</strong> em
+                                {{ aviso.data_criacao.strftime('%d/%m/%Y %H:%M') }}</small>
+                        </div>
+
                     </div>
                 </div>
                 {% endfor %}
 
-                </div>
-                
+            </div> <!-- FECHAMENTO CORRETO DO ROW -->
+
         </div>
     </div>
 </div>
