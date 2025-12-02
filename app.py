@@ -53,8 +53,6 @@ with app.app_context():
         admin.apartamento = '0'
         admin.is_adm = True
         admin.is_sindico = False
-        # Novo admin pode precisar do foto_id = None se for novo registro
-        # admin.foto_id = None 
 
         db.session.add(admin)
         db.session.commit()
