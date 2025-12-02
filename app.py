@@ -19,7 +19,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Senai%40118@localhost/redesocialdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:2007@localhost/redesocialdb'
 app.config['SQLALCHECHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -92,6 +92,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
+    # busca aviso urgente mais recente
     aviso_urgente = (
         Aviso.query
         .filter_by(status='urgente')
@@ -99,6 +100,7 @@ def home():
         .first()
     )
 
+    # últimos 3 avisos gerais
     ultimos_avisos = (
         Aviso.query
         .order_by(Aviso.data_aviso.desc())
@@ -106,6 +108,7 @@ def home():
         .all()
     )
 
+    # últimos 3 achados e perdidos
     ultimos_achados = (
         Achado.query
         .order_by(Achado.data_achado.desc())
@@ -113,6 +116,7 @@ def home():
         .all()
     )
 
+    # últimos 3 trabalhos
     ultimos_trabalhos = (
         Trabalho.query
         .order_by(Trabalho.data_trabalho.desc())
@@ -161,6 +165,7 @@ def usuarios():
 def reservas():
     reservas = Reserva.query.all()
 
+    # agrupa reservas por local para facilitar no template
     reservas_por_local = {}
     for r in reservas:
         if r.local not in reservas_por_local:
@@ -197,13 +202,13 @@ def index():
 def chat():
     return render_template('chat.html')
 
-# --- EVENTOS DE CHAT (APENAS UMA VEZ) ---
-
 @socketio.on("message")
 def receive_message(data):
     username = data["username"]
     msg = data["msg"]
     room = data["room"]
+
+    # Envia a mensagem para todos na sala
     emit("message", {"username": username, "msg": msg}, room=room)
 
 @socketio.on("join")
@@ -211,9 +216,75 @@ def join_room_event(data):
     username = data["username"]
     room_name = data["room"]
     join_room(room_name)
-    emit("system_message", {"msg": f"{username} entrou na sala."}, room=room_name)
 
-# --- INICIAR O SERVIDOR ---
+    emit("system_message", {"msg": f"{username} entrou na sala."}, room=room_name)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+
+# CHAT TEMPO REAL COMPATÍVEL COM O HTML ENVIADO
+
+users_online = {}      # { sid: {"username": x, "room": y} }
+rooms_users = {}       # { "bloco": [nomes], "assembleia": [nomes] }
+
+@app.route('/chat')
+@login_required
+def chat():
+    return render_template('chat.html')
+
+# Usuário entrou em uma sala
+@socketio.on("join")
+def join_room_event(data):
+    username = data.get("username")
+    room = data.get("room")
+    sid = str(request.sid)
+
+    # salva usuário conectado
+    users_online[sid] = {"username": username, "room": room}
+
+    # adiciona usuário na lista da sala
+    if room not in rooms_users:
+        rooms_users[room] = []
+
+    if username not in rooms_users[room]:
+        rooms_users[room].append(username)
+
+    join_room(room)
+
+    # mensagem do sistema
+    emit("system_message", {"msg": f"{username} entrou no chat."}, to=room)
+
+    # envia lista atualizada de usuários
+    emit("users", rooms_users[room], to=room)
+
+# Mensagem normal
+@socketio.on("message")
+def handle_message(data):
+    username = data.get("username")
+    msg = data.get("msg")
+    room = data.get("room")
+
+    emit("message", {"username": username, "msg": msg}, to=room)
+
+# Desconexão
+@socketio.on("disconnect")
+def disconnect_user():
+    sid = str(request.sid)
+
+    if sid not in users_online:
+        return
+
+    username = users_online[sid]["username"]
+    room = users_online[sid]["room"]
+
+    # remove usuário das listas
+    if room in rooms_users and username in rooms_users[room]:
+        rooms_users[room].remove(username)
+
+    del users_online[sid]
+
+    # avisa a sala
+    emit("system_message", {"msg": f"{username} saiu do chat."}, to=room)
+
+    # atualiza lista de usuários
+    emit("users", rooms_users.get(room, []), to=room)
