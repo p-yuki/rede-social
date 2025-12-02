@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 from models import db, Trabalho, Usuario, Foto
-from utils import login_required, allowed_file
+from utils import allowed_file
 import os
 from datetime import datetime
 from flask import current_app as app
@@ -18,7 +18,6 @@ def novo_trabalho():
         contato = request.form.get('contato')
 
         if not descricao:
-            flash('A descrição é obrigatória!', 'danger')
             return render_template('trabalhos_form.html')
 
         foto_id = None
@@ -54,7 +53,6 @@ def novo_trabalho():
         db.session.add(trabalho)
         db.session.commit()
 
-        flash('Trabalho criado com sucesso!', 'success')
         return redirect(url_for('trabalhos_bp.trabalhos'))
 
     return render_template('trabalhos_form.html')
@@ -65,7 +63,6 @@ def excluir_trabalho(trabalho_id):
 
     # verifica se o usuário é o autor do post
     if trabalho.usuario_id != session.get('user_id'):
-        flash('Você não tem permissão para excluir este post.', 'danger')
         return redirect(url_for('trabalhos_bp.trabalhos'))
 
     # exclui a foto associada se existir
@@ -84,7 +81,6 @@ def excluir_trabalho(trabalho_id):
     db.session.delete(trabalho)
     db.session.commit()
 
-    flash('Post excluído com sucesso!', 'success')
     return redirect(url_for('trabalhos_bp.trabalhos'))
 
 @trabalhos_bp.route('/trabalhos')

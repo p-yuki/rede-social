@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, Usuario, Foto
 from utils import allowed_file
@@ -22,11 +22,9 @@ def novo():
         arquivo_foto = request.files.get('foto')
 
         if not nome or not email or not senha:
-            flash('Preencha todos os campos obrigatórios (nome, email, senha)!', 'danger')
             return render_template('usuarios_form.html')
 
         if Usuario.query.filter_by(email=email).first():
-            flash('Este email já está cadastrado.', 'danger')
             return render_template('usuarios_form.html')
 
         foto_id = None
@@ -62,7 +60,6 @@ def novo():
         db.session.add(usuario)
         db.session.commit()
         
-        flash('Morador cadastrado com sucesso!', 'success')
         return redirect(url_for('usuarios'))
     
     return render_template('usuarios_form.html', title='Cadastro')
@@ -75,7 +72,6 @@ def login():
         user = Usuario.query.filter_by(email=email).first()
 
         if user and not user.is_active:
-            flash('Este usuário está desativado. Fale com o administrador.', 'danger')
             return render_template('login.html')
 
         if user and check_password_hash(user.senha, senha):
@@ -95,10 +91,8 @@ def login():
             session['is_sindico'] = user.is_sindico
             session['user_foto_path'] = foto_path
             
-            flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('home'))
 
-    flash('Email ou senha incorretos!', 'danger')
     return render_template('login.html')
 
 @usuarios_bp.route('/usuarios/desativar/<int:user_id>', methods=['POST'])
@@ -107,13 +101,11 @@ def desativar_usuario(user_id):
     usuario.is_active = False
     db.session.commit()
 
-    flash(f'O usuário {usuario.nome} foi desativado.', 'warning')
     return redirect(url_for('usuarios'))
 
 @usuarios_bp.route('/usuarios/logout')
 def logout():
     session.clear()
-    flash('Você saiu da conta.', 'info')
     return redirect(url_for('login'))
 
 @usuarios_bp.route('/usuarios')

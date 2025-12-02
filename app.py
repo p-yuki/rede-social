@@ -227,11 +227,6 @@ if __name__ == '__main__':
 users_online = {}      # { sid: {"username": x, "room": y} }
 rooms_users = {}       # { "bloco": [nomes], "assembleia": [nomes] }
 
-@app.route('/chat')
-@login_required
-def chat():
-    return render_template('chat.html')
-
 # Usuário entrou em uma sala
 @socketio.on("join")
 def join_room_event(data):
