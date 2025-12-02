@@ -20,7 +20,13 @@ def novo_achados():
 
         if not descricao:
             flash('A descrição é obrigatória!', 'danger')
-            return render_template('achados_perdidos_form.html')
+            # Adicione os valores do formulário para manter os dados digitados
+            return render_template('achados_perdidos_form.html', 
+                                    descricao=descricao,
+                                    contato=contato,
+                                    local=local,
+                                    status=status,
+                                    data_encontro=data_encontro)
 
         foto_id = None
         

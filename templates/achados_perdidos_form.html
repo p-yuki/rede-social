@@ -15,50 +15,52 @@
 
                     <div class="mb-3">
                         <label for="descricao" class="form-label">O que Achou/Perdeu?: </label>
-                        <input type="text" name="descricao" id="descricao" class="form-control" required>
+                        <input type="text" name="descricao" id="descricao" class="form-control"
+                            value="{{ descricao or '' }}" required>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="local" class="form-label">Onde Encontrou/Perdeu?: </label>
-                            <input type="text" name="local" id="local" class="form-control" required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="local" class="form-label">Onde Encontrou/Perdeu?: </label>
+                        <input type="text" name="local" id="local" class="form-control" value="{{ local or '' }}"
+                            required>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Achou ou Perdeu?: </label>
-                            <select name="status" id="status" class="form-select">
-                                <option value="achado">Achei</option>
-                                <option value="perdido">Perdi</option>
-                            </select>
-                        </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Achou ou Perdeu?: </label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="achado" {% if status=='achado' %}selected{% endif %}>Achei</option>
+                            <option value="perdido" {% if status=='perdido' %}selected{% endif %}>Perdi</option>
+                        </select>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="data_encontro" class="form-label">Quando Achou/Perdeu?: </label>
-                            <input type="date" name="data_encontro" id="data_encontro" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="contato" class="form-label">Contato (Telefone): </label>
-                            <input type="tel" id="contato" name="contato" class="form-control phone-mask"
-                                placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel" maxlength="15"
-                                required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="data_encontro" class="form-label">Quando Achou/Perdeu?: </label>
+                        <input type="date" name="data_encontro" id="data_encontro" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contato" class="form-label">Contato (Telefone): </label>
+                        <input type="tel" id="contato" name="contato" class="form-control phone-mask"
+                            placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel" maxlength="15" required>
+                    </div>
 
-                        <!-- Campo de imagem (inserido corretamente aqui) -->
-                        <div class="mb-3">
-                            <label for="foto" class="form-label">Adicionar Imagem:</label>
-                            <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
-                        </div>
+                    <!-- Campo de imagem (inserido corretamente aqui) -->
+                    <div class="mb-3">
+                        <label for="foto" class="form-label">Adicionar Imagem:</label>
+                        <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                    </div>
 
-                        <div class="mb-3">
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                                <button type="submit" class="btn btn-danger rounded-pill px-4">
-                                    <i class="bi bi-save"></i> {{ "Salvar" if not aviso else "Atualizar" }}
-                                </button>
-                            </div>
+                    <div class="mb-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                            <button type="submit" class="btn btn-danger rounded-pill px-4">
+                                <i class="bi bi-save"></i> {{ "Salvar" if not aviso else "Atualizar" }}
+                            </button>
                         </div>
                     </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 </div>
 {% endblock %}
